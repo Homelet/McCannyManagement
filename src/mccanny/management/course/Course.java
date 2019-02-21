@@ -49,5 +49,13 @@ public class Course{
 	public String toString(){
 		return courseID + "{courseHour=" + courseHour + '}';
 	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(this == o) return true;
+		if(o == null || getClass() != o.getClass()) return false;
+		Course course = (Course) o;
+		return courseID.equals(course.courseID);
+	}
 }
 

@@ -18,9 +18,7 @@ import mccanny.util.Weekday;
 import mccanny.visual.Display;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 
 //@SuppressWarnings("all")
 public class CourseManager{
@@ -61,17 +59,21 @@ public class CourseManager{
 			day.errors.clear();
 			day.events.clear();
 		}
-		for(CoursePeriod period : timeTable.periods){
+		HashSet<Weekday> weekdays = new HashSet<>();
+		for(CoursePeriod period : timeTable.periods()){
 			thread.getRenderManager().addTargets(period);
-			ArrayList<Event> day = days.get(period.weekday()).events;
-			day.add(new Event(period, period.start(), Event.START));
-			day.add(new Event(period, period.end(), Event.END));
+			Day day = days.get(period.weekday());
+			day.periods.add(period);
+			day.events.add(new Event(period, period.start(), Event.START));
+			day.events.add(new Event(period, period.end(), Event.END));
+			weekdays.add(period.weekday());
 		}
-		for(Weekday weekday : Weekday.weekdays())
+		for(Weekday weekday : weekdays)
 			days.get(weekday).events.sort(null);
 		analyze();
-		for(CoursePeriod period : timeTable.periods){
-			period.updateLocation();
+		for(Weekday weekday : weekdays){
+			for(CoursePeriod period : days.get(weekday).periods)
+				period.updateLocation();
 		}
 	}
 	
@@ -132,36 +134,72 @@ public class CourseManager{
 		return days.get(weekday).renderOffset();
 	}
 	
+	/**
+	 * call this method if a coursePeriod has changes it's start or finish
+	 */
 	public void update(CoursePeriod period){
 		ArrayList<Event> day = days.get(period.weekday()).events;
 		day.removeIf(event->event.period == period);
 		day.add(new Event(period, period.start(), Event.START));
 		day.add(new Event(period, period.end(), Event.END));
 		day.sort(null);
+		analyze(period.weekday(), true);
+		period.updateLocation();
+	}
+	
+	public void addAll(Collection<CoursePeriod> periods){
+		if(periods.size() == 0)
+			return;
+		HashSet<Weekday> weekdays = new HashSet<>();
+		for(CoursePeriod period : periods){
+			timeTable.add(period);
+			thread.getRenderManager().addTargets(period);
+			Day day = days.get(period.weekday());
+			day.periods.add(period);
+			day.events.add(new Event(period, period.start(), Event.START));
+			day.events.add(new Event(period, period.end(), Event.END));
+			weekdays.add(period.weekday());
+		}
+		for(Weekday weekday : weekdays)
+			days.get(weekday).events.sort(null);
+		analyze();
+		for(Weekday weekday : weekdays){
+			for(CoursePeriod period : days.get(weekday).periods)
+				period.updateLocation();
+		}
 	}
 	
 	public void add(CoursePeriod period){
-		timeTable.periods.add(period);
-		timeTable.periods.sort(null);
+		timeTable.add(period);
 		thread.getRenderManager().addTargets(period);
-		ArrayList<Event> day = days.get(period.weekday()).events;
-		day.add(new Event(period, period.start(), Event.START));
-		day.add(new Event(period, period.end(), Event.END));
-		day.sort(null);
+		Day day = days.get(period.weekday());
+		day.periods.add(period);
+		day.events.add(new Event(period, period.start(), Event.START));
+		day.events.add(new Event(period, period.end(), Event.END));
+		day.events.sort(null);
+		analyze(period.weekday(), true);
+		for(CoursePeriod p : day.periods)
+			p.updateLocation();
 	}
 	
 	public void remove(CoursePeriod period){
-		timeTable.periods.remove(period);
+		timeTable.remove(period);
 		thread.getRenderManager().removeTargets(period);
-		ArrayList<Event> day = days.get(period.weekday()).events;
-		day.removeIf(event->event.period == period);
+		Day day = days.get(period.weekday());
+		day.events.removeIf(event->event.period == period);
+		day.periods.remove(period);
 	}
 	
 	class Event implements Comparable<Event>{
 		
 		@Override
 		public int compareTo(Event o){
-			return Double.compare(time, o.time);
+			int result = Double.compare(time, o.time);
+			if(result == 0){
+				return this.period.compareTo(o.period);
+			}else{
+				return result;
+			}
 		}
 		
 		final static boolean      START = true;
@@ -187,6 +225,7 @@ public class CourseManager{
 		final         Weekday                    weekday;
 		final         ArrayList<CourseCollusion> errors;
 		final         ArrayList<Event>           events;
+		final         ArrayList<CoursePeriod>    periods;
 		private       int                        renderOffset;
 		private       int                        maxCount;
 		private final Dimension                  size;
@@ -197,6 +236,7 @@ public class CourseManager{
 			this.weekday = weekday;
 			errors = new ArrayList<>();
 			events = new ArrayList<>();
+			periods = new ArrayList<>();
 			renderOffset = 0;
 			maxCount = 0;
 			this.size = new Dimension(0, FIXED_HEADER_HEIGHT + TIMETABLE_DI.height);

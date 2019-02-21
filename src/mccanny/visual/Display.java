@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Display extends JFrame{
 	
@@ -67,17 +68,16 @@ public class Display extends JFrame{
 	}
 	
 	private void construct(){
-		Course                  course   = new Course("MHF4U", new Color(0xFF6600));
-		Teacher                 teacher  = new Teacher("0", "Patric");
-		Teacher                 teacher1 = new Teacher("0", "Eleanor");
-		Student                 student  = new Student("0", "Homelet");
-		Student                 student1 = new Student("0", "Harry");
-		Student                 student2 = new Student("0", "Penny");
-		Student                 student3 = new Student("0", "Emma");
-		Student                 student4 = new Student("0", "Brendon");
-		Student                 student5 = new Student("0", "Ethan");
-		Student                 student6 = new Student("0", "Olivia");
-		ArrayList<CoursePeriod> periods  = new ArrayList<>();
+		Course  course   = new Course("MHF4U", new Color(0xFF6600));
+		Teacher teacher  = new Teacher("0", "Patric");
+		Teacher teacher1 = new Teacher("0", "Eleanor");
+		Student student  = new Student("0", "Homelet");
+		Student student1 = new Student("0", "Harry");
+		Student student2 = new Student("0", "Penny");
+		Student student3 = new Student("0", "Emma");
+		Student student4 = new Student("0", "Brendon");
+		Student student5 = new Student("0", "Ethan");
+		Student student6 = new Student("0", "Olivia");
 		//
 		CoursePeriod period2 = new CoursePeriod(course, 10, Weekday.MONDAY, 8, 8.5);
 		period2.addTeacher(true, Arrays.asList(teacher, teacher1, teacher1, teacher1, teacher1, teacher1, teacher1, teacher1, teacher1));
@@ -93,12 +93,12 @@ public class Display extends JFrame{
 //		CoursePeriod period5 = new CoursePeriod(course, 10, Weekday.MONDAY, 11.5, 12.5);
 //		period5.addStudent(true, Arrays.asList(student));
 //		period5.addTeacher(true, Arrays.asList(teacher));
-		periods.add(period2);
-		periods.add(period);
-		periods.add(period3);
-		periods.add(period4);
 //		periods.add(period5);
-		this.manager.initializeTimeTable(new TimeTable(new Date(2019, 02.f, 10.f), periods));
+		this.manager.initializeTimeTable(new TimeTable(new Date(2019, 02.f, 10.f)));
+		this.manager.add(period);
+		this.manager.add(period3);
+		this.manager.add(period4);
+		this.manager.add(period2);
 		updateDimension();
 	}
 	

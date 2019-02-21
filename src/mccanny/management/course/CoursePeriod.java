@@ -34,7 +34,7 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	static{
 		configs.put(0.5, new RenderThresholdConfig(false, false, 0, 0));
 		configs.put(1.0, new RenderThresholdConfig(true, false, 2, 0));
-		configs.put(1.5, new RenderThresholdConfig(true, false, 4, 0));
+		configs.put(1.5, new RenderThresholdConfig(true, false, 5, 0));
 		configs.put(2.0, new RenderThresholdConfig(true, false, 2, 5));
 		configs.put(2.5, new RenderThresholdConfig(true, true, 1, 6));
 		configs.put(3.0, new RenderThresholdConfig(true, true, 1, 7));
@@ -72,8 +72,7 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	public int compareTo(CoursePeriod o){
 		int result = Integer.compare(this.weekday.index(), o.weekday.index());
 		if(result == 0){
-			int period = comparePeriod(this, o);
-			return Integer.compare(period, 0);
+			return comparePeriod(this, o);
 		}else{
 			return result;
 		}
@@ -85,7 +84,7 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 		}else if(p1.start < p2.start){
 			return -1;
 		}else{
-			return Double.compare(p2.end, p1.end);
+			return Double.compare(p1.end, p2.end);
 		}
 	}
 	
@@ -99,6 +98,7 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	private final Dimension             size;
 	private final Point                 vertex;
 	private       RenderThresholdConfig config;
+	private       boolean               activate;
 	// participant
 	private       ArrayList<Teacher>    teachers;
 	private       ArrayList<Student>    students;
@@ -157,6 +157,7 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 		this.students = new ArrayList<>();
 		this.size = new Dimension();
 		this.vertex = new Point();
+		this.activate = false;
 		period(start, end);
 	}
 	
@@ -177,6 +178,7 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 		pullConfig();
 		this.size.setSize(CoursePeriod.WIDTH, (int) (CoursePeriod.HEIGHT_PER_HOUR * length));
 		this.periodDrawer.initializeContents(Utility.time(start, FORMAT_24), "~", Utility.time(end, FORMAT_24));
+		Display.getInstance().manager().update(this);
 	}
 	
 	private void pullConfig(){
@@ -330,6 +332,24 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	@Override
 	public Point getVertex(Rectangle rectangle){
 		return vertex;
+	}
+	
+	public boolean activate(){
+		return activate;
+	}
+	
+	public void activate(boolean activate){
+		this.activate = activate;
+	}
+	
+	@Override
+	public boolean isTicking(){
+		return activate;
+	}
+	
+	@Override
+	public boolean isRendering(){
+		return activate;
 	}
 	
 	@Override

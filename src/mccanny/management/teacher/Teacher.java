@@ -41,4 +41,12 @@ public class Teacher{
 	public String toString(){
 		return identity + "{MEN='" + MEN + "\'}";
 	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(this == o) return true;
+		if(o == null || getClass() != o.getClass()) return false;
+		Teacher teacher = (Teacher) o;
+		return MEN.equals(teacher.MEN);
+	}
 }
