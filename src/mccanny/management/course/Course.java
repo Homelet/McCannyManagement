@@ -1,21 +1,41 @@
 package mccanny.management.course;
 
 import java.awt.*;
+import java.util.Collection;
+import java.util.HashMap;
 
 /**
  * the blue print for every course object
  */
 public class Course{
 	
+	private static HashMap<String, Course> courses = new HashMap<>();
+	
+	public static Collection<Course> courses(){
+		return courses.values();
+	}
+	
+	public static Course findCourse(String courseID){
+		return courses.get(courseID);
+	}
+	
+	public static Course loadCourse(String courseID, double courseHour, Color color){
+		// if null means no such student exist yet
+		// else means such student have already been registered
+		if(courses.get(courseID) == null){
+			Course course = new Course(courseID, courseHour, color);
+			courses.put(courseID, course);
+			return course;
+		}else{
+			throw new IllegalArgumentException("Course with the same Course Name have registered (" + courses.get(courseID) + ")");
+		}
+	}
+	
 	private String courseID;
 	private double courseHour;
 	private Color  color;
 	
-	public Course(String courseID, Color color){
-		this(courseID, 110.0, color);
-	}
-	
-	public Course(String courseID, double courseHour, Color color){
+	private Course(String courseID, double courseHour, Color color){
 		this.courseID = courseID;
 		this.courseHour = courseHour;
 		this.color = color;
@@ -25,12 +45,16 @@ public class Course{
 		return courseID;
 	}
 	
-	public double courseHour(){
-		return courseHour;
+	public void courseID(String courseID){
+		if(courses.get(courseID) == null){
+			courses.put(courseID, courses.remove(this.courseID));
+			this.courseID = courseID;
+		}else
+			throw new IllegalArgumentException("Course with the same Course Name have registered (" + courses.get(courseID) + ")");
 	}
 	
-	public void courseID(String courseID){
-		this.courseID = courseID;
+	public double courseHour(){
+		return courseHour;
 	}
 	
 	public void courseHour(double courseHour){
@@ -47,7 +71,7 @@ public class Course{
 	
 	@Override
 	public String toString(){
-		return courseID + "{courseHour=" + courseHour + '}';
+		return courseID;
 	}
 	
 	@Override

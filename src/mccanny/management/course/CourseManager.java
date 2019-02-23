@@ -13,6 +13,7 @@ import mccanny.management.exception.StudentCollusion;
 import mccanny.management.exception.TeacherCollusion;
 import mccanny.management.student.Student;
 import mccanny.management.teacher.Teacher;
+import mccanny.util.OrderedUniqueArray;
 import mccanny.util.Utility;
 import mccanny.util.Weekday;
 import mccanny.visual.Display;
@@ -68,8 +69,6 @@ public class CourseManager{
 			day.events.add(new Event(period, period.end(), Event.END));
 			weekdays.add(period.weekday());
 		}
-		for(Weekday weekday : weekdays)
-			days.get(weekday).events.sort(null);
 		analyze();
 		for(Weekday weekday : weekdays){
 			for(CoursePeriod period : days.get(weekday).periods)
@@ -92,6 +91,8 @@ public class CourseManager{
 		int          maxCount = 0;
 		PeriodBuffer buffer   = new PeriodBuffer();
 		for(Event event : day.events){
+			if(!event.period.activate())
+				continue;
 			if(event.status){
 				check(event.period, buffer, day.errors);
 				event.period.lineIndex(buffer.join(event.period), false);
@@ -134,15 +135,21 @@ public class CourseManager{
 		return days.get(weekday).renderOffset();
 	}
 	
+	public void applyFilter(Filter filter){
+		timeTable.applyFilter(filter);
+		analyze();
+		for(CoursePeriod period : timeTable.periods())
+			period.updateLocation();
+	}
+	
 	/**
 	 * call this method if a coursePeriod has changes it's start or finish
 	 */
 	public void update(CoursePeriod period){
-		ArrayList<Event> day = days.get(period.weekday()).events;
+		OrderedUniqueArray<Event> day = days.get(period.weekday()).events;
 		day.removeIf(event->event.period == period);
 		day.add(new Event(period, period.start(), Event.START));
 		day.add(new Event(period, period.end(), Event.END));
-		day.sort(null);
 		analyze(period.weekday(), true);
 		period.updateLocation();
 	}
@@ -160,9 +167,9 @@ public class CourseManager{
 			day.events.add(new Event(period, period.end(), Event.END));
 			weekdays.add(period.weekday());
 		}
-		for(Weekday weekday : weekdays)
-			days.get(weekday).events.sort(null);
-		analyze();
+		for(Weekday weekday : weekdays){
+			analyze(weekday, true);
+		}
 		for(Weekday weekday : weekdays){
 			for(CoursePeriod period : days.get(weekday).periods)
 				period.updateLocation();
@@ -176,7 +183,6 @@ public class CourseManager{
 		day.periods.add(period);
 		day.events.add(new Event(period, period.start(), Event.START));
 		day.events.add(new Event(period, period.end(), Event.END));
-		day.events.sort(null);
 		analyze(period.weekday(), true);
 		for(CoursePeriod p : day.periods)
 			p.updateLocation();
@@ -224,7 +230,7 @@ public class CourseManager{
 		private final int                        FIXED_Y_OFFSET               = 65;
 		final         Weekday                    weekday;
 		final         ArrayList<CourseCollusion> errors;
-		final         ArrayList<Event>           events;
+		final         OrderedUniqueArray<Event>  events;
 		final         ArrayList<CoursePeriod>    periods;
 		private       int                        renderOffset;
 		private       int                        maxCount;
@@ -235,7 +241,7 @@ public class CourseManager{
 		Day(Weekday weekday){
 			this.weekday = weekday;
 			errors = new ArrayList<>();
-			events = new ArrayList<>();
+			events = new OrderedUniqueArray<>();
 			periods = new ArrayList<>();
 			renderOffset = 0;
 			maxCount = 0;

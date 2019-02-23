@@ -14,15 +14,13 @@ import mccanny.management.student.Student;
 import mccanny.management.teacher.Teacher;
 import mccanny.util.Date;
 import mccanny.util.Weekday;
+import mccanny.visual.swing.JBasePanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class Display extends JFrame{
 	
@@ -39,8 +37,9 @@ public class Display extends JFrame{
 	}
 	
 	public static       Font          CLEAR_SANS_BOLD;
+	public static       Dimension     SCREEN_DIMENSION;
 	public static final Color         McCANNY_BLUE = new Color(0x00205E);
-	public static final String        VERSION      = "0.1";
+	public static final String        VERSION      = "V0.1";
 	private final       JCanvas       canvas;
 	private final       CourseManager manager;
 	
@@ -50,55 +49,30 @@ public class Display extends JFrame{
 		}catch(FontFormatException | IOException e){
 			e.printStackTrace();
 		}
+		SCREEN_DIMENSION = Toolkit.getDefaultToolkit().getScreenSize();
 	}
 	
 	private Display() throws HeadlessException{
-		super("McCanny TimeTable");
+		super("McCanny TimeTable " + VERSION);
 		setName("2048");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
 		this.canvas = new JCanvas("TimeTable");
 		this.canvas.getCanvasThread().setPrintNoticeInConsole(true);
-		this.canvas.getCanvasThread().setFPS(-1);
+		this.canvas.getCanvasThread().setFPS(30);
 		this.manager = new CourseManager(canvas.getCanvasThread());
-		JPanel                   panel    = new JPanel();
+		JBasePanel               panel    = new JBasePanel();
 		Layouter.GridBagLayouter layouter = new GridBagLayouter(panel);
 		layouter.put(layouter.instanceOf(canvas, 0, 0).setWeight(100, 100).setFill(Fill.BOTH).setAnchor(Anchor.CENTER));
 		this.setContentPane(panel);
 	}
 	
 	private void construct(){
-		Course  course   = new Course("MHF4U", new Color(0xFF6600));
-		Teacher teacher  = new Teacher("0", "Patric");
-		Teacher teacher1 = new Teacher("0", "Eleanor");
-		Student student  = new Student("0", "Homelet");
-		Student student1 = new Student("0", "Harry");
-		Student student2 = new Student("0", "Penny");
-		Student student3 = new Student("0", "Emma");
-		Student student4 = new Student("0", "Brendon");
-		Student student5 = new Student("0", "Ethan");
-		Student student6 = new Student("0", "Olivia");
-		//
-		CoursePeriod period2 = new CoursePeriod(course, 10, Weekday.MONDAY, 8, 8.5);
-		period2.addTeacher(true, Arrays.asList(teacher, teacher1, teacher1, teacher1, teacher1, teacher1, teacher1, teacher1, teacher1));
-		//
-		CoursePeriod period = new CoursePeriod(course, 10, Weekday.MONDAY, 8, 10);
-		period.addTeacher(true, Arrays.asList(teacher, teacher1, teacher1, teacher1, teacher1, teacher1));
-		//
-		CoursePeriod period3 = new CoursePeriod(course, 10, Weekday.MONDAY, 8, 9.5);
-		period3.addTeacher(true, Arrays.asList(teacher, teacher1, teacher1, teacher1, teacher1, teacher1, teacher1));
-		//
-		CoursePeriod period4 = new CoursePeriod(course, 10, Weekday.MONDAY, 8, 12);
-		period4.addTeacher(true, Arrays.asList(teacher1, teacher1, teacher1, teacher1, teacher1, teacher1, teacher1, teacher1));
-//		CoursePeriod period5 = new CoursePeriod(course, 10, Weekday.MONDAY, 11.5, 12.5);
-//		period5.addStudent(true, Arrays.asList(student));
-//		period5.addTeacher(true, Arrays.asList(teacher));
-//		periods.add(period5);
 		this.manager.initializeTimeTable(new TimeTable(new Date(2019, 02.f, 10.f)));
-		this.manager.add(period);
-		this.manager.add(period3);
-		this.manager.add(period4);
-		this.manager.add(period2);
+		Course.loadCourse("MHF4U", 110, Color.ORANGE);
+		Teacher.loadTeacher("000", "Patric");
+		Student.loadStudent("111", "Harry");
+		manager.add(new CoursePeriod(Course.findCourse("MHF4U"), 0, Weekday.SUNDAY, 8.0, 12.5));
 		updateDimension();
 	}
 	
@@ -128,7 +102,7 @@ public class Display extends JFrame{
 	@Override
 	protected void processWindowEvent(WindowEvent e){
 		if(e.getID() == WindowEvent.WINDOW_CLOSING)
-			;
+			System.out.println("Exiting!");
 		super.processWindowEvent(e);
 	}
 }

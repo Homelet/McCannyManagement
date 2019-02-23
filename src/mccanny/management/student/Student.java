@@ -2,24 +2,30 @@ package mccanny.management.student;
 
 import mccanny.management.course.Course;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 public class Student{
 	
 	private static HashMap<String, Student> students = new HashMap<>();
 	
+	public static Collection<Student> students(){
+		return students.values();
+	}
+	
 	public static Student findStudent(String OEN){
 		return students.get(OEN);
 	}
 	
-	public static void loadStudent(String OEN, String identity, HashMap<Course, StudentCourseDetail> studentCourseDetailMap){
+	public static Student loadStudent(String OEN, String identity){
 		// if null means no such student exist yet
 		// else means such student have already been registered
 		if(students.get(OEN) == null){
 			Student student = new Student(OEN, identity);
-			students.put(student.OEN, student);
+			students.put(OEN, student);
+			return student;
 		}else{
-			throw new IllegalArgumentException("Student with the same OEN have registered (" + students.get(OEN).toString() + ")");
+			throw new IllegalArgumentException("Student with the same OEN have registered (" + students.get(OEN) + ")");
 		}
 	}
 	
@@ -27,7 +33,7 @@ public class Student{
 	private       String                               OEN;
 	private       String                               identity;
 	
-	public Student(String OEN, String identity){
+	private Student(String OEN, String identity){
 		this.OEN = OEN;
 		this.identity = identity;
 		this.studentCourseDetailMap = new HashMap<>();
@@ -38,7 +44,11 @@ public class Student{
 	}
 	
 	public void OEN(String OEN){
-		this.OEN = OEN;
+		if(students.get(OEN) == null){
+			students.put(OEN, students.remove(this.OEN));
+			this.OEN = OEN;
+		}else
+			throw new IllegalArgumentException("Student with the same OEN have registered (" + students.get(OEN) + ")");
 	}
 	
 	public String identity(){
@@ -51,7 +61,7 @@ public class Student{
 	
 	@Override
 	public String toString(){
-		return identity + "{OEN='" + OEN + "\'}";
+		return identity;
 	}
 	
 	@Override

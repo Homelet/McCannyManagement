@@ -1,10 +1,15 @@
 package mccanny.util;
 
+import com.sun.source.tree.NewArrayTree;
 import mccanny.management.course.Course;
 import mccanny.management.exception.CourseCollusion;
 
+import java.awt.*;
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Utility{
 	
@@ -100,6 +105,76 @@ public class Utility{
 			return String.valueOf(hour) + ':' + padString(String.valueOf(minute), 2, '0', true);
 		}else{
 			return (hour > 12 ? String.valueOf(hour - 12) : hour) + ":" + padString(String.valueOf(minute), 2, '0', true) + (hour > 12 ? " PM" : " AM");
+		}
+	}
+	
+	public static Color translateColor(String context){
+		context = context.toLowerCase().trim();
+		if(context.startsWith("#")){
+			return Color.decode(context);
+		}else{
+			context = discardSpace(context);
+			String[] groups = context.split(",");
+			switch(groups.length){
+				case 3:
+					return new Color(Integer.valueOf(groups[0]), Integer.valueOf(groups[1]), Integer.valueOf(groups[2]));
+				case 4:
+					return new Color(Integer.valueOf(groups[0]), Integer.valueOf(groups[1]), Integer.valueOf(groups[2], Integer.valueOf(groups[3])));
+				default:
+					return null;
+			}
+		}
+	}
+	
+	public static String discardSpace(String string){
+		StringBuilder builder = new StringBuilder();
+		for(char c : string.toCharArray()){
+			if(c == ' ')
+				continue;
+			builder.append(c);
+		}
+		return builder.toString();
+	}
+	
+	/**
+	 * Determine the Position of the value which between two peaks
+	 * <br>
+	 * if know the two Comparable's large, use {@link Utility#betweenPeaks(Comparable, Comparable, Comparable)}
+	 *
+	 * @param <E>     the type parameter
+	 * @param value   value that needs to be compared
+	 * @param peakOne one value
+	 * @param peakTwo two value
+	 * @return <ul> <li>-2 value is smaller than minimum</li> <li>-1 value is equals than minimum</li> <li>0 value in range</li> <li>1 value is equals than max</li> <li>2 value is bigger than max</li> </ul>
+	 * @author HomeletWei
+	 */
+	public static <E extends Comparable<E>> int between(E value, E peakOne, E peakTwo){
+		return betweenPeaks(value, peakOne.compareTo(peakTwo) >= 0 ? peakOne : peakTwo, peakTwo.compareTo(peakOne) <= 0 ? peakTwo : peakOne);
+	}
+	
+	/**
+	 * Determine the Position of the value which between two peaks
+	 *
+	 * @param <E>     the type parameter
+	 * @param value   value that needs to be compared
+	 * @param maxPeak max peak
+	 * @param minPeak minimum peak
+	 * @return <ul> <li>-2 value is smaller than minimum peak</li> <li>-1 value is equals than minimum peak</li> <li>0 value in range</li> <li>1 value is equals than max peak</li> <li>2 value is bigger than max peak</li> </ul>
+	 * @author HomeletWei
+	 */
+	public static <E extends Comparable<E>> int betweenPeaks(E value, E maxPeak, E minPeak){
+		if(value.compareTo(minPeak) < 0){
+			return -2;
+		}else if(value.compareTo(minPeak) == 0){
+			return -1;
+		}else{
+			if(value.compareTo(maxPeak) > 0){
+				return 2;
+			}else if(value.compareTo(maxPeak) == 0){
+				return 1;
+			}else{
+				return 0;
+			}
 		}
 	}
 	

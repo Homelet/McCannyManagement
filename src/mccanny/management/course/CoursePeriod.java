@@ -3,8 +3,8 @@ package mccanny.management.course;
 import homelet.GH.StringDrawer.StringDrawer.StringDrawer;
 import homelet.GH.StringDrawer.StringDrawer.StringDrawer.LinePolicy;
 import homelet.GH.StringDrawer.StringDrawer.StringDrawerException;
-import homelet.GH.handlers.GH;
 import homelet.GH.utils.Alignment;
+import homelet.GH.utils.Border;
 import homelet.GH.visual.ActionsManager;
 import homelet.GH.visual.interfaces.LocatableRender;
 import mccanny.management.student.Student;
@@ -123,8 +123,8 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 		this.classroomNumberDrawer.setLinePolicy(LinePolicy.NEVER_BREAK);
 		this.periodDrawer.setLinePolicy(LinePolicy.NEVER_BREAK);
 		this.courseCodeDrawer.setLinePolicy(LinePolicy.NEVER_BREAK);
-		this.teacherDrawer.setLinePolicy(LinePolicy.BREAK_BY_WORD);
-		this.studentDrawer.setLinePolicy(LinePolicy.BREAK_BY_WORD);
+		this.teacherDrawer.setLinePolicy(LinePolicy.NEVER_BREAK);
+		this.studentDrawer.setLinePolicy(LinePolicy.NEVER_BREAK);
 		this.periodDrawer.setParagraphSpacing(-8);
 		this.teacherDrawer.setParagraphSpacing(-5);
 		this.studentDrawer.setParagraphSpacing(-5);
@@ -158,14 +158,14 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 		this.size = new Dimension();
 		this.vertex = new Point();
 		this.activate = false;
-		period(start, end);
+		initPeriod(start, end);
 	}
 	
 	public double length(){
 		return length;
 	}
 	
-	public void period(double start, double end){
+	public void initPeriod(double start, double end){
 		if(start >= 24 || start < 0)
 			throw new IllegalArgumentException("Illegal Course Start time");
 		if(end >= 24 || end < 0)
@@ -178,6 +178,10 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 		pullConfig();
 		this.size.setSize(CoursePeriod.WIDTH, (int) (CoursePeriod.HEIGHT_PER_HOUR * length));
 		this.periodDrawer.initializeContents(Utility.time(start, FORMAT_24), "~", Utility.time(end, FORMAT_24));
+	}
+	
+	public void period(double start, double end){
+		initPeriod(start, end);
 		Display.getInstance().manager().update(this);
 	}
 	
@@ -358,14 +362,10 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	@Override
 	public void render(Graphics2D g){
 		Rectangle bound = g.getClipBounds();
+		g.setColor(course.color());
+		g.fill(bound);
 		if(isHovering()){
-			g.setColor(Color.BLACK);
-			g.fill(bound);
-			g.setColor(course.color());
-			g.fill(GH.rectangle(false, 2, 2, bound.width - 4, bound.height - 4));
-		}else{
-			g.setColor(course.color());
-			g.fill(bound);
+			Border.drawBorder(g, Border.RECTANGULAR, bound, Color.BLACK, 2, 0);
 		}
 		try{
 			Rectangle up;
