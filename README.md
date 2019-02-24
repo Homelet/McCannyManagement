@@ -15,9 +15,9 @@ The program intergrades several built-in features:
 
 The program needs to be able to run efficiently and can handle most of the circumstances. 
 
-<h2>Project guidelines</h2>
+<h2>Project Guidelines</h2>
 
-<h4>V1.0</h4>
+<h4>V1.X</h4>
 <p>Implements a basic timetable includes basic needs for calendar management, and capable of create time schedule for every student with one click of a button.</p>
 <ul>
 <li>Filter for students, teachers or course</li>
@@ -37,7 +37,7 @@ The program needs to be able to run efficiently and can handle most of the circu
 <li>New timetable dialog</li>
 </ul>
 
-<h4>V2.0</h4>
+<h4>V2.X</h4>
 
 <p>Implements a functional calendar to contains a course buffer for every teacher and student, makes information for them more accessible, for example, it is possible to access how many more hours does a course is needed for a specific student.</p>
 <ul>
