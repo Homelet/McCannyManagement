@@ -27,14 +27,14 @@ The program needs to be able to run efficiently and can handle most of the circu
 	<li>Teacher collusion</li>
 	<li>Classroom collusion</li>
 </ul>
-<li>Add teacher dialog</li>
-<li>Add student dialog</li>
-<li>Add course dialog</li>
+<li>Add teacher Dialog</li>
+<li>Add student Dialog</li>
+<li>Add course Dialog</li>
 <li>Add course period Dialog</li>
-<li>Teacher/Student Selection dialog</li>
-<li>Teacher/Student/Course View dialog</li>
+<li>Teacher/Student Selection Dialog</li>
+<li>Teacher/Student/Course View Dialog</li>
 <li>Filter Dialog</li>
-<li>New timetable dialog</li>
+<li>New timetable Dialog</li>
 </ul>
 
 <h4>V2.X</h4>
