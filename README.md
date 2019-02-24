@@ -15,10 +15,10 @@ The program intergrades several built-in features:
 
 The program needs to be able to run efficiently and can handle most of the circumstances. 
 
-Project guidelines
+<h2>Project guidelines</h2>
 
-V1.0
-Implements a basic timetable includes basic needs for calendar management, and capable of create time schedule for every student with one click of a button.
+<h4>V1.0</h4>
+<p>Implements a basic timetable includes basic needs for calendar management, and capable of create time schedule for every student with one click of a button.</p>
 <ul>
 <li>Filter for students, teachers or course</li>
 <li>Collusion detection</li>
@@ -37,11 +37,18 @@ Implements a basic timetable includes basic needs for calendar management, and c
 <li>New timetable dialog</li>
 </ul>
 
-V2.0
-Implements a functional calendar to contains a course buffer for every teacher and student, makes information for them more accessible, for example, it is possible to access how many more hours does a course is needed for a specific student.
-A distinct buffer to make every student different
-	Different start date for a course
-	Different attendance for the day
-Break day
-A concept for a break day so the hour in that specific day will not count to the students hour, for example family day, Christmas break, any holiday that school is close.
-A calculator for calculate the estimated end date for a specific student for that day.
+<h4>V2.0</h4>
+
+<p>Implements a functional calendar to contains a course buffer for every teacher and student, makes information for them more accessible, for example, it is possible to access how many more hours does a course is needed for a specific student.</p>
+<ul>
+<li>A distinct buffer to make every student different</li>
+<ul>
+	<li>Different start date for a course</li>
+	<li>Different attendance for the day</li>
+</ul>
+<li>Break day</li>
+<ul>
+<li>A concept for a break day so the hour in that specific day will not count to the students hour, for example family day, Christmas break, any holiday that school is close.</li>
+</ul>
+<li>A calculator for calculate the estimated end date for a specific student for that day.</li>
+</ul>
