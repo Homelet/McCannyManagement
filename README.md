@@ -14,3 +14,41 @@ The program intergrades several built-in features:
 </ul>
 
 The program needs to be able to run efficiently and can handle most of the circumstances. 
+
+<h2>Project Guidelines</h2>
+
+<h4>V1.X</h4>
+<p>Implements a basic timetable includes basic needs for calendar management, and capable of create time schedule for every student with one click of a button.</p>
+<ul>
+<li>Filter for students, teachers or course</li>
+<li>Collusion detection</li>
+<ul>
+	<li>Student collusion</li>
+	<li>Teacher collusion</li>
+	<li>Classroom collusion</li>
+</ul>
+<li>Add teacher Dialog</li>
+<li>Add student Dialog</li>
+<li>Add course Dialog</li>
+<li>Add course period Dialog</li>
+<li>Teacher/Student Selection Dialog</li>
+<li>Teacher/Student/Course View Dialog</li>
+<li>Filter Dialog</li>
+<li>New timetable Dialog</li>
+</ul>
+
+<h4>V2.X</h4>
+
+<p>Implements a functional calendar to contains a course buffer for every teacher and student, makes information for them more accessible, for example, it is possible to access how many more hours does a course is needed for a specific student.</p>
+<ul>
+<li>A distinct buffer to make every student different</li>
+<ul>
+	<li>Different start date for a course</li>
+	<li>Different attendance for the day</li>
+</ul>
+<li>Break day</li>
+<ul>
+<li>A concept for a break day so the hour in that specific day will not count to the students hour, for example family day, Christmas break, any holiday that school is close.</li>
+</ul>
+<li>A calculator for calculate the estimated end date for a specific student for that day.</li>
+</ul>
