@@ -1,5 +1,7 @@
 package mccanny.management.course;
 
+import mccanny.util.ToolTipText;
+
 import java.awt.*;
 import java.util.Collection;
 import java.util.HashMap;
@@ -7,7 +9,7 @@ import java.util.HashMap;
 /**
  * the blue print for every course object
  */
-public class Course{
+public class Course implements ToolTipText{
 	
 	private static HashMap<String, Course> courses = new HashMap<>();
 	
@@ -80,6 +82,11 @@ public class Course{
 		if(o == null || getClass() != o.getClass()) return false;
 		Course course = (Course) o;
 		return courseID.equals(course.courseID);
+	}
+	
+	@Override
+	public String toolTip(){
+		return courseID + "(" + courseHour + ")";
 	}
 }
 

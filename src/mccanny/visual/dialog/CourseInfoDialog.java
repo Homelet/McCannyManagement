@@ -11,20 +11,23 @@ import mccanny.management.course.Course;
 import mccanny.visual.Display;
 import mccanny.visual.swing.JBasePanel;
 import mccanny.visual.swing.JColorChooser;
-import mccanny.visual.swing.JNumberChooser;
+import mccanny.visual.swing.JIndexedChooser.JIndexedChooser;
 
 import javax.swing.*;
 
 public class CourseInfoDialog extends InfoDialog<Course>{
 	
+	public static Course showDialog(Course course){
+		CourseInfoDialog dialog = new CourseInfoDialog(course);
+		dialog.showDialog();
+		dialog.closeDialog();
+		return dialog.result();
+	}
+	
 	private static ColorBank colorBank = new ColorBank();
 	private        Course    course;
 	
-	public CourseInfoDialog(){
-		this(null);
-	}
-	
-	public CourseInfoDialog(Course course){
+	private CourseInfoDialog(Course course){
 		super(Display.getInstance(), "Course");
 		this.course = course;
 		NestedPanel panel = new NestedPanel();
@@ -40,12 +43,12 @@ public class CourseInfoDialog extends InfoDialog<Course>{
 	private class NestedPanel extends JBasePanel{
 		
 		NestedPanel(){
-			JLabel         courseID         = new JLabel("Course Name");
-			JLabel         courseHour       = new JLabel("Course Required Hour");
-			JLabel         courseColor      = new JLabel("Course Color");
-			JInputField    courseIDField    = new JInputField("Ex: MHF4U", true);
-			JNumberChooser courseHourField  = new JNumberChooser(this, 5, course != null ? course.courseHour() : 110, Integer.MAX_VALUE, 0, Orientation.HORIZONTAL, (value->value + "h"));
-			JColorChooser  courseColorField = new JColorChooser(this, course != null ? course.color() : colorBank.pollColor());
+			JLabel          courseID         = new JLabel("Course Name");
+			JLabel          courseHour       = new JLabel("Course Required Hour");
+			JLabel          courseColor      = new JLabel("Course Color");
+			JInputField     courseIDField    = new JInputField("Ex: MHF4U", true);
+			JIndexedChooser courseHourField  = new JIndexedChooser(this, 5, course != null ? course.courseHour() : 110, Integer.MAX_VALUE, 0, Orientation.HORIZONTAL, (value->value + "h"));
+			JColorChooser   courseColorField = new JColorChooser(this, course != null ? course.color() : colorBank.pollRandomColor());
 			if(course != null){
 				courseIDField.setContent(course.courseID());
 			}
@@ -75,6 +78,13 @@ public class CourseInfoDialog extends InfoDialog<Course>{
 			courseID.setHorizontalAlignment(JLabel.RIGHT);
 			courseHour.setHorizontalAlignment(JLabel.RIGHT);
 			courseColor.setHorizontalAlignment(JLabel.RIGHT);
+			courseID.setFont(Display.CLEAR_SANS_BOLD);
+			courseHour.setFont(Display.CLEAR_SANS_BOLD);
+			courseColor.setFont(Display.CLEAR_SANS_BOLD);
+			courseIDField.getDrawer().setFont(Display.CLEAR_SANS_BOLD);
+			courseIDField.getTextComponent().setFont(Display.CLEAR_SANS_BOLD);
+			confirm.setFont(Display.CLEAR_SANS_BOLD);
+			cancel.setFont(Display.CLEAR_SANS_BOLD);
 			Layouter.GridBagLayouter layouter = new GridBagLayouter(this);
 			layouter.put(layouter.instanceOf(courseID, 0, 0).setInnerPad(FIXED_LABEL_WIDTH, FIXED_HEIGHT).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(0, 100).setInsets(10, 10, 10, 10));
 			layouter.put(layouter.instanceOf(courseIDField, 1, 0).setInnerPad(FIXED_FIELD_WIDTH, FIXED_HEIGHT).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(100, 100).setInsets(10, 10, 0, 10));

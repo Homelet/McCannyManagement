@@ -4,17 +4,21 @@ import homelet.GH.handlers.Layouter;
 import homelet.GH.handlers.Layouter.GridBagLayouter;
 import homelet.GH.handlers.Layouter.GridBagLayouter.GridConstrain.Anchor;
 import homelet.GH.handlers.Layouter.GridBagLayouter.GridConstrain.Fill;
-import homelet.GH.utils.ToolBox.Orientation;
 import homelet.GH.visual.swing.JInput.JInputField;
-import mccanny.management.course.Course;
 import mccanny.management.student.Student;
 import mccanny.visual.Display;
 import mccanny.visual.swing.JBasePanel;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class StudentInfoDialog extends InfoDialog<Student>{
+	
+	public static Student showDialog(Student student){
+		StudentInfoDialog dialog = new StudentInfoDialog(student);
+		dialog.showDialog();
+		dialog.closeDialog();
+		return dialog.result();
+	}
 	
 	private Student student;
 	
@@ -69,6 +73,14 @@ public class StudentInfoDialog extends InfoDialog<Student>{
 			studentOEN.setLabelFor(studentOENField);
 			studentIdentity.setHorizontalAlignment(JLabel.RIGHT);
 			studentOEN.setHorizontalAlignment(JLabel.RIGHT);
+			studentIdentity.setFont(Display.CLEAR_SANS_BOLD);
+			studentOEN.setFont(Display.CLEAR_SANS_BOLD);
+			studentIdentityField.getTextComponent().setFont(Display.CLEAR_SANS_BOLD);
+			studentOENField.getTextComponent().setFont(Display.CLEAR_SANS_BOLD);
+			studentIdentityField.getDrawer().setFont(Display.CLEAR_SANS_BOLD);
+			studentOENField.getDrawer().setFont(Display.CLEAR_SANS_BOLD);
+			confirm.setFont(Display.CLEAR_SANS_BOLD);
+			cancel.setFont(Display.CLEAR_SANS_BOLD);
 			Layouter.GridBagLayouter layouter = new GridBagLayouter(this);
 			layouter.put(layouter.instanceOf(studentIdentity, 0, 0).setInnerPad(FIXED_LABEL_WIDTH, FIXED_HEIGHT).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(0, 100).setInsets(10, 10, 10, 10));
 			layouter.put(layouter.instanceOf(studentIdentityField, 1, 0).setInnerPad(FIXED_FIELD_WIDTH, FIXED_HEIGHT).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(100, 100).setInsets(10, 10, 0, 10));

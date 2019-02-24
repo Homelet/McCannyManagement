@@ -18,6 +18,7 @@ public class JBasePanel extends JPanel{
 	
 	@Override
 	public void paint(Graphics g){
+		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		super.paint(g);
 		if(showGrid)
 			paintInner((Graphics2D) g, this, new Point(0, 0), 0);

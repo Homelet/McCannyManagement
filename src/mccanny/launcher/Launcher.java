@@ -17,9 +17,12 @@ public class Launcher{
 				Teacher.loadTeacher(String.valueOf(index), String.valueOf(index * index));
 				Student.loadStudent(String.valueOf(index), String.valueOf(index * index * index * index));
 			}
-			PeriodInfoDialog periodInfoDialog = new PeriodInfoDialog();
-			periodInfoDialog.showDialog();
-			periodInfoDialog.closeDialog();
+			Teacher.loadTeacher("000", "Patric");
+			Student.loadStudent("111", "Homelet");
+			Student.loadStudent("112", "Harry");
+			Student.loadStudent("113", "Penny");
+			Student.loadStudent("114", "Ethan");
+			PeriodInfoDialog.showDialog(null);
 		});
 	}
 }

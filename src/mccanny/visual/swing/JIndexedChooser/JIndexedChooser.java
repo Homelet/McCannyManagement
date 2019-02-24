@@ -1,4 +1,4 @@
-package mccanny.visual.swing;
+package mccanny.visual.swing.JIndexedChooser;
 
 import homelet.GH.handlers.Layouter;
 import homelet.GH.handlers.Layouter.GridBagLayouter;
@@ -6,24 +6,29 @@ import homelet.GH.handlers.Layouter.GridBagLayouter.GridConstrain.Anchor;
 import homelet.GH.handlers.Layouter.GridBagLayouter.GridConstrain.Fill;
 import homelet.GH.utils.ToolBox.Orientation;
 import mccanny.util.Utility;
+import mccanny.visual.Display;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 
-public class JNumberChooser extends JComponent{
+public class JIndexedChooser extends JComponent{
 	
 	public static ValueProcessor DEFAULT_PROCESSOR = value->value - Math.floor(value) == 0 ? String.valueOf((int) value) : String.valueOf(value);
 	private final JLabel         label;
 	private final JButton        plus;
 	private final JButton        minus;
-	private       double         value, step, max, min;
-	private ValueProcessor processor;
+	private       double         value;
+	private       double         step;
+	private       double         max;
+	private       double         min;
+	private       ValueProcessor processor;
+	JIndexedChooserGroup group;
 	
-	public JNumberChooser(JComponent parent, double init, double step, Orientation orientation){
+	public JIndexedChooser(JComponent parent, double init, double step, Orientation orientation){
 		this(parent, step, init, Integer.MAX_VALUE, Integer.MIN_VALUE, orientation, DEFAULT_PROCESSOR);
 	}
 	
-	public JNumberChooser(JComponent parent, double step, double init, double max, double min, Orientation orientation, ValueProcessor processor){
+	public JIndexedChooser(JComponent parent, double step, double init, double max, double min, Orientation orientation, ValueProcessor processor){
 		super();
 		this.step = step;
 		this.max = max;
@@ -40,6 +45,9 @@ public class JNumberChooser extends JComponent{
 		});
 		this.label = new JLabel();
 		this.label.setHorizontalAlignment(JLabel.CENTER);
+		this.label.setFont(Display.CLEAR_SANS_BOLD);
+		this.plus.setFont(Display.CLEAR_SANS_BOLD);
+		this.minus.setFont(Display.CLEAR_SANS_BOLD);
 		addAction(parent);
 		processShift(init);
 		Layouter.GridBagLayouter layouter = new GridBagLayouter(this);
@@ -106,29 +114,33 @@ public class JNumberChooser extends JComponent{
 		});
 	}
 	
-	private void processValue(double newValue){
+	public void processValue(double newValue){
 		switch(Utility.betweenPeaks(newValue, max, min)){
 			case -2:
 			case -1:
-				minus.setEnabled(false);
-				plus.setEnabled(true);
+				setButtonEnable(false, true);
 				setValue(min);
 				break;
 			case 2:
 			case 1:
-				minus.setEnabled(true);
-				plus.setEnabled(false);
+				setButtonEnable(true, false);
 				setValue(max);
 				break;
 			case 0:
-				minus.setEnabled(true);
-				plus.setEnabled(true);
+				setButtonEnable(true, true);
 				setValue(newValue);
 				break;
 		}
+		if(this.group != null)
+			this.group.onTrigger(this);
 	}
 	
-	public void setValue(double value){
+	public void setButtonEnable(boolean decrease, boolean increase){
+		minus.setEnabled(decrease);
+		plus.setEnabled(increase);
+	}
+	
+	private void setValue(double value){
 		this.value = value;
 		label.setText(processor.process(value));
 	}

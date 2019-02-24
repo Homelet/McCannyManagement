@@ -5,8 +5,8 @@ import homelet.GH.handlers.Layouter;
 import homelet.GH.handlers.Layouter.GridBagLayouter;
 import homelet.GH.handlers.Layouter.GridBagLayouter.GridConstrain.Anchor;
 import homelet.GH.handlers.Layouter.GridBagLayouter.GridConstrain.Fill;
-import homelet.GH.utils.Border;
 import mccanny.util.Utility;
+import mccanny.visual.Display;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,6 +27,7 @@ public class JColorChooser extends JComponent{
 			label.color = color;
 			label.repaint();
 		});
+		button.setFont(Display.CLEAR_SANS_BOLD);
 		Layouter.GridBagLayouter layout = new GridBagLayouter(this);
 		layout.put(layout.instanceOf(label, 0, 0).setAnchor(Anchor.LEFT).setFill(Fill.BOTH).setWeight(40, 100));
 		layout.put(layout.instanceOf(button, 1, 0).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(60, 100));

@@ -1,9 +1,11 @@
 package mccanny.management.teacher;
 
+import mccanny.util.ToolTipText;
+
 import java.util.Collection;
 import java.util.HashMap;
 
-public class Teacher{
+public class Teacher implements ToolTipText{
 	
 	private static HashMap<String, Teacher> teachers = new HashMap<>();
 	
@@ -62,5 +64,10 @@ public class Teacher{
 		if(o == null || getClass() != o.getClass()) return false;
 		Teacher teacher = (Teacher) o;
 		return MEN.equals(teacher.MEN);
+	}
+	
+	@Override
+	public String toolTip(){
+		return identity + "(" + MEN + ")";
 	}
 }

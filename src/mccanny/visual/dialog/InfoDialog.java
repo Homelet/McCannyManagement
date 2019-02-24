@@ -1,7 +1,5 @@
 package mccanny.visual.dialog;
 
-import mccanny.visual.Display;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -11,7 +9,7 @@ public abstract class InfoDialog<E> extends JDialog{
 	
 	static final int FIXED_LABEL_WIDTH    = 0;
 	static final int FIXED_FIELD_WIDTH    = 150;
-	static final int FIXED_HEIGHT         = 20;
+	static final int FIXED_HEIGHT         = 0;
 	static final int FIXED_CONFIRM_HEIGHT = 10;
 	static final int FIXED_CONFIRM_WIDTH  = 30;
 	
@@ -19,7 +17,7 @@ public abstract class InfoDialog<E> extends JDialog{
 		super(frameOwner, true);
 		setTitle(title);
 		this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-		this.setResizable(false);
+		this.setResizable(true);
 		this.addWindowListener(new WindowAdapter(){
 			@Override
 			public void windowClosing(WindowEvent e){
