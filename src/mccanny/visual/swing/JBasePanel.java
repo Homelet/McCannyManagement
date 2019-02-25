@@ -9,7 +9,7 @@ import java.awt.*;
 
 public class JBasePanel extends JPanel{
 	
-	private static boolean   showGrid = true;
+	private static boolean   showGrid = false;
 	private        ColorBank colorBank;
 	
 	public JBasePanel(){

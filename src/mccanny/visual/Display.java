@@ -8,12 +8,14 @@ import homelet.GH.utils.ToolBox;
 import homelet.GH.visual.JCanvas;
 import mccanny.management.course.Course;
 import mccanny.management.course.CourseManager;
-import mccanny.management.course.CoursePeriod;
 import mccanny.management.course.TimeTable;
 import mccanny.management.student.Student;
 import mccanny.management.teacher.Teacher;
 import mccanny.util.Date;
-import mccanny.util.Weekday;
+import mccanny.visual.dialog.CourseInfoDialog;
+import mccanny.visual.dialog.PeriodInfoDialog;
+import mccanny.visual.dialog.StudentInfoDialog;
+import mccanny.visual.dialog.TeacherInfoDialog;
 import mccanny.visual.swing.JBasePanel;
 
 import javax.swing.*;
@@ -40,6 +42,7 @@ public class Display extends JFrame{
 	public static       Dimension     SCREEN_DIMENSION;
 	public static final Color         McCANNY_BLUE = new Color(0x00205E);
 	public static final String        VERSION      = "V0.1";
+	public static       boolean       FORMAT_24    = false;
 	private final       JCanvas       canvas;
 	private final       CourseManager manager;
 	
@@ -69,11 +72,19 @@ public class Display extends JFrame{
 	
 	private void construct(){
 		this.manager.initializeTimeTable(new TimeTable(new Date(2019, 02.f, 10.f)));
-		Course.loadCourse("MHF4U", 110, Color.ORANGE);
-		Teacher.loadTeacher("000", "Patric");
-		Student.loadStudent("111", "Harry");
-		manager.add(new CoursePeriod(Course.findCourse("MHF4U"), 0, Weekday.SUNDAY, 8.0, 12.5));
 		updateDimension();
+		Course.loadCourse("MHF4U", 110, Color.ORANGE);
+		Course.loadCourse("MDM4U", 110, Color.ORANGE);
+		Course.loadCourse("ENG4U", 110, Color.ORANGE);
+		for(int index = 0; index < 101; index++){
+			Teacher.loadTeacher(String.valueOf(index), String.valueOf(index * index));
+			Student.loadStudent(String.valueOf(index), String.valueOf(index * index * index * index));
+		}
+		Teacher.loadTeacher("000", "Patric");
+		Student.loadStudent("111", "Homelet");
+		Student.loadStudent("112", "Harry");
+		Student.loadStudent("113", "Penny");
+		Student.loadStudent("114", "Ethan");
 	}
 	
 	public JCanvas canvas(){
@@ -87,6 +98,12 @@ public class Display extends JFrame{
 	public void showDisplay(){
 		this.setVisible(true);
 		this.canvas.startRendering();
+		SwingUtilities.invokeLater(()->{
+			StudentInfoDialog.showDialog(null);
+			TeacherInfoDialog.showDialog(null);
+			CourseInfoDialog.showDialog(null);
+			PeriodInfoDialog.showDialog(null);
+		});
 	}
 	
 	/**

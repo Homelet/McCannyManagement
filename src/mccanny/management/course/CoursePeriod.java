@@ -12,7 +12,9 @@ import mccanny.management.teacher.Teacher;
 import mccanny.util.Utility;
 import mccanny.util.Weekday;
 import mccanny.visual.Display;
+import mccanny.visual.dialog.PeriodInfoDialog;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -28,7 +30,6 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	public static final  double                                 END_AT          = 20.0;
 	public static final  int                                    WIDTH           = 50;
 	public static final  int                                    HEIGHT_PER_HOUR = 50;
-	public static        boolean                                FORMAT_24       = false;
 	private static final HashMap<Double, RenderThresholdConfig> configs         = new HashMap<>();
 	
 	static{
@@ -165,7 +166,7 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 		return length;
 	}
 	
-	public void initPeriod(double start, double end){
+	private void initPeriod(double start, double end){
 		if(start >= 24 || start < 0)
 			throw new IllegalArgumentException("Illegal Course Start time");
 		if(end >= 24 || end < 0)
@@ -177,10 +178,12 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 		this.length = end - start;
 		pullConfig();
 		this.size.setSize(CoursePeriod.WIDTH, (int) (CoursePeriod.HEIGHT_PER_HOUR * length));
-		this.periodDrawer.initializeContents(Utility.time(start, FORMAT_24), "~", Utility.time(end, FORMAT_24));
+		this.periodDrawer.initializeContents(Utility.time(start, Display.FORMAT_24), "~", Utility.time(end, Display.FORMAT_24));
 	}
 	
 	public void period(double start, double end){
+		if(this.start == start && this.end == end)
+			return;
 		initPeriod(start, end);
 		Display.getInstance().manager().update(this);
 	}
@@ -188,7 +191,9 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	private void pullConfig(){
 		double hour   = Math.floor(length);
 		double minute = length - hour;
-		if(hour >= 8){
+		if(hour <= 0){
+			this.config = configs.get(0.5);
+		}else if(hour >= 8){
 			this.config = configs.get(8.0);
 		}else if(minute < 0.5){
 			this.config = configs.get(hour);
@@ -219,11 +224,15 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	}
 	
 	public void course(Course course){
-		this.course = course;
-		this.courseCodeDrawer.initializeContents(course.courseID());
+		if(this.course == null || !this.course.equals(course)){
+			this.course = course;
+			this.courseCodeDrawer.initializeContents(course.courseID());
+		}
 	}
 	
 	public void classroom(int classroomNumber){
+		if(this.classroomNumber == classroomNumber)
+			return;
 		this.classroomNumber = classroomNumber;
 		this.classroomNumberDrawer.initializeContents("Room " + classroomNumber);
 	}
@@ -249,6 +258,8 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	}
 	
 	public void weekday(Weekday weekday){
+		if(this.weekday == weekday)
+			return;
 		this.weekday = weekday;
 	}
 	
@@ -264,6 +275,12 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 			syncTeacherApper();
 	}
 	
+	public void replaceTeacher(Collection<Teacher> teacher){
+		teachers.clear();
+		teachers.addAll(teacher);
+		syncTeacherApper();
+	}
+	
 	public void addStudent(boolean sync, Collection<Student> student){
 		students.addAll(student);
 		if(sync)
@@ -274,6 +291,12 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 		students.removeAll(student);
 		if(sync)
 			syncStudentApper();
+	}
+	
+	public void replaceStudent(Collection<Student> student){
+		students.clear();
+		students.addAll(student);
+		syncStudentApper();
 	}
 	
 	public void syncStudentApper(){
@@ -320,9 +343,8 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	public String toString(){
 		return "CoursePeriod{" +
 				"course=" + course +
-				", classroomNumber=" + classroomNumber +
-				", periodFlag=(" + start + "~" + end + ", " + length() + "h)" +
-				", weekday=" + weekday +
+				", classroomNumber=Room " + classroomNumber +
+				", period=(" + weekday + ", " + start + "~" + end + " (" + length() + "h))" +
 				", teachers=" + teachers +
 				", students=" + students +
 				'}';
@@ -410,4 +432,19 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	// TODO FUTURE IMPLEMENTATION
 	@Override
 	public void onMousePress(MouseEvent e){}
+	
+	@Override
+	public void onMouseClick(MouseEvent e){
+		if(e.getButton() == MouseEvent.BUTTON1){
+			PeriodInfoDialog.showDialog(this);
+		}else if(e.getButton() == MouseEvent.BUTTON3){
+			int result = JOptionPane.showConfirmDialog(Display.getInstance(), "Are you sure to delete this Course Period?\n" + this.toString(), "Delete Confirmation", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null);
+			switch(result){
+				case JOptionPane.CANCEL_OPTION:
+					return;
+				case JOptionPane.OK_OPTION:
+			}
+			Display.getInstance().manager().remove(this);
+		}
+	}
 }

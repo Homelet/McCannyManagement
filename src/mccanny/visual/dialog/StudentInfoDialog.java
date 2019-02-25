@@ -27,7 +27,7 @@ public class StudentInfoDialog extends InfoDialog<Student>{
 	}
 	
 	public StudentInfoDialog(Student student){
-		super(Display.getInstance(), "Student");
+		super("Student");
 		this.student = student;
 		NestedPanel nestedPanel = new NestedPanel();
 		this.setContentPane(nestedPanel);
@@ -53,17 +53,30 @@ public class StudentInfoDialog extends InfoDialog<Student>{
 			JButton confirm = new JButton("Confirm");
 			JButton cancel  = new JButton("Cancel");
 			confirm.addActionListener((action)->{
+				String identity = studentIdentityField.getContent().trim();
+				String OEN      = studentOENField.getContent().trim();
+				if(OEN.length() != 9){
+					JOptionPane.showMessageDialog(StudentInfoDialog.this, "OEN needs to contain exactly 9 digit!", "OEN Format Exception", JOptionPane.ERROR_MESSAGE, null);
+					return;
+				}else if(identity.trim().length() == 0){
+					JOptionPane.showMessageDialog(StudentInfoDialog.this, "Student Identity requires at least an Non-space character!", "Identity Format Exception", JOptionPane.ERROR_MESSAGE, null);
+					return;
+				}
 				if(student == null){
 					try{
-						student = Student.loadStudent(studentOENField.getContent(), studentIdentityField.getContent());
+						student = Student.loadStudent(OEN, identity);
 						closeDialog();
 					}catch(IllegalArgumentException e){
 						JOptionPane.showMessageDialog(this, e.getMessage(), "Error Adding Student", JOptionPane.ERROR_MESSAGE, null);
 					}
 				}else{
-					student.OEN(studentOENField.getContent());
-					student.identity(studentIdentityField.getContent());
-					closeDialog();
+					try{
+						student.OEN(OEN);
+						student.identity(identity);
+						closeDialog();
+					}catch(IllegalArgumentException e){
+						JOptionPane.showMessageDialog(this, e.getMessage(), "Error Changing StudentInfo", JOptionPane.ERROR_MESSAGE, null);
+					}
 				}
 			});
 			cancel.addActionListener((action)->{

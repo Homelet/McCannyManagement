@@ -48,11 +48,13 @@ public class Course implements ToolTipText{
 	}
 	
 	public void courseID(String courseID){
+		if(this.courseID.equals(courseID))
+			return;
 		if(courses.get(courseID) == null){
 			courses.put(courseID, courses.remove(this.courseID));
 			this.courseID = courseID;
 		}else
-			throw new IllegalArgumentException("Course with the same Course Name have registered (" + courses.get(courseID) + ")");
+			throw new IllegalArgumentException("Course with the same CourseID have registered (" + courses.get(courseID) + ")");
 	}
 	
 	public double courseHour(){
@@ -60,6 +62,8 @@ public class Course implements ToolTipText{
 	}
 	
 	public void courseHour(double courseHour){
+		if(this.courseHour == courseHour)
+			return;
 		this.courseHour = courseHour;
 	}
 	
@@ -68,6 +72,8 @@ public class Course implements ToolTipText{
 	}
 	
 	public void color(Color color){
+		if(this.color == color)
+			return;
 		this.color = color;
 	}
 	

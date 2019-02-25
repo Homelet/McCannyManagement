@@ -24,8 +24,8 @@ public class JIndexedChooserGroup{
 		this.handler = handler;
 	}
 	
-	void onTrigger(JIndexedChooser initiator){
+	void onTrigger(JIndexedChooser initiator, int eventFlag, double value){
 		if(handler != null)
-			handler.onTrigger(new JIndexedChooserEvent(initiator));
+			handler.onTrigger(new JIndexedChooserEvent(initiator, eventFlag, value));
 	}
 }

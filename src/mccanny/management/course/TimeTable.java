@@ -126,7 +126,7 @@ public class TimeTable implements Renderable{
 				g.fill(GH.rectangle(false, 30, heightOffset - 2, bound.width - 30, 2));
 				drawer.setFrame(new Rectangle(10, 0, CourseManager.LEFT_INSET - 10, heightOffset));
 			}
-			drawer.initializeContents(Utility.time(timeCount, CoursePeriod.FORMAT_24));
+			drawer.initializeContents(Utility.time(timeCount, Display.FORMAT_24));
 			try{
 				drawer.validate();
 				drawer.draw();

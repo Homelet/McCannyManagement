@@ -14,6 +14,7 @@ import mccanny.visual.swing.JColorChooser;
 import mccanny.visual.swing.JIndexedChooser.JIndexedChooser;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class CourseInfoDialog extends InfoDialog<Course>{
 	
@@ -28,7 +29,7 @@ public class CourseInfoDialog extends InfoDialog<Course>{
 	private        Course    course;
 	
 	private CourseInfoDialog(Course course){
-		super(Display.getInstance(), "Course");
+		super("Course");
 		this.course = course;
 		NestedPanel panel = new NestedPanel();
 		this.setContentPane(panel);
@@ -55,18 +56,37 @@ public class CourseInfoDialog extends InfoDialog<Course>{
 			JButton confirm = new JButton("Confirm");
 			JButton cancel  = new JButton("Cancel");
 			confirm.addActionListener((action)->{
+				String courseIDValue    = courseIDField.getContent().trim();
+				int    courseHourValue  = (int) Math.floor(courseHourField.value());
+				Color  courseColorColor = courseColorField.getColor();
+				if(courseIDValue.length() == 0){
+					JOptionPane.showMessageDialog(CourseInfoDialog.this, "CourseID requires at least an Non-space character!", "CourseID Format Exception", JOptionPane.ERROR_MESSAGE, null);
+					return;
+				}else if(courseIDValue.length() != 5){
+					int result = JOptionPane.showConfirmDialog(CourseInfoDialog.this, "CourseID is typically 5 digit long.\nAre you sure to proceed?", "CourseID Format Warning", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null);
+					switch(result){
+						case JOptionPane.CANCEL_OPTION:
+							return;
+						default:
+						case JOptionPane.OK_OPTION:
+					}
+				}
 				if(course == null){
 					try{
-						course = Course.loadCourse(courseIDField.getContent(), courseHourField.value(), courseColorField.getColor());
+						course = Course.loadCourse(courseIDValue, courseHourValue, courseColorColor);
 						closeDialog();
 					}catch(IllegalArgumentException e){
 						JOptionPane.showMessageDialog(this, e.getMessage(), "Error Adding Course", JOptionPane.ERROR_MESSAGE, null);
 					}
 				}else{
-					course.courseID(courseIDField.getContent());
-					course.courseHour(courseHourField.value());
-					course.color(courseColorField.getColor());
-					closeDialog();
+					try{
+						course.courseID(courseIDValue);
+						course.courseHour(courseHourValue);
+						course.color(courseColorColor);
+						closeDialog();
+					}catch(IllegalArgumentException e){
+						JOptionPane.showMessageDialog(this, e.getMessage(), "Error Changing CourseInfo", JOptionPane.ERROR_MESSAGE, null);
+					}
 				}
 			});
 			cancel.addActionListener((action)->{

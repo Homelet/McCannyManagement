@@ -4,8 +4,6 @@ import homelet.GH.StringDrawer.StringDrawer.StringDrawer;
 import homelet.GH.StringDrawer.StringDrawer.StringDrawer.LinePolicy;
 import homelet.GH.handlers.GH;
 import homelet.GH.handlers.Layouter;
-import homelet.GH.handlers.Layouter.FlowLayouter;
-import homelet.GH.handlers.Layouter.FlowLayouter.FlowAlignment;
 import homelet.GH.handlers.Layouter.GridBagLayouter;
 import homelet.GH.handlers.Layouter.GridBagLayouter.GridConstrain.Anchor;
 import homelet.GH.handlers.Layouter.GridBagLayouter.GridConstrain.Fill;
@@ -19,6 +17,7 @@ import mccanny.management.course.Course;
 import mccanny.management.course.CoursePeriod;
 import mccanny.management.student.Student;
 import mccanny.management.teacher.Teacher;
+import mccanny.util.MyFlowLayout;
 import mccanny.util.ToolTipText;
 import mccanny.util.Utility;
 import mccanny.util.Weekday;
@@ -34,8 +33,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -52,7 +50,7 @@ public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
 	private       CoursePeriod period;
 	
 	public PeriodInfoDialog(CoursePeriod period){
-		super(Display.getInstance(), "CoursePeriod");
+		super("CoursePeriod");
 		this.period = period;
 		NestedPanel panel = new NestedPanel();
 		this.setContentPane(panel);
@@ -69,9 +67,70 @@ public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
 		NestedPanel(){
 			JInputArea           announcement = new JInputArea("Announcement", false);
 			BasicModule          basicField   = new BasicModule();
-			DateModule           dateField    = new DateModule();
+			PeriodModule         periodField  = new PeriodModule();
 			ChooseField<Teacher> teacherField = new ChooseField<>("Teacher", Teacher.teachers(), period == null ? null : period.teachers());
 			ChooseField<Student> studentField = new ChooseField<>("Student", Student.students(), period == null ? null : period.students());
+			if(period != null){
+				basicField.courseField.setSelectedItem(period.course());
+				basicField.classroomNumberField.processValue(period.classroom());
+				periodField.weekdayField.setSelectedItem(period.weekday());
+				periodField.startField.processValue(period.start());
+				periodField.endField.processValue(period.end());
+			}
+			JButton confirm = new JButton("Confirm");
+			JButton cancel  = new JButton("Cancel");
+			confirm.addActionListener((action)->{
+				Course              courseValue          = (Course) basicField.courseField.getSelectedItem();
+				int                 classRoomNumberValue = (int) basicField.classroomNumberField.value();
+				Weekday             weekdayValue         = (Weekday) periodField.weekdayField.getSelectedItem();
+				double              startValue           = periodField.startField.value();
+				double              endValue             = periodField.endField.value();
+				Collection<Teacher> teacherValue         = teacherField.chosen();
+				Collection<Student> studentValue         = studentField.chosen();
+				if(endValue - startValue <= 0){
+					JOptionPane.showMessageDialog(PeriodInfoDialog.this, "Period requires at least 0.1 h!", "Period Too Short Exception", JOptionPane.ERROR_MESSAGE, null);
+					return;
+				}
+				if(teacherValue.size() == 0){
+					int result = JOptionPane.showConfirmDialog(PeriodInfoDialog.this, "There is no teacher Associated.\nAre you sure to proceed?", "No Teacher Warning", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null);
+					switch(result){
+						case JOptionPane.CANCEL_OPTION:
+							return;
+						default:
+						case JOptionPane.OK_OPTION:
+					}
+				}
+				if(period == null){
+					try{
+						period = new CoursePeriod(courseValue, classRoomNumberValue, weekdayValue, startValue, endValue);
+						period.addTeacher(true, teacherValue);
+						period.addStudent(true, studentValue);
+						Display.getInstance().manager().add(period);
+						closeDialog();
+					}catch(IllegalArgumentException e){
+						JOptionPane.showMessageDialog(this, e.getMessage(), "Error Creating CoursePeriod", JOptionPane.ERROR_MESSAGE, null);
+					}
+				}else{
+					try{
+						period.course(courseValue);
+						period.classroom(classRoomNumberValue);
+						period.weekday(weekdayValue);
+						period.period(startValue, endValue);
+						period.replaceTeacher(teacherField.chosen());
+						period.replaceStudent(studentField.chosen());
+						closeDialog();
+					}catch(IllegalArgumentException e){
+						JOptionPane.showMessageDialog(this, e.getMessage(), "Error Changing CoursePeriodInfo", JOptionPane.ERROR_MESSAGE, null);
+					}
+				}
+			});
+			cancel.addActionListener((action)->{
+				closeDialog();
+			});
+			announcement.getDrawer().setFont(Display.CLEAR_SANS_BOLD);
+			announcement.getTextComponent().setFont(Display.CLEAR_SANS_BOLD);
+			confirm.setFont(Display.CLEAR_SANS_BOLD);
+			cancel.setFont(Display.CLEAR_SANS_BOLD);
 			announcement.setBorder(BorderFactory.createTitledBorder(DEFAULT_BORDER, "Announcement", TitledBorder.LEADING, TitledBorder.BELOW_TOP, Display.CLEAR_SANS_BOLD));
 			Layouter.SpringLayouter layouter = new SpringLayouter(this);
 			layouter.put(Position.CONSTRAIN_X, basicField, 10, Position.CONSTRAIN_X, this);
@@ -79,36 +138,44 @@ public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
 			layouter.put(Position.CONSTRAIN_X_WIDTH, basicField, -10, Position.CONSTRAIN_X, announcement);
 			layouter.put(Position.CONSTRAIN_Y, announcement, 10, Position.CONSTRAIN_Y, this);
 			layouter.put(Position.CONSTRAIN_X_WIDTH, announcement, -10, Position.CONSTRAIN_X_WIDTH, this);
-			layouter.put(Position.CONSTRAIN_Y, dateField, 10, Position.CONSTRAIN_Y_HEIGHT, basicField);
-			layouter.put(Position.CONSTRAIN_X, dateField, 10, Position.CONSTRAIN_X, this);
-			layouter.put(Position.CONSTRAIN_X_WIDTH, dateField, -10, Position.CONSTRAIN_X, announcement);
-			layouter.put(Position.CONSTRAIN_Y_HEIGHT, dateField, 0, Position.CONSTRAIN_Y_HEIGHT, announcement);
+			layouter.put(Position.CONSTRAIN_X, periodField, 10, Position.CONSTRAIN_X, this);
+			layouter.put(Position.CONSTRAIN_Y, periodField, 10, Position.CONSTRAIN_Y_HEIGHT, basicField);
+			layouter.put(Position.CONSTRAIN_X_WIDTH, periodField, 0, Position.CONSTRAIN_X_WIDTH, basicField);
+			layouter.put(Position.CONSTRAIN_Y_HEIGHT, periodField, 0, Position.CONSTRAIN_Y_HEIGHT, announcement);
 			layouter.put(Position.CONSTRAIN_X, teacherField, 10, Position.CONSTRAIN_X, this);
 			layouter.put(Position.CONSTRAIN_Y, teacherField, 10, Position.CONSTRAIN_Y_HEIGHT, announcement);
-			layouter.put(Position.CONSTRAIN_Y_HEIGHT, teacherField, -10, Position.CONSTRAIN_Y_HEIGHT, this);
 			layouter.put(Position.CONSTRAIN_X, studentField, 10, Position.CONSTRAIN_X_WIDTH, teacherField);
 			layouter.put(Position.CONSTRAIN_Y, studentField, 10, Position.CONSTRAIN_Y_HEIGHT, announcement);
 			layouter.put(Position.CONSTRAIN_X_WIDTH, studentField, -10, Position.CONSTRAIN_X_WIDTH, this);
-			layouter.put(Position.CONSTRAIN_Y_HEIGHT, studentField, -10, Position.CONSTRAIN_Y_HEIGHT, this);
+			layouter.put(Position.CONSTRAIN_Y_HEIGHT, teacherField, 0, Position.CONSTRAIN_Y_HEIGHT, studentField);
+			layouter.put(Position.CONSTRAIN_Y, cancel, 10, Position.CONSTRAIN_Y_HEIGHT, teacherField);
+			layouter.put(Position.CONSTRAIN_Y, confirm, 10, Position.CONSTRAIN_Y_HEIGHT, teacherField);
+			layouter.put(Position.CONSTRAIN_Y_HEIGHT, cancel, -10, Position.CONSTRAIN_Y_HEIGHT, this);
+			layouter.put(Position.CONSTRAIN_Y_HEIGHT, confirm, -10, Position.CONSTRAIN_Y_HEIGHT, this);
 			// 730 * 830
-			layouter.put(layouter.instanceOf(this).put(Position.VALUE_WIDTH, 730).put(Position.VALUE_HEIGHT, 830));
+			layouter.put(layouter.instanceOf(this).put(Position.VALUE_WIDTH, 730).put(Position.VALUE_HEIGHT, 880));
 			layouter.put(layouter.instanceOf(announcement).put(Position.VALUE_WIDTH, 200).put(Position.VALUE_HEIGHT, 350));
-			layouter.put(layouter.instanceOf(teacherField).put(Position.VALUE_WIDTH, 350).put(Position.VALUE_HEIGHT, 450));
-			layouter.put(layouter.instanceOf(studentField).put(Position.VALUE_WIDTH, 350).put(Position.VALUE_HEIGHT, 450));
+			layouter.put(layouter.instanceOf(cancel).put(Position.CONSTRAIN_X, 235).put(Position.VALUE_WIDTH, 125).put(Position.VALUE_HEIGHT, 40));
+			layouter.put(layouter.instanceOf(confirm).put(Position.CONSTRAIN_X, 370).put(Position.VALUE_WIDTH, 125).put(Position.VALUE_HEIGHT, 40));
 		}
 	}
 	
-	private class BasicModule extends JComponent{
+	private class BasicModule extends JComponent implements JIndexedChooserHandler, ActionListener, ValueProcessor{
 		
 		final JComboBox<Course> courseField;
 		final JIndexedChooser   classroomNumberField;
+		final TitledBorder      border;
 		
 		public BasicModule(){
-			this.setBorder(BorderFactory.createTitledBorder(DEFAULT_BORDER, "Info", TitledBorder.LEADING, TitledBorder.BELOW_TOP, Display.CLEAR_SANS_BOLD));
+			this.border = BorderFactory.createTitledBorder(DEFAULT_BORDER, "", TitledBorder.LEADING, TitledBorder.BELOW_TOP, Display.CLEAR_SANS_BOLD);
+			this.setBorder(border);
 			JLabel course          = new JLabel("Course");
 			JLabel classroomNumber = new JLabel("Classroom Number");
 			courseField = new JComboBox<>(Course.courses().toArray(new Course[0]));
-			classroomNumberField = new JIndexedChooser(this, 1, 1, Integer.MAX_VALUE, 0, Orientation.HORIZONTAL, null);
+			JIndexedChooserGroup group = new JIndexedChooserGroup(this);
+			classroomNumberField = new JIndexedChooser(this, 1, 1, Integer.MAX_VALUE, 0, Orientation.HORIZONTAL, this);
+			courseField.addActionListener(this);
+			group.add(classroomNumberField);
 			courseField.setFont(Display.CLEAR_SANS_BOLD);
 			course.setLabelFor(courseField);
 			classroomNumber.setLabelFor(classroomNumberField);
@@ -121,17 +188,41 @@ public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
 			layouter.put(layouter.instanceOf(courseField, 1, 0).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(100, 100).setInsets(10, 10, 10, 10));
 			layouter.put(layouter.instanceOf(classroomNumber, 0, 1).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(0, 100).setInsets(0, 10, 10, 0));
 			layouter.put(layouter.instanceOf(classroomNumberField, 1, 1).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(100, 100).setInsets(0, 10, 10, 10));
+			updateTitle();
+		}
+		
+		@Override
+		public String process(double value){
+			return String.valueOf((int) Math.floor(value));
+		}
+		
+		private void updateTitle(){
+			this.border.setTitle(courseField.getSelectedItem() + " - Room " + process(classroomNumberField.value()));
+			this.revalidate();
+			this.repaint();
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e){
+			updateTitle();
+		}
+		
+		@Override
+		public void onTrigger(JIndexedChooserEvent e){
+			updateTitle();
 		}
 	}
 	
-	private class DateModule extends JComponent implements ValueProcessor, JIndexedChooserHandler{
+	private class PeriodModule extends JComponent implements ValueProcessor, JIndexedChooserHandler, ActionListener{
 		
 		final JComboBox<Weekday> weekdayField;
 		final JIndexedChooser    startField;
 		final JIndexedChooser    endField;
+		final TitledBorder       border;
 		
-		DateModule(){
-			this.setBorder(BorderFactory.createTitledBorder(DEFAULT_BORDER, "Period", TitledBorder.LEADING, TitledBorder.BELOW_TOP, Display.CLEAR_SANS_BOLD));
+		PeriodModule(){
+			this.border = BorderFactory.createTitledBorder(DEFAULT_BORDER, "Period", TitledBorder.LEADING, TitledBorder.BELOW_TOP, Display.CLEAR_SANS_BOLD);
+			this.setBorder(border);
 			JLabel start = new JLabel("Start");
 			JLabel end   = new JLabel("End");
 			weekdayField = new JComboBox<>(Weekday.weekdays().toArray(new Weekday[0]));
@@ -147,17 +238,19 @@ public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
 			weekdayField.setFont(Display.CLEAR_SANS_BOLD);
 			start.setFont(Display.CLEAR_SANS_BOLD);
 			end.setFont(Display.CLEAR_SANS_BOLD);
+			weekdayField.addActionListener(this);
 			Layouter.GridBagLayouter layouter = new GridBagLayouter(this);
 			layouter.put(layouter.instanceOf(weekdayField, 0, 0, 2, 1).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(100, 100).setInsets(10, 10, 10, 10));
 			layouter.put(layouter.instanceOf(start, 0, 1).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(0, 100).setInsets(0, 10, 10, 0));
 			layouter.put(layouter.instanceOf(startField, 1, 1).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(100, 100).setInsets(0, 10, 10, 10));
 			layouter.put(layouter.instanceOf(end, 0, 2).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(0, 100).setInsets(0, 10, 10, 0));
 			layouter.put(layouter.instanceOf(endField, 1, 2).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(100, 100).setInsets(0, 10, 10, 10));
+			updateTitle();
 		}
 		
 		@Override
 		public String process(double value){
-			return Utility.time(value, CoursePeriod.FORMAT_24);
+			return Utility.time(value, Display.FORMAT_24);
 		}
 		
 		@Override
@@ -171,47 +264,93 @@ public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
 					startField.processValue(endField.value());
 				}
 			}
+			updateTitle();
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e){
+			updateTitle();
+		}
+		
+		private void updateTitle(){
+			border.setTitle("Period - " + weekdayField.getSelectedItem() + ", " + Utility.time(startField.value(), Display.FORMAT_24) + "~" + Utility.time(endField.value(), Display.FORMAT_24) + " (" + (endField.value() - startField.value()) + "h)");
+			this.revalidate();
+			this.repaint();
 		}
 	}
 	
-	private class ChooseField<E extends ToolTipText> extends JScrollPane{
+	private class ChooseField<E extends ToolTipText> extends JScrollPane implements MouseMotionListener{
 		
-		final Color  color = Color.WHITE;
-		final String title;
-		final Field  field;
+		final Color        color = Color.WHITE;
+		final String       title;
+		final Field        field;
+		final TitledBorder border;
 		
 		public ChooseField(String title, Collection<E> data, Collection<E> added){
 			this.title = title;
+			ToolBox.setPreferredSize(this, 350, 450);
 			this.field = new Field(data, added);
-			this.setBorder(BorderFactory.createTitledBorder(DEFAULT_BORDER, title, TitledBorder.LEADING, TitledBorder.BELOW_TOP, Display.CLEAR_SANS_BOLD));
+			this.border = BorderFactory.createTitledBorder(DEFAULT_BORDER, "", TitledBorder.LEADING, TitledBorder.BELOW_TOP, Display.CLEAR_SANS_BOLD);
+			this.setBorder(this.border);
 			this.setViewportView(field);
-			this.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
+			this.getVerticalScrollBar().setBlockIncrement(40);
+			this.getVerticalScrollBar().setUnitIncrement(40);
+			this.setAutoscrolls(true);
+			this.addMouseMotionListener(this);
+			this.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_AS_NEEDED);
 			this.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
+			updateTitle();
+		}
+		
+		@Override
+		public void mouseDragged(MouseEvent e){
+			Rectangle r = new Rectangle(e.getX(), e.getY(), 1, 1);
+			((JPanel) e.getSource()).scrollRectToVisible(r);
+		}
+		
+		@Override
+		public void mouseMoved(MouseEvent e){}
+		
+		void scrollToBottom(){
+			SwingUtilities.invokeLater(()->{
+				this.getVerticalScrollBar().setValue(this.getVerticalScrollBar().getMaximum());
+			});
+		}
+		
+		void updateTitle(){
+			this.border.setTitle(title + " - " + field.include.size() + " selected");
+			this.revalidate();
+			this.repaint();
+		}
+		
+		public Collection<E> chosen(){
+			return field.include;
 		}
 		
 		private class Field extends JPanel implements MouseListener{
 			
-			final ArrayList<E>          exclude;
-			final ArrayList<E>          include;
-			final Layouter.FlowLayouter layouter;
-			final JPopupMenu            leftClickMenu;
-			final StringDrawer          notify;
+			final ArrayList<E> exclude;
+			final ArrayList<E> include;
+			final JPopupMenu   leftClickMenu;
+			final StringDrawer notify;
+			final MyFlowLayout layout;
 			
 			public Field(Collection<E> data, Collection<E> added){
-				notify = new StringDrawer("Double Click To add " + title);
+				notify = new StringDrawer("Double Click To Add " + title);
 				notify.setLinePolicy(LinePolicy.NEVER_BREAK);
 				notify.setFont(Display.CLEAR_SANS_BOLD.deriveFont(15.0f));
 				notify.setAlign(Alignment.CENTER);
 				notify.setColor(new Color(0x999999));
 				notify.setTextAlign(Alignment.TOP);
-				this.layouter = new FlowLayouter(this, FlowAlignment.LEFT, 5, 5, false, false);
+				layout = new MyFlowLayout(300, 5, 5);
+				this.setLayout(layout);
 				if(added != null){
 					this.include = new ArrayList<>();
 					this.exclude = new ArrayList<>();
 					for(E e : data){
 						if(added.contains(e)){
 							include.add(e);
-							layouter.add(new Item(e));
+							this.add(new Item(e));
 						}else{
 							exclude.add(e);
 						}
@@ -232,7 +371,7 @@ public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
 						super.show(invoker, x, y);
 					}
 				};
-				add.addActionListener(e->this.add());
+				add.addActionListener(e->this.addItem());
 				remove.addActionListener(e->this.remove());
 				clear.addActionListener(e->this.clear());
 				this.leftClickMenu.add(properties);
@@ -241,40 +380,33 @@ public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
 				this.leftClickMenu.add(remove);
 				this.leftClickMenu.addSeparator();
 				this.leftClickMenu.add(clear);
-				this.setMinimumSize(new Dimension(330, 450));
-				this.setMaximumSize(new Dimension(330, Integer.MAX_VALUE));
 			}
 			
-			public void add(E e){
+			public void addItem(E e){
 				exclude.remove(e);
 				include.add(e);
-				layouter.add(new Item(e));
+				this.add(new Item(e));
+				updateTitle();
 				syncBestSize();
-				this.revalidate();
-				this.repaint();
+				scrollToBottom();
 			}
 			
-			public void remove(Item item){
+			public void removeItem(Item item){
 				exclude.add(item.item);
 				include.remove(item.item);
-				layouter.remove(item);
+				this.remove(item);
+				updateTitle();
 				syncBestSize();
-				this.revalidate();
-				this.repaint();
 			}
 			
 			private void syncBestSize(){
-				this.setPreferredSize(this.getUI().getPreferredSize(this));
-			}
-			
-			public Collection<E> chosen(){
-				return include;
+				this.setSize(layout.prefDimension());
 			}
 			
 			@Override
 			public void mouseClicked(MouseEvent e){
 				if(e.getClickCount() == 2)
-					add();
+					addItem();
 			}
 			
 			@Override
@@ -298,11 +430,11 @@ public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
 					leftClickMenu.show(this, e.getX(), e.getY());
 			}
 			
-			private void add(){
-				Object arr = JOptionPane.showInputDialog(ChooseField.this, "Select an item to add into the field.", "Add", JOptionPane.PLAIN_MESSAGE, null, exclude.toArray((E[]) new ToolTipText[0]), null);
+			private void addItem(){
+				Object arr = JOptionPane.showInputDialog(ChooseField.this, "Select an item to addItem into the field.", "Add", JOptionPane.PLAIN_MESSAGE, null, exclude.toArray((E[]) new ToolTipText[0]), null);
 				if(arr == null)
 					return;
-				add((E) arr);
+				addItem((E) arr);
 			}
 			
 			private void remove(){
@@ -312,7 +444,7 @@ public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
 			private void clear(){
 				exclude.addAll(include);
 				include.clear();
-				layouter.removeAll();
+				this.removeAll();
 				this.revalidate();
 				this.repaint();
 			}
@@ -343,9 +475,7 @@ public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
 				this.hovering = false;
 				this.setFont(Display.CLEAR_SANS_BOLD);
 				this.setToolTipText(item.toolTip());
-				Dimension dimension = this.getPreferredSize();
-				dimension.setSize(dimension.width + 20, dimension.height + 20);
-				ToolBox.setPreferredSize(this, dimension);
+				syncBestSize();
 			}
 			
 			@Override
@@ -364,7 +494,24 @@ public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
 			@Override
 			public void mouseClicked(MouseEvent e){
 				if(e.getButton() == MouseEvent.BUTTON3)
-					field.remove(this);
+					field.removeItem(this);
+				else if(e.getButton() == MouseEvent.BUTTON1){
+					if(this.item instanceof Student)
+						StudentInfoDialog.showDialog((Student) item);
+					else
+						TeacherInfoDialog.showDialog((Teacher) item);
+					this.setText(item.toString());
+					this.setToolTipText(item.toolTip());
+					syncBestSize();
+					this.revalidate();
+					this.repaint();
+				}
+			}
+			
+			void syncBestSize(){
+				Dimension dimension = this.getUI().getPreferredSize(this);
+				dimension.setSize(dimension.width + 20, dimension.height + 20);
+				ToolBox.setPreferredSize(this, dimension);
 			}
 			
 			@Override

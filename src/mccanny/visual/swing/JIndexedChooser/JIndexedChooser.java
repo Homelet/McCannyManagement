@@ -13,7 +13,7 @@ import java.awt.event.MouseAdapter;
 
 public class JIndexedChooser extends JComponent{
 	
-	public static ValueProcessor DEFAULT_PROCESSOR = value->value - Math.floor(value) == 0 ? String.valueOf((int) value) : String.valueOf(value);
+	public static ValueProcessor DEFAULT_PROCESSOR = value->value == Math.floor(value) ? String.valueOf((int) value) : String.valueOf(value);
 	private final JLabel         label;
 	private final JButton        plus;
 	private final JButton        minus;
@@ -66,10 +66,6 @@ public class JIndexedChooser extends JComponent{
 		}
 	}
 	
-	private void processShift(double shift){
-		processValue(value + shift);
-	}
-	
 	private void addAction(JComponent parent){
 		label.addMouseListener(new MouseAdapter(){
 			@Override
@@ -114,7 +110,13 @@ public class JIndexedChooser extends JComponent{
 		});
 	}
 	
+	public void processShift(double shift){
+		processValue(value + shift);
+	}
+	
 	public void processValue(double newValue){
+		double shiftValue = newValue - value;
+		int    eventFlag  = shiftValue > 0 ? JIndexedChooserEvent.EVENT_INCREASE : JIndexedChooserEvent.EVENT_DECEASE;
 		switch(Utility.betweenPeaks(newValue, max, min)){
 			case -2:
 			case -1:
@@ -132,7 +134,7 @@ public class JIndexedChooser extends JComponent{
 				break;
 		}
 		if(this.group != null)
-			this.group.onTrigger(this);
+			this.group.onTrigger(this, eventFlag, shiftValue);
 	}
 	
 	public void setButtonEnable(boolean decrease, boolean increase){

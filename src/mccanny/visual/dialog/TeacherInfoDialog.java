@@ -27,7 +27,7 @@ public class TeacherInfoDialog extends InfoDialog<Teacher>{
 	}
 	
 	public TeacherInfoDialog(Teacher teacher){
-		super(Display.getInstance(), "Teacher");
+		super("Teacher");
 		this.teacher = teacher;
 		NestedPanel nestedPanel = new NestedPanel();
 		this.setContentPane(nestedPanel);
@@ -53,17 +53,30 @@ public class TeacherInfoDialog extends InfoDialog<Teacher>{
 			JButton confirm = new JButton("Confirm");
 			JButton cancel  = new JButton("Cancel");
 			confirm.addActionListener((action)->{
+				String identity = teacherIdentityField.getContent().trim();
+				String MEN      = teacherMENField.getContent().trim();
+				if(MEN.length() != 9){
+					JOptionPane.showMessageDialog(TeacherInfoDialog.this, "MEN needs to contain exactly 9 digit!", "MEN Format Exception", JOptionPane.ERROR_MESSAGE, null);
+					return;
+				}else if(identity.length() == 0){
+					JOptionPane.showMessageDialog(TeacherInfoDialog.this, "Teacher Identity requires at least an Non-space character!", "Identity Format Exception", JOptionPane.ERROR_MESSAGE, null);
+					return;
+				}
 				if(teacher == null){
 					try{
-						teacher = Teacher.loadTeacher(teacherIdentityField.getContent(), teacherMENField.getContent());
+						teacher = Teacher.loadTeacher(MEN, identity);
 						closeDialog();
 					}catch(IllegalArgumentException e){
 						JOptionPane.showMessageDialog(this, e.getMessage(), "Error Adding Teacher", JOptionPane.ERROR_MESSAGE, null);
 					}
 				}else{
-					teacher.MEN(teacherMENField.getContent());
-					teacher.identity(teacherIdentityField.getContent());
-					closeDialog();
+					try{
+						teacher.MEN(MEN);
+						teacher.identity(identity);
+						closeDialog();
+					}catch(IllegalArgumentException e){
+						JOptionPane.showMessageDialog(this, e.getMessage(), "Error Changing TeacherInfo", JOptionPane.ERROR_MESSAGE, null);
+					}
 				}
 			});
 			cancel.addActionListener((action)->{

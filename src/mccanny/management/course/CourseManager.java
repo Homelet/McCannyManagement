@@ -7,6 +7,7 @@ import homelet.GH.utils.Alignment;
 import homelet.GH.visual.ActionsManager;
 import homelet.GH.visual.CanvasThread;
 import homelet.GH.visual.interfaces.LocatableRender;
+import homelet.GH.visual.interfaces.Renderable;
 import mccanny.management.exception.ClassroomCollusion;
 import mccanny.management.exception.CourseCollusion;
 import mccanny.management.exception.StudentCollusion;
@@ -22,7 +23,7 @@ import java.awt.*;
 import java.util.*;
 
 //@SuppressWarnings("all")
-public class CourseManager{
+public class CourseManager implements Renderable{
 	
 	public static       Dimension             TIMETABLE_DI        = new Dimension(0, (int) ((CoursePeriod.END_AT - CoursePeriod.START_AT) * CoursePeriod.HEIGHT_PER_HOUR));
 	public static final int                   MIN_COUNT           = 4;
@@ -45,7 +46,16 @@ public class CourseManager{
 		this.days.put(Weekday.FRIDAY, new Day(Weekday.FRIDAY));
 		this.days.put(Weekday.SATURDAY, new Day(Weekday.SATURDAY));
 		this.days.put(Weekday.SUNDAY, new Day(Weekday.SUNDAY));
+		thread.getRenderManager().addPreTargets(this);
 		thread.getRenderManager().addPreTargets(this.days.values().toArray(new LocatableRender[0]));
+	}
+	
+	@Override
+	public void tick(){}
+	
+	@Override
+	public void render(Graphics2D g){
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	}
 	
 	public TimeTable timeTable(){
@@ -194,6 +204,9 @@ public class CourseManager{
 		Day day = days.get(period.weekday());
 		day.events.removeIf(event->event.period == period);
 		day.periods.remove(period);
+		analyze(period.weekday(), true);
+		for(CoursePeriod p : day.periods)
+			p.updateLocation();
 	}
 	
 	class Event implements Comparable<Event>{
@@ -206,6 +219,15 @@ public class CourseManager{
 			}else{
 				return result;
 			}
+		}
+		
+		@Override
+		public boolean equals(Object o){
+			if(this == o) return true;
+			if(o == null || getClass() != o.getClass()) return false;
+			Event event = (Event) o;
+			if(status != event.status) return false;
+			return period.equals(event.period);
 		}
 		
 		final static boolean      START = true;

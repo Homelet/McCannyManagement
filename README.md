@@ -2,7 +2,7 @@
 A Managment Software aimed for manage the School's Calender
 
 The Student/Calendar Management Project is a volunteer project, 
-the initial motivation of the project is to reduce my counsellor`s 
+the initial motivation of the project is to reduce my counsellor's 
 workflow by creating a program to help her manage student information 
 and provide assistant planning the school calendar. 
 
@@ -35,6 +35,7 @@ The program needs to be able to run efficiently and can handle most of the circu
 <li>Teacher/Student/Course View Dialog</li>
 <li>Filter Dialog</li>
 <li>New timetable Dialog</li>
+<li>Preference Dialog</li>
 </ul>
 
 <h4>V2.X</h4>

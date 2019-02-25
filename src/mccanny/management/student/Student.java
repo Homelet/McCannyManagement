@@ -45,6 +45,8 @@ public class Student implements ToolTipText{
 	}
 	
 	public void OEN(String OEN){
+		if(this.OEN.equals(OEN))
+			return;
 		if(students.get(OEN) == null){
 			students.put(OEN, students.remove(this.OEN));
 			this.OEN = OEN;
@@ -57,6 +59,8 @@ public class Student implements ToolTipText{
 	}
 	
 	public void identity(String identity){
+		if(this.identity.equals(identity))
+			return;
 		this.identity = identity;
 	}
 	

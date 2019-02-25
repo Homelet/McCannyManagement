@@ -25,7 +25,7 @@ public class Teacher implements ToolTipText{
 			teachers.put(MEN, teacher);
 			return teacher;
 		}else{
-			throw new IllegalArgumentException("Student with the same OEN have registered (" + teachers.get(MEN) + ")");
+			throw new IllegalArgumentException("Teacher with the same MEN have registered (" + teachers.get(MEN) + ")");
 		}
 	}
 	
@@ -42,7 +42,13 @@ public class Teacher implements ToolTipText{
 	}
 	
 	public void MEN(String MEN){
-		this.MEN = MEN;
+		if(this.MEN.equals(MEN))
+			return;
+		if(teachers.get(MEN) == null){
+			teachers.put(MEN, teachers.remove(this.MEN));
+			this.MEN = MEN;
+		}else
+			throw new IllegalArgumentException("Teacher with the same MEN have registered (" + teachers.get(MEN) + ")");
 	}
 	
 	public String identity(){
@@ -50,6 +56,8 @@ public class Teacher implements ToolTipText{
 	}
 	
 	public void identity(String identity){
+		if(this.identity.equals(identity))
+			return;
 		this.identity = identity;
 	}
 	
