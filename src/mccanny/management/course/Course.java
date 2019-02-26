@@ -1,5 +1,6 @@
 package mccanny.management.course;
 
+import mccanny.util.Listable;
 import mccanny.util.ToolTipText;
 
 import java.awt.*;
@@ -9,7 +10,7 @@ import java.util.HashMap;
 /**
  * the blue print for every course object
  */
-public class Course implements ToolTipText{
+public class Course implements ToolTipText, Listable{
 	
 	private static HashMap<String, Course> courses = new HashMap<>();
 	
@@ -93,6 +94,16 @@ public class Course implements ToolTipText{
 	@Override
 	public String toolTip(){
 		return courseID + "(" + courseHour + ")";
+	}
+	
+	@Override
+	public String identity(){
+		return courseID;
+	}
+	
+	@Override
+	public String info(){
+		return String.valueOf(courseHour);
 	}
 }
 

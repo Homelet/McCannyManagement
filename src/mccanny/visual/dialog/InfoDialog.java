@@ -4,6 +4,7 @@ import mccanny.util.Utility;
 import mccanny.visual.Display;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -15,8 +16,12 @@ public abstract class InfoDialog<E> extends JDialog{
 	static final int FIXED_CONFIRM_HEIGHT = 10;
 	static final int FIXED_CONFIRM_WIDTH  = 30;
 	
-	public InfoDialog(String title){
-		super(Display.getInstance(), true);
+	InfoDialog(String title){
+		this(Display.getInstance(), title);
+	}
+	
+	InfoDialog(Frame frameOwner, String title){
+		super(frameOwner, true);
 		setTitle(title);
 		this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		this.setResizable(false);
@@ -34,7 +39,11 @@ public abstract class InfoDialog<E> extends JDialog{
 	}
 	
 	public void showDialog(){
-		this.setLocation(Utility.frameVertex(Display.getInstance().getBounds(), this.getBounds()));
+		showDialog(Display.getInstance());
+	}
+	
+	public void showDialog(Frame locationReference){
+		this.setLocation(Utility.frameVertex(locationReference.getBounds(), this.getBounds()));
 		this.setVisible(true);
 	}
 	

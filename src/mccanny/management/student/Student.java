@@ -1,12 +1,13 @@
 package mccanny.management.student;
 
 import mccanny.management.course.Course;
+import mccanny.util.Listable;
 import mccanny.util.ToolTipText;
 
 import java.util.Collection;
 import java.util.HashMap;
 
-public class Student implements ToolTipText{
+public class Student implements ToolTipText, Listable{
 	
 	private static HashMap<String, Student> students = new HashMap<>();
 	
@@ -80,5 +81,10 @@ public class Student implements ToolTipText{
 	@Override
 	public String toolTip(){
 		return identity + "(" + OEN + ")";
+	}
+	
+	@Override
+	public String info(){
+		return OEN;
 	}
 }

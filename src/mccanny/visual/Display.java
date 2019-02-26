@@ -13,7 +13,7 @@ import mccanny.management.student.Student;
 import mccanny.management.teacher.Teacher;
 import mccanny.util.Date;
 import mccanny.util.Utility;
-import mccanny.visual.dialog.StudentSelectionDialog;
+import mccanny.visual.dialog.SelectionDialog;
 import mccanny.visual.swing.JBasePanel;
 
 import javax.swing.*;
@@ -21,6 +21,7 @@ import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 
 public class Display extends JFrame{
 	
@@ -59,7 +60,7 @@ public class Display extends JFrame{
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
 		this.canvas = new JCanvas("TimeTable");
-		this.canvas.getCanvasThread().setPrintNoticeInConsole(true);
+		this.canvas.getCanvasThread().setPrintNoticeInConsole(false);
 		this.canvas.getCanvasThread().setFPS(30);
 		this.manager = new CourseManager(canvas.getCanvasThread());
 		JBasePanel               panel    = new JBasePanel();
@@ -102,7 +103,7 @@ public class Display extends JFrame{
 //			TeacherInfoDialog.showDialog(null);
 //			CourseInfoDialog.showDialog(null);
 //			PeriodInfoDialog.showDialog(null);
-			StudentSelectionDialog dialog = new StudentSelectionDialog();
+			SelectionDialog<Student> dialog = new SelectionDialog<>("Student", Collections.emptyList(), Student.students());
 			dialog.showDialog();
 			dialog.closeDialog();
 		});
