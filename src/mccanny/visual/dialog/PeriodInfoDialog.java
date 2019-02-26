@@ -65,7 +65,7 @@ public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
 	private class NestedPanel extends JBasePanel{
 		
 		NestedPanel(){
-			JInputArea           announcement = new JInputArea("Announcement", false);
+			JInputArea           announcement = new JInputArea("No Announcement Yet", false);
 			BasicModule          basicField   = new BasicModule();
 			PeriodModule         periodField  = new PeriodModule();
 			ChooseField<Teacher> teacherField = new ChooseField<>("Teacher", Teacher.teachers(), period == null ? null : period.teachers());
@@ -114,8 +114,7 @@ public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
 					try{
 						period.course(courseValue);
 						period.classroom(classRoomNumberValue);
-						period.weekday(weekdayValue);
-						period.period(startValue, endValue);
+						period.period(weekdayValue, startValue, endValue);
 						period.replaceTeacher(teacherField.chosen());
 						period.replaceStudent(studentField.chosen());
 						closeDialog();

@@ -12,10 +12,8 @@ import mccanny.management.course.TimeTable;
 import mccanny.management.student.Student;
 import mccanny.management.teacher.Teacher;
 import mccanny.util.Date;
-import mccanny.visual.dialog.CourseInfoDialog;
-import mccanny.visual.dialog.PeriodInfoDialog;
-import mccanny.visual.dialog.StudentInfoDialog;
-import mccanny.visual.dialog.TeacherInfoDialog;
+import mccanny.util.Utility;
+import mccanny.visual.dialog.StudentSelectionDialog;
 import mccanny.visual.swing.JBasePanel;
 
 import javax.swing.*;
@@ -96,13 +94,17 @@ public class Display extends JFrame{
 	}
 	
 	public void showDisplay(){
+		this.setLocation(Utility.frameVertex(new Rectangle(SCREEN_DIMENSION), this.getBounds()));
 		this.setVisible(true);
 		this.canvas.startRendering();
 		SwingUtilities.invokeLater(()->{
-			StudentInfoDialog.showDialog(null);
-			TeacherInfoDialog.showDialog(null);
-			CourseInfoDialog.showDialog(null);
-			PeriodInfoDialog.showDialog(null);
+//			StudentInfoDialog.showDialog(null);
+//			TeacherInfoDialog.showDialog(null);
+//			CourseInfoDialog.showDialog(null);
+//			PeriodInfoDialog.showDialog(null);
+			StudentSelectionDialog dialog = new StudentSelectionDialog();
+			dialog.showDialog();
+			dialog.closeDialog();
 		});
 	}
 	

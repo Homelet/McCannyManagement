@@ -152,21 +152,20 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 //		this.studentDrawer.setDrawFrameBorder(true);
 //		this.studentDrawer.setDrawTextFrameBorder(true);
 		course(course);
-		this.weekday = weekday;
 		classroom(classroomNumber);
 		this.teachers = new ArrayList<>();
 		this.students = new ArrayList<>();
 		this.size = new Dimension();
 		this.vertex = new Point();
 		this.activate = false;
-		initPeriod(start, end);
+		initPeriod(weekday, start, end);
 	}
 	
 	public double length(){
 		return length;
 	}
 	
-	private void initPeriod(double start, double end){
+	private void initPeriod(Weekday weekday, double start, double end){
 		if(start >= 24 || start < 0)
 			throw new IllegalArgumentException("Illegal Course Start time");
 		if(end >= 24 || end < 0)
@@ -175,17 +174,19 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 			throw new IllegalArgumentException("Period End before Start");
 		this.start = start;
 		this.end = end;
+		this.weekday = weekday;
 		this.length = end - start;
 		pullConfig();
 		this.size.setSize(CoursePeriod.WIDTH, (int) (CoursePeriod.HEIGHT_PER_HOUR * length));
 		this.periodDrawer.initializeContents(Utility.time(start, Display.FORMAT_24), "~", Utility.time(end, Display.FORMAT_24));
 	}
 	
-	public void period(double start, double end){
-		if(this.start == start && this.end == end)
+	public void period(Weekday weekday, double start, double end){
+		if(this.start == start && this.end == end && this.weekday == weekday)
 			return;
-		initPeriod(start, end);
-		Display.getInstance().manager().update(this);
+		Weekday previous = this.weekday;
+		initPeriod(weekday, start, end);
+		Display.getInstance().manager().update(this, previous);
 	}
 	
 	private void pullConfig(){
@@ -255,12 +256,6 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	
 	public Weekday weekday(){
 		return weekday;
-	}
-	
-	public void weekday(Weekday weekday){
-		if(this.weekday == weekday)
-			return;
-		this.weekday = weekday;
 	}
 	
 	public void addTeacher(boolean sync, Collection<Teacher> teacher){
@@ -341,13 +336,13 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	
 	@Override
 	public String toString(){
-		return "CoursePeriod{" +
-				"course=" + course +
-				", classroomNumber=Room " + classroomNumber +
-				", period=(" + weekday + ", " + start + "~" + end + " (" + length() + "h))" +
-				", teachers=" + teachers +
-				", students=" + students +
-				'}';
+//		return +
+//				"course=" + course +
+//				", classroomNumber=Room " + classroomNumber +
+//				", teachers=" + teachers +
+//				", students=" + students +
+//				'}';
+		return course + ", Room " + classroomNumber + ", " + weekday + " " + Utility.time(start, Display.FORMAT_24) + "~" + Utility.time(end, Display.FORMAT_24) + " (" + length() + "h), Teachers:" + teachers + ", Students:" + students;
 	}
 	
 	@Override

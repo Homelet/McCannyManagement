@@ -153,9 +153,9 @@ public class CourseManager implements Renderable{
 	}
 	
 	/**
-	 * call this method if a coursePeriod has changes it's start or finish
+	 * call this method if a coursePeriod has changes it's start or finish or weekday
 	 */
-	public void update(CoursePeriod period){
+	public void update(CoursePeriod period, Weekday previousDay){
 		OrderedUniqueArray<Event> day = days.get(period.weekday()).events;
 		day.removeIf(event->event.period == period);
 		day.add(new Event(period, period.start(), Event.START));

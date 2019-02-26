@@ -1,15 +1,14 @@
 package mccanny.util;
 
-import com.sun.source.tree.NewArrayTree;
-import mccanny.management.course.Course;
+import homelet.GH.utils.Alignment;
 import mccanny.management.exception.CourseCollusion;
+import mccanny.visual.Display;
 
 import java.awt.*;
-import java.lang.reflect.Array;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Utility{
 	
@@ -29,7 +28,7 @@ public class Utility{
 		for(int adder = 0; adder < desiredLength - i.length(); adder++){
 			builder.append(padder);
 		}
-		return (fromStart ? builder.insert(0, i) : builder.append(i)).toString();
+		return (fromStart ? builder.append(i) : builder.insert(0, i)).toString();
 	}
 	
 	/**
@@ -176,6 +175,19 @@ public class Utility{
 				return 0;
 			}
 		}
+	}
+	
+	public static Point frameVertex(Rectangle frame, Rectangle objectFrame){
+		Point vertex = Alignment.CENTER.getVertex(false, frame, objectFrame);
+		if(vertex.x < 0)
+			vertex.x = 0;
+		if(vertex.y < 0)
+			vertex.y = 0;
+		if(vertex.x + objectFrame.width > Display.SCREEN_DIMENSION.width)
+			vertex.x = Display.SCREEN_DIMENSION.width - objectFrame.width;
+		if(vertex.y + objectFrame.height > Display.SCREEN_DIMENSION.height)
+			vertex.y = Display.SCREEN_DIMENSION.height - objectFrame.height;
+		return vertex;
 	}
 	
 	public interface PeriodComparator<E>{

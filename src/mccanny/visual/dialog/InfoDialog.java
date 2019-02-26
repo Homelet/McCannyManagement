@@ -1,10 +1,9 @@
 package mccanny.visual.dialog;
 
-import homelet.GH.utils.Alignment;
+import mccanny.util.Utility;
 import mccanny.visual.Display;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -35,16 +34,7 @@ public abstract class InfoDialog<E> extends JDialog{
 	}
 	
 	public void showDialog(){
-		Point vertex = Alignment.CENTER.getVertex(false, Display.getInstance().getBounds(), this.getBounds());
-		if(vertex.x < 0)
-			vertex.x = 0;
-		if(vertex.y < 0)
-			vertex.y = 0;
-		if(vertex.x + this.getWidth() > Display.SCREEN_DIMENSION.width)
-			vertex.x = Display.SCREEN_DIMENSION.width - this.getWidth();
-		if(vertex.y + this.getHeight() > Display.SCREEN_DIMENSION.height)
-			vertex.y = Display.SCREEN_DIMENSION.height - this.getHeight();
-		this.setLocation(vertex);
+		this.setLocation(Utility.frameVertex(Display.getInstance().getBounds(), this.getBounds()));
 		this.setVisible(true);
 	}
 	
