@@ -5,12 +5,26 @@ import mccanny.management.exception.CourseCollusion;
 import mccanny.visual.Display;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.*;
 
 public class Utility{
+	
+	public static final int STUDENT_FLAG = 0;
+	public static final int TEACHER_FLAG = 1;
+	public static final int COURSE_FLAG  = 2;
+	
+	public static String flag(int flag){
+		switch(flag){
+			case STUDENT_FLAG:
+				return "Student";
+			case TEACHER_FLAG:
+				return "Teacher";
+			case COURSE_FLAG:
+				return "Course";
+		}
+		return null;
+	}
 	
 	/**
 	 * Pad string with a certain padder from start or end.
@@ -188,6 +202,26 @@ public class Utility{
 		if(vertex.y + objectFrame.height > Display.SCREEN_DIMENSION.height)
 			vertex.y = Display.SCREEN_DIMENSION.height - objectFrame.height;
 		return vertex;
+	}
+	
+	public static String toString(List objects, int limit){
+		StringBuilder builder = new StringBuilder("[");
+		for(int index = 0; index < objects.size(); index++){
+			if(index >= limit){
+				builder.append(" ...").append(objects.size() - limit).append(" more");
+				break;
+			}else{
+				builder.append(objects.get(index));
+				if(index + 1 < objects.size())
+					builder.append(", ");
+			}
+		}
+		builder.append("]");
+		return builder.toString();
+	}
+	
+	public static String fetchUUID32(){
+		return UUID.randomUUID().toString().replace("-", "").toLowerCase();
 	}
 	
 	public interface PeriodComparator<E>{

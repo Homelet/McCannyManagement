@@ -13,7 +13,7 @@ import mccanny.management.student.Student;
 import mccanny.management.teacher.Teacher;
 import mccanny.util.Date;
 import mccanny.util.Utility;
-import mccanny.visual.dialog.SelectionDialog;
+import mccanny.visual.infoCenter.InformationCenter;
 import mccanny.visual.swing.JBasePanel;
 
 import javax.swing.*;
@@ -21,7 +21,6 @@ import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 
 public class Display extends JFrame{
 	
@@ -56,7 +55,6 @@ public class Display extends JFrame{
 	
 	private Display() throws HeadlessException{
 		super("McCanny TimeTable " + VERSION);
-		setName("2048");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
 		this.canvas = new JCanvas("TimeTable");
@@ -72,18 +70,18 @@ public class Display extends JFrame{
 	private void construct(){
 		this.manager.initializeTimeTable(new TimeTable(new Date(2019, 02.f, 10.f)));
 		updateDimension();
-		Course.loadCourse("MHF4U", 110, Color.ORANGE);
-		Course.loadCourse("MDM4U", 110, Color.ORANGE);
-		Course.loadCourse("ENG4U", 110, Color.ORANGE);
+		Course.newCourse("MHF4U", 110, Color.ORANGE);
+		Course.newCourse("MDM4U", 110, Color.ORANGE);
+		Course.newCourse("ENG4U", 110, Color.ORANGE);
 		for(int index = 0; index < 101; index++){
-			Teacher.loadTeacher(String.valueOf(index), String.valueOf(index * index));
-			Student.loadStudent(String.valueOf(index), String.valueOf(index * index * index * index));
+			Teacher.newTeacher(String.valueOf(index), String.valueOf(index * index));
+			Student.newStudent(String.valueOf(index), String.valueOf(index * index * index * index));
 		}
-		Teacher.loadTeacher("000", "Patric");
-		Student.loadStudent("111", "Homelet");
-		Student.loadStudent("112", "Harry");
-		Student.loadStudent("113", "Penny");
-		Student.loadStudent("114", "Ethan");
+		Teacher.newTeacher("000", "Patric");
+		Student.newStudent("111", "Homelet");
+		Student.newStudent("112", "Harry");
+		Student.newStudent("113", "Penny");
+		Student.newStudent("114", "Ethan");
 	}
 	
 	public JCanvas canvas(){
@@ -103,7 +101,8 @@ public class Display extends JFrame{
 //			TeacherInfoDialog.showDialog(null);
 //			CourseInfoDialog.showDialog(null);
 //			PeriodInfoDialog.showInfoDialog(null);
-			SelectionDialog.showStudentDialog(this, Collections.emptyList(), Student.students());
+//			SelectionDialog.showStudentDialog(this, Collections.emptyList(), Student.students(), null);
+			InformationCenter.showInformationCenter();
 		});
 	}
 	

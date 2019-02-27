@@ -4,39 +4,57 @@ import homelet.GH.handlers.Layouter;
 import homelet.GH.handlers.Layouter.GridBagLayouter;
 import homelet.GH.handlers.Layouter.GridBagLayouter.GridConstrain.Anchor;
 import homelet.GH.handlers.Layouter.GridBagLayouter.GridConstrain.Fill;
+import homelet.GH.utils.ToolBox;
 import homelet.GH.visual.swing.JInput.JInputField;
 import mccanny.management.teacher.Teacher;
 import mccanny.visual.Display;
 import mccanny.visual.swing.JBasePanel;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class TeacherInfoDialog extends InfoDialog<Teacher>{
 	
-	public static Teacher showInfoDialog(Teacher teacher){
-		TeacherInfoDialog dialog = new TeacherInfoDialog(teacher);
-		dialog.showDialog();
-		dialog.closeDialog();
-		return dialog.result();
-	}
-	
 	private Teacher teacher;
 	
-	public TeacherInfoDialog(){
-		this(null);
+	private TeacherInfoDialog(Frame owner, Teacher teacher){
+		super(owner, "Teacher Info");
+		init(teacher);
 	}
 	
-	public TeacherInfoDialog(Teacher teacher){
-		super("Teacher");
+	private void init(Teacher teacher){
 		this.teacher = teacher;
 		NestedPanel nestedPanel = new NestedPanel();
 		this.setContentPane(nestedPanel);
 		this.pack();
 	}
 	
+	private TeacherInfoDialog(Dialog owner, Teacher teacher){
+		super(owner, "Teacher Info");
+		init(teacher);
+	}
+	
+	public static Teacher showInfoDialog(Teacher teacher){
+		return showInfoDialog(Display.getInstance(), teacher);
+	}
+	
+	public static Teacher showInfoDialog(Frame owner, Teacher teacher){
+		TeacherInfoDialog dialog = new TeacherInfoDialog(owner, teacher);
+		dialog.showDialog();
+		dialog.removeDialog();
+		return dialog.result();
+	}
+	
 	@Override
 	public Teacher result(){
 		return teacher;
+	}
+	
+	public static Teacher showInfoDialog(Dialog owner, Teacher teacher){
+		TeacherInfoDialog dialog = new TeacherInfoDialog(owner, teacher);
+		dialog.showDialog();
+		dialog.removeDialog();
+		return dialog.result();
 	}
 	
 	private class NestedPanel extends JBasePanel{
@@ -46,6 +64,8 @@ public class TeacherInfoDialog extends InfoDialog<Teacher>{
 			JLabel      teacherMEN           = new JLabel("MEN");
 			JInputField teacherIdentityField = new JInputField("Ex: Alireza Rafiee", true);
 			JInputField teacherMENField      = new JInputField("Ex: XXXXXXXXX", true);
+			teacherIdentityField.getTextComponent().setToolTipText("The Identity for a teacher, typically the teacher's name.");
+			teacherMENField.getTextComponent().setToolTipText("A Ministry Educator Number (MEN) is a unique identifier which is assigned to all educators in the province.");
 			if(teacher != null){
 				teacherIdentityField.setContent(teacher.identity());
 				teacherMENField.setContent(teacher.MEN());
@@ -64,15 +84,15 @@ public class TeacherInfoDialog extends InfoDialog<Teacher>{
 				}
 				if(teacher == null){
 					try{
-						teacher = Teacher.loadTeacher(MEN, identity);
+						teacher = Teacher.newTeacher(MEN, identity);
 						closeDialog();
 					}catch(IllegalArgumentException e){
 						JOptionPane.showMessageDialog(this, e.getMessage(), "Error Adding Teacher", JOptionPane.ERROR_MESSAGE, null);
 					}
 				}else{
 					try{
-						teacher.MEN(MEN);
-						teacher.identity(identity);
+						if(teacher.MEN(MEN) | teacher.identity(identity))
+							Display.getInstance().manager().syncAll();
 						closeDialog();
 					}catch(IllegalArgumentException e){
 						JOptionPane.showMessageDialog(this, e.getMessage(), "Error Changing TeacherInfo", JOptionPane.ERROR_MESSAGE, null);
@@ -95,12 +115,17 @@ public class TeacherInfoDialog extends InfoDialog<Teacher>{
 			confirm.setFont(Display.CLEAR_SANS_BOLD);
 			cancel.setFont(Display.CLEAR_SANS_BOLD);
 			Layouter.GridBagLayouter layouter = new GridBagLayouter(this);
-			layouter.put(layouter.instanceOf(teacherIdentity, 0, 0).setInnerPad(FIXED_LABEL_WIDTH, FIXED_HEIGHT).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(0, 100).setInsets(10, 10, 10, 10));
-			layouter.put(layouter.instanceOf(teacherIdentityField, 1, 0).setInnerPad(FIXED_FIELD_WIDTH, FIXED_HEIGHT).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(100, 100).setInsets(10, 10, 0, 10));
-			layouter.put(layouter.instanceOf(teacherMEN, 0, 1).setInnerPad(FIXED_LABEL_WIDTH, FIXED_HEIGHT).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(0, 100).setInsets(0, 10, 10, 10));
-			layouter.put(layouter.instanceOf(teacherMENField, 1, 1).setInnerPad(FIXED_FIELD_WIDTH, FIXED_HEIGHT).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(100, 100).setInsets(0, 10, 0, 10));
-			layouter.put(layouter.instanceOf(cancel, 0, 2).setInnerPad(FIXED_CONFIRM_WIDTH, FIXED_CONFIRM_HEIGHT).setAnchor(Anchor.LEFT).setFill(Fill.BOTH).setWeight(100, 100).setInsets(0, 10, 10, 10));
-			layouter.put(layouter.instanceOf(confirm, 1, 2).setInnerPad(FIXED_CONFIRM_WIDTH, FIXED_CONFIRM_HEIGHT).setAnchor(Anchor.RIGHT).setFill(Fill.BOTH).setWeight(100, 100).setInsets(0, 10, 0, 10));
+			layouter.put(layouter.instanceOf(teacherIdentity, 0, 0).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(0, 100).setInsets(10, 10, 10, 10));
+			layouter.put(layouter.instanceOf(teacherIdentityField, 1, 0).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(100, 100).setInsets(10, 10, 0, 10));
+			layouter.put(layouter.instanceOf(teacherMEN, 0, 1).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(0, 100).setInsets(0, 10, 10, 10));
+			layouter.put(layouter.instanceOf(teacherMENField, 1, 1).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(100, 100).setInsets(0, 10, 0, 10));
+			layouter.put(layouter.instanceOf(cancel, 0, 2).setAnchor(Anchor.LEFT).setFill(Fill.BOTH).setWeight(100, 100).setInsets(0, 10, 10, 10));
+			layouter.put(layouter.instanceOf(confirm, 1, 2).setAnchor(Anchor.RIGHT).setFill(Fill.BOTH).setWeight(100, 100).setInsets(0, 10, 0, 10));
+			ToolBox.setPreferredSize(teacherIdentityField, FIXED_FIELD_DIMENSION);
+			ToolBox.setPreferredSize(teacherMENField, FIXED_FIELD_DIMENSION);
+			ToolBox.setPreferredSize(cancel, FIXED_BUTTON_DIMENSION);
+			ToolBox.setPreferredSize(confirm, FIXED_BUTTON_DIMENSION);
+			teacherIdentityField.getTextComponent().requestFocusInWindow();
 		}
 	}
 }

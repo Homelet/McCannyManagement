@@ -35,19 +35,21 @@ public class JIndexedChooser extends JComponent{
 		this.min = min;
 		this.value = 0;
 		this.processor(processor);
-		this.plus = new JButton("+".concat(step != 1 ? String.valueOf(step) : ""));
+		this.plus = new JButton();
 		this.plus.addActionListener((actionEvent)->{
 			processShift(+this.step, true);
 		});
-		this.minus = new JButton("-".concat(step != 1 ? String.valueOf(step) : ""));
+		this.minus = new JButton();
 		this.minus.addActionListener((actionEvent)->{
 			processShift(-this.step, true);
 		});
+		setButtonText(null, null);
 		this.label = new JLabel();
 		this.label.setHorizontalAlignment(JLabel.CENTER);
 		this.label.setFont(Display.CLEAR_SANS_BOLD);
 		this.plus.setFont(Display.CLEAR_SANS_BOLD);
 		this.minus.setFont(Display.CLEAR_SANS_BOLD);
+		this.label.setToolTipText("Double Click to Change the Value.");
 		addAction(parent);
 		processShift(init, true);
 		Layouter.GridBagLayouter layouter = new GridBagLayouter(this);
@@ -64,6 +66,7 @@ public class JIndexedChooser extends JComponent{
 				layouter.put(layouter.instanceOf(plus, 0, 2).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(0, 100));
 				break;
 		}
+		this.setFocusable(true);
 	}
 	
 	private void addAction(JComponent parent){
@@ -157,6 +160,20 @@ public class JIndexedChooser extends JComponent{
 	
 	public double max(){
 		return max;
+	}
+	
+	public void step(double step){
+		this.step = step;
+	}
+	
+	public void setButtonToolTipText(String plus, String minus){
+		this.plus.setToolTipText(plus);
+		this.minus.setToolTipText(minus);
+	}
+	
+	public void setButtonText(String plus, String minus){
+		this.plus.setText(plus != null ? plus : "+".concat(step != 1 ? String.valueOf(step) : ""));
+		this.minus.setText(minus != null ? minus : "+".concat(step != 1 ? String.valueOf(step) : ""));
 	}
 	
 	public double min(){

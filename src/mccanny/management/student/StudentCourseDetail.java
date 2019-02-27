@@ -6,6 +6,7 @@ import mccanny.util.Date;
 
 import java.util.ArrayList;
 
+// TODO FUTURE IMPLEMENTATION V2.X
 public class StudentCourseDetail{
 	
 	private final Course                  course;

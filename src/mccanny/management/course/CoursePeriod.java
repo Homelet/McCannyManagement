@@ -342,7 +342,9 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 //				", teachers=" + teachers +
 //				", students=" + students +
 //				'}';
-		return course + ", Room " + classroomNumber + ", " + weekday + " " + Utility.time(start, Display.FORMAT_24) + "~" + Utility.time(end, Display.FORMAT_24) + " (" + length() + "h), Teachers:" + teachers + ", Students:" + students;
+		return course + ", Room " + classroomNumber +
+				", " + weekday + " " + Utility.time(start, Display.FORMAT_24) + "~" + Utility.time(end, Display.FORMAT_24) + " (" + length() +
+				"h), Teachers:" + Utility.toString(teachers, 10) + ", Students:" + Utility.toString(students, 10);
 	}
 	
 	@Override
@@ -422,6 +424,17 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 		}catch(StringDrawerException e){
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * use for passive synchronising
+	 */
+	public void syncAll(){
+		this.courseCodeDrawer.initializeContents(course.courseID());
+		this.classroomNumberDrawer.initializeContents("Room " + classroomNumber);
+		this.periodDrawer.initializeContents(Utility.time(start, Display.FORMAT_24), "~", Utility.time(end, Display.FORMAT_24));
+		syncStudentApper();
+		syncTeacherApper();
 	}
 	
 	// TODO FUTURE IMPLEMENTATION

@@ -209,6 +209,11 @@ public class CourseManager implements Renderable{
 			p.updateLocation();
 	}
 	
+	public void syncAll(){
+		for(CoursePeriod period : timeTable.periods())
+			period.syncAll();
+	}
+	
 	class Event implements Comparable<Event>{
 		
 		@Override

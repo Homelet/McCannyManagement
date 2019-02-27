@@ -27,10 +27,11 @@ public class JColorChooser extends JComponent{
 			label.color = color;
 			label.repaint();
 		});
+		button.setToolTipText("Click To change Color.");
 		button.setFont(Display.CLEAR_SANS_BOLD);
 		Layouter.GridBagLayouter layout = new GridBagLayouter(this);
-		layout.put(layout.instanceOf(label, 0, 0).setAnchor(Anchor.LEFT).setFill(Fill.BOTH).setWeight(40, 100));
-		layout.put(layout.instanceOf(button, 1, 0).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(60, 100));
+		layout.put(layout.instanceOf(label, 0, 0).setAnchor(Anchor.LEFT).setFill(Fill.BOTH).setWeight(80, 100).setInsets(0, 0, 0, 10));
+		layout.put(layout.instanceOf(button, 1, 0).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(20, 100));
 	}
 	
 	public Color getColor(){
@@ -44,13 +45,15 @@ public class JColorChooser extends JComponent{
 		JColorLabel(Color color){
 			this.color = color;
 			this.addMouseListener(this);
+			this.setFocusable(true);
+			this.setToolTipText("Double Click for Quick Color Prompt.");
 		}
 		
 		@Override
 		protected void paintComponent(Graphics g){
 			Graphics2D g2 = (Graphics2D) g;
 			g2.setColor(color);
-			g2.fill(GH.rectangle(false, 0, 0, this.getWidth(), this.getHeight()));
+			g2.fill(GH.rRectangle(false, 0, 0, this.getWidth(), this.getHeight(), this.getHeight(), this.getHeight()));
 		}
 		
 		@Override
