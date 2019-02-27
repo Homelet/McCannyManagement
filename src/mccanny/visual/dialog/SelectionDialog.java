@@ -4,9 +4,9 @@ import homelet.GH.handlers.Layouter.GridBagLayouter;
 import homelet.GH.handlers.Layouter.GridBagLayouter.GridConstrain.Anchor;
 import homelet.GH.handlers.Layouter.GridBagLayouter.GridConstrain.Fill;
 import homelet.GH.utils.ToolBox;
+import mccanny.management.course.Course;
 import mccanny.management.student.Student;
 import mccanny.management.teacher.Teacher;
-import mccanny.util.Listable;
 import mccanny.util.Utility;
 import mccanny.visual.Display;
 import mccanny.visual.swing.JBasePanel;
@@ -16,17 +16,15 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class SelectionDialog<E extends Listable> extends InfoDialog<Collection<E>>{
+public class SelectionDialog<E> extends InfoDialog<Collection<E>>{
 	
 	private static final String[]        STUDENT_COLUMN_HEADER = new String[]{ null, "Identity", "OEN" };
 	private static final String[]        TEACHER_COLUMN_HEADER = new String[]{ null, "Identity", "MEN" };
+	private static final String[]        COURSE_COLUMN_HEADER  = new String[]{ null, "CourseID", "CourseHour" };
 	private              ArrayList<E>    include;
 	private              ArrayList<E>    exclude;
 	private              int             flag;
@@ -34,11 +32,12 @@ public class SelectionDialog<E extends Listable> extends InfoDialog<Collection<E
 	private              boolean         shiftDown             = false;
 	private              NewItemListener newItemListener       = null;
 	private              boolean         acceptResult          = false;
+	
 	private SelectionDialog(Frame frameOwner, String[] columnHeader, Collection<E> include, Collection<E> exclude, int flag, NewItemListener itemListener){
 		super(frameOwner, "Select " + Utility.flag(flag));
 		init(Utility.flag(flag), columnHeader, include, exclude, flag, itemListener);
 	}
-
+	
 	private void init(String title, String[] columnHeader, Collection<E> include, Collection<E> exclude, int flag, NewItemListener itemListener){
 		this.title = title;
 		this.flag = flag;
@@ -49,22 +48,23 @@ public class SelectionDialog<E extends Listable> extends InfoDialog<Collection<E
 		this.setContentPane(nestedPanel);
 		this.pack();
 	}
+	
 	private SelectionDialog(Dialog frameOwner, String[] columnHeader, Collection<E> include, Collection<E> exclude, int flag, NewItemListener itemListener){
 		super(frameOwner, "Select " + Utility.flag(flag));
 		init(Utility.flag(flag), columnHeader, include, exclude, flag, itemListener);
 	}
-
+	
 	public static SelectionDialog<Student> showStudentDialog(Collection<Student> include, Collection<Student> exclude, NewItemListener itemListener){
 		return showStudentDialog(Display.getInstance(), include, exclude, itemListener);
 	}
-
+	
 	public static SelectionDialog<Student> showStudentDialog(Frame frameOwner, Collection<Student> include, Collection<Student> exclude, NewItemListener itemListener){
 		SelectionDialog<Student> studentSelectionDialog = new SelectionDialog<>(frameOwner, STUDENT_COLUMN_HEADER, include, exclude, Utility.STUDENT_FLAG, itemListener);
 		studentSelectionDialog.showDialog();
 		studentSelectionDialog.removeDialog();
 		return studentSelectionDialog;
 	}
-
+	
 	public static SelectionDialog<Student> showStudentDialog(Dialog frameOwner, Collection<Student> include, Collection<Student> exclude, NewItemListener itemListener){
 		SelectionDialog<Student> studentSelectionDialog = new SelectionDialog<>(frameOwner, STUDENT_COLUMN_HEADER, include, exclude, Utility.STUDENT_FLAG, itemListener);
 		studentSelectionDialog.showDialog();
@@ -88,6 +88,24 @@ public class SelectionDialog<E extends Listable> extends InfoDialog<Collection<E
 		teacherSelectionDialog.showDialog();
 		teacherSelectionDialog.removeDialog();
 		return teacherSelectionDialog;
+	}
+	
+	public static SelectionDialog<Course> showCourseDialog(Collection<Course> include, Collection<Course> exclude, NewItemListener itemListener){
+		return showCourseDialog(Display.getInstance(), include, exclude, itemListener);
+	}
+	
+	public static SelectionDialog<Course> showCourseDialog(Frame frameOwner, Collection<Course> include, Collection<Course> exclude, NewItemListener itemListener){
+		SelectionDialog<Course> courseSelectionDialog = new SelectionDialog<>(frameOwner, COURSE_COLUMN_HEADER, include, exclude, Utility.COURSE_FLAG, itemListener);
+		courseSelectionDialog.showDialog();
+		courseSelectionDialog.removeDialog();
+		return courseSelectionDialog;
+	}
+	
+	public static SelectionDialog<Course> showCourseDialog(Dialog frameOwner, Collection<Course> include, Collection<Course> exclude, NewItemListener itemListener){
+		SelectionDialog<Course> courseSelectionDialog = new SelectionDialog<>(frameOwner, COURSE_COLUMN_HEADER, include, exclude, Utility.COURSE_FLAG, itemListener);
+		courseSelectionDialog.showDialog();
+		courseSelectionDialog.removeDialog();
+		return courseSelectionDialog;
 	}
 	
 	@Override
@@ -158,7 +176,7 @@ public class SelectionDialog<E extends Listable> extends InfoDialog<Collection<E
 		}
 	}
 	
-	class SelectionTable extends JScrollPane implements MouseListener, KeyListener{
+	class SelectionTable extends JScrollPane implements MouseListener, KeyListener, FocusListener{
 		
 		final JTable   table;
 		final String[] columnHeader;
@@ -176,6 +194,7 @@ public class SelectionDialog<E extends Listable> extends InfoDialog<Collection<E
 			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			table.addMouseListener(this);
 			table.addKeyListener(this);
+			table.addFocusListener(this);
 			this.setViewportView(table);
 		}
 		
@@ -194,6 +213,15 @@ public class SelectionDialog<E extends Listable> extends InfoDialog<Collection<E
 		}
 		
 		@Override
+		public void focusGained(FocusEvent e){
+		}
+		
+		@Override
+		public void focusLost(FocusEvent e){
+			shiftDown = false;
+		}
+		
+		@Override
 		public void mouseClicked(MouseEvent e){}
 		
 		/*
@@ -202,13 +230,16 @@ public class SelectionDialog<E extends Listable> extends InfoDialog<Collection<E
 		@Override
 		public void mousePressed(MouseEvent e){
 			if(shiftDown){
-				String key = (String) table.getValueAt(table.getSelectedRow(), 2);
+				Object value = tableModule.data[table.convertRowIndexToModel(table.getSelectedRow())][0];
 				switch(flag){
 					case Utility.TEACHER_FLAG:
-						TeacherInfoDialog.showInfoDialog(SelectionDialog.this, Teacher.findTeacher(key));
+						TeacherInfoDialog.showInfoDialog(SelectionDialog.this, (Teacher) value);
 						break;
 					case Utility.STUDENT_FLAG:
-						StudentInfoDialog.showInfoDialog(SelectionDialog.this, Student.findStudent(key));
+						StudentInfoDialog.showInfoDialog(SelectionDialog.this, (Student) value);
+						break;
+					case Utility.COURSE_FLAG:
+						CourseInfoDialog.showInfoDialog(SelectionDialog.this, (Course) value);
 						break;
 				}
 				syncTableModule();
@@ -253,14 +284,14 @@ public class SelectionDialog<E extends Listable> extends InfoDialog<Collection<E
 		
 		void selectAll(){
 			for(int index = 0; index < table.getRowCount(); index++)
-				table.setValueAt(Boolean.TRUE, index, 0);
+				table.setValueAt(Boolean.TRUE, index, 1);
 			table.revalidate();
 			table.repaint();
 		}
 		
 		void clearSelection(){
 			for(int index = 0; index < table.getRowCount(); index++)
-				table.setValueAt(Boolean.FALSE, index, 0);
+				table.setValueAt(Boolean.FALSE, index, 1);
 			table.revalidate();
 			table.repaint();
 		}
@@ -273,6 +304,9 @@ public class SelectionDialog<E extends Listable> extends InfoDialog<Collection<E
 					break;
 				case Utility.STUDENT_FLAG:
 					newItem = (E) StudentInfoDialog.showInfoDialog(SelectionDialog.this, null);
+					break;
+				case Utility.COURSE_FLAG:
+					newItem = (E) CourseInfoDialog.showInfoDialog(SelectionDialog.this, null);
 					break;
 			}
 			if(newItem == null)
@@ -298,19 +332,61 @@ public class SelectionDialog<E extends Listable> extends InfoDialog<Collection<E
 		synchronized void initializeData(){
 			data = new Object[include.size() + exclude.size()][columnName.length + 1];
 			int row = 0;
-			for(E item : include){
-				data[row][0] = Boolean.TRUE;
-				data[row][1] = item.identity();
-				data[row][2] = item.info();
-				data[row][3] = item;
-				row++;
-			}
-			for(E item : exclude){
-				data[row][0] = Boolean.FALSE;
-				data[row][1] = item.identity();
-				data[row][2] = item.info();
-				data[row][3] = item;
-				row++;
+			switch(flag){
+				case Utility.STUDENT_FLAG:
+					for(E e : include){
+						Student item = (Student) e;
+						data[row][0] = item;
+						data[row][1] = Boolean.TRUE;
+						data[row][2] = item.identity();
+						data[row][3] = item.OEN();
+						row++;
+					}
+					for(E e : exclude){
+						Student item = (Student) e;
+						data[row][0] = item;
+						data[row][1] = Boolean.FALSE;
+						data[row][2] = item.identity();
+						data[row][3] = item.OEN();
+						row++;
+					}
+					break;
+				case Utility.TEACHER_FLAG:
+					for(E e : include){
+						Teacher item = (Teacher) e;
+						data[row][0] = item;
+						data[row][1] = Boolean.TRUE;
+						data[row][2] = item.identity();
+						data[row][3] = item.MEN();
+						row++;
+					}
+					for(E e : exclude){
+						Teacher item = (Teacher) e;
+						data[row][0] = item;
+						data[row][1] = Boolean.FALSE;
+						data[row][2] = item.identity();
+						data[row][3] = item.MEN();
+						row++;
+					}
+					break;
+				case Utility.COURSE_FLAG:
+					for(E e : include){
+						Course item = (Course) e;
+						data[row][0] = item;
+						data[row][1] = Boolean.TRUE;
+						data[row][2] = item.courseID();
+						data[row][3] = item.courseHour();
+						row++;
+					}
+					for(E e : exclude){
+						Course item = (Course) e;
+						data[row][0] = item;
+						data[row][1] = Boolean.FALSE;
+						data[row][2] = item.courseID();
+						data[row][3] = item.courseHour();
+						row++;
+					}
+					break;
 			}
 		}
 		
@@ -326,7 +402,7 @@ public class SelectionDialog<E extends Listable> extends InfoDialog<Collection<E
 		
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex){
-			return data[rowIndex][columnIndex];
+			return data[rowIndex][columnIndex + 1];
 		}
 		
 		@Override
@@ -336,7 +412,7 @@ public class SelectionDialog<E extends Listable> extends InfoDialog<Collection<E
 		
 		@Override
 		public Class<?> getColumnClass(int columnIndex){
-			return data[0][columnIndex].getClass();
+			return data[0][columnIndex + 1].getClass();
 		}
 		
 		@Override
@@ -346,27 +422,27 @@ public class SelectionDialog<E extends Listable> extends InfoDialog<Collection<E
 		
 		@Override
 		public void setValueAt(Object aValue, int rowIndex, int columnIndex){
-			boolean oldValue = (boolean) data[rowIndex][columnIndex];
+			boolean oldValue = (boolean) data[rowIndex][1];
 			boolean newValue = (boolean) aValue;
 			// if a value has changed, it also need to synchronize it corresponding buffer
 			if(oldValue){
 				if(!newValue){
-					if(include.remove(data[rowIndex][3])){
-						exclude.add((E) data[rowIndex][3]);
+					if(include.remove(data[rowIndex][0])){
+						exclude.add((E) data[rowIndex][0]);
 					}else{
 						throw new IllegalArgumentException("Unexpected exception");
 					}
 				}
 			}else{
 				if(newValue){
-					if(exclude.remove(data[rowIndex][3])){
-						include.add((E) data[rowIndex][3]);
+					if(exclude.remove(data[rowIndex][0])){
+						include.add((E) data[rowIndex][0]);
 					}else{
 						throw new IllegalArgumentException("Unexpected exception");
 					}
 				}
 			}
-			data[rowIndex][columnIndex] = newValue;
+			data[rowIndex][1] = newValue;
 		}
 	}
 }

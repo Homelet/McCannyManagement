@@ -1,14 +1,13 @@
 package mccanny.management.teacher;
 
 import mccanny.util.Distinguishable;
-import mccanny.util.Listable;
 import mccanny.util.ToolTipText;
 import mccanny.util.Utility;
 
 import java.util.Collection;
 import java.util.HashMap;
 
-public class Teacher implements ToolTipText, Listable, Distinguishable{
+public class Teacher implements ToolTipText, Distinguishable{
 	
 	private static HashMap<String, Teacher> teachers = new HashMap<>();
 	
@@ -100,11 +99,6 @@ public class Teacher implements ToolTipText, Listable, Distinguishable{
 	@Override
 	public String toolTip(){
 		return identity + "(" + MEN + ")";
-	}
-	
-	@Override
-	public String info(){
-		return MEN;
 	}
 	
 	@Override

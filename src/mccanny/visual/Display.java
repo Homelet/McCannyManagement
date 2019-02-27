@@ -13,7 +13,7 @@ import mccanny.management.student.Student;
 import mccanny.management.teacher.Teacher;
 import mccanny.util.Date;
 import mccanny.util.Utility;
-import mccanny.visual.infoCenter.InformationCenter;
+import mccanny.visual.dialog.SelectionDialog;
 import mccanny.visual.swing.JBasePanel;
 
 import javax.swing.*;
@@ -21,6 +21,7 @@ import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 
 public class Display extends JFrame{
 	
@@ -101,8 +102,8 @@ public class Display extends JFrame{
 //			TeacherInfoDialog.showDialog(null);
 //			CourseInfoDialog.showDialog(null);
 //			PeriodInfoDialog.showInfoDialog(null);
-//			SelectionDialog.showStudentDialog(this, Collections.emptyList(), Student.students(), null);
-			InformationCenter.showInformationCenter();
+			SelectionDialog.showCourseDialog(this, Collections.emptyList(), Course.courses(), null);
+//			InformationCenter.showInformationCenter();
 		});
 	}
 	

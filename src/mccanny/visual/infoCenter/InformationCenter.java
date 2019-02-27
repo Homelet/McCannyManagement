@@ -183,7 +183,7 @@ public class InformationCenter extends JDialog{
 				case KeyEvent.VK_DELETE:
 					int selectedRow = table.getSelectedRow();
 					if(selectedRow != -1){
-						Object value  = tableModule.data[table.convertRowIndexToModel(selectedRow)][2];
+						Object value  = tableModule.data[table.convertRowIndexToModel(selectedRow)][0];
 						int    result = JOptionPane.showConfirmDialog(Display.getInstance(), "Are you sure to delete this " + Utility.flag(flag) + "?\n" + value, "Delete Confirmation", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null);
 						switch(result){
 							case JOptionPane.CANCEL_OPTION:
@@ -222,15 +222,16 @@ public class InformationCenter extends JDialog{
 		@Override
 		public void mousePressed(MouseEvent e){
 			if(shiftDown){
+				Object value = tableModule.data[table.convertRowIndexToModel(table.getSelectedRow())][0];
 				switch(flag){
 					case Utility.TEACHER_FLAG:
-						TeacherInfoDialog.showInfoDialog(InformationCenter.this, Teacher.findTeacher((String) table.getValueAt(table.getSelectedRow(), 1)));
+						TeacherInfoDialog.showInfoDialog(InformationCenter.this, (Teacher) value);
 						break;
 					case Utility.STUDENT_FLAG:
-						StudentInfoDialog.showInfoDialog(InformationCenter.this, Student.findStudent((String) table.getValueAt(table.getSelectedRow(), 1)));
+						StudentInfoDialog.showInfoDialog(InformationCenter.this, (Student) value);
 						break;
 					case Utility.COURSE_FLAG:
-						CourseInfoDialog.showInfoDialog(InformationCenter.this, Course.findCourse((String) table.getValueAt(table.getSelectedRow(), 0)));
+						CourseInfoDialog.showInfoDialog(InformationCenter.this, (Course) value);
 						break;
 				}
 				syncTableModule();
@@ -283,9 +284,9 @@ public class InformationCenter extends JDialog{
 						data = new Object[Student.students().size()][columnName.length + 1];
 						int row = 0;
 						for(Student item : Student.students()){
-							data[row][0] = item.identity();
-							data[row][1] = item.info();
-							data[row][2] = item;
+							data[row][0] = item;
+							data[row][1] = item.identity();
+							data[row][2] = item.OEN();
 							row++;
 						}
 						break;
@@ -294,9 +295,9 @@ public class InformationCenter extends JDialog{
 						data = new Object[Teacher.teachers().size()][columnName.length + 1];
 						int row = 0;
 						for(Teacher item : Teacher.teachers()){
-							data[row][0] = item.identity();
-							data[row][1] = item.info();
-							data[row][2] = item;
+							data[row][0] = item;
+							data[row][1] = item.identity();
+							data[row][2] = item.MEN();
 							row++;
 						}
 						break;
@@ -305,9 +306,9 @@ public class InformationCenter extends JDialog{
 						data = new Object[Course.courses().size()][columnName.length + 1];
 						int row = 0;
 						for(Course item : Course.courses()){
-							data[row][0] = item.identity();
-							data[row][1] = item.info();
-							data[row][2] = item;
+							data[row][0] = item;
+							data[row][1] = item.courseID();
+							data[row][2] = String.valueOf(item.courseHour());
 							row++;
 						}
 						break;
@@ -332,7 +333,7 @@ public class InformationCenter extends JDialog{
 			
 			@Override
 			public Class<?> getColumnClass(int columnIndex){
-				return data[0][columnIndex].getClass();
+				return data[0][columnIndex + 1].getClass();
 			}
 			
 			@Override
@@ -342,13 +343,11 @@ public class InformationCenter extends JDialog{
 			
 			@Override
 			public Object getValueAt(int rowIndex, int columnIndex){
-				return data[rowIndex][columnIndex];
+				return data[rowIndex][columnIndex + 1];
 			}
 			
 			@Override
-			public void setValueAt(Object aValue, int rowIndex, int columnIndex){
-				data[rowIndex][columnIndex] = aValue;
-			}
+			public void setValueAt(Object aValue, int rowIndex, int columnIndex){}
 		}
 	}
 }
