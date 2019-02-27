@@ -28,9 +28,9 @@ public class SelectionDialog<E extends Listable> extends InfoDialog<Collection<E
 		return studentSelectionDialog;
 	}
 	
-	public static final String[]      STUDENT_COLUMN_HEADER = new String[]{};
-	public static final String[]      TEACHER_COLUMN_HEADER = new String[]{};
-	public static final String[]      COURSE_COLUMN_HEADER  = new String[]{};
+	public static final String[]      STUDENT_COLUMN_HEADER = new String[]{ null, "Identity", "OEN" };
+	public static final String[]      TEACHER_COLUMN_HEADER = new String[]{ null, "Identity", "MEN" };
+	public static final String[]      COURSE_COLUMN_HEADER  = new String[]{ null, "CourseID", "Course Hour(h)" };
 	private             Collection<E> include;
 	private             Collection<E> exclude;
 	
@@ -95,27 +95,23 @@ public class SelectionDialog<E extends Listable> extends InfoDialog<Collection<E
 		}
 		
 		@Override
-		public void mouseClicked(MouseEvent e){
+		public void mouseClicked(MouseEvent e){}
+		
+		@Override
+		public void mousePressed(MouseEvent e){
 			if(e.getButton() == MouseEvent.BUTTON1){
 				toggleSelected();
 			}
 		}
 		
 		@Override
-		public void mousePressed(MouseEvent e){
-		}
+		public void mouseReleased(MouseEvent e){}
 		
 		@Override
-		public void mouseReleased(MouseEvent e){
-		}
+		public void mouseEntered(MouseEvent e){}
 		
 		@Override
-		public void mouseEntered(MouseEvent e){
-		}
-		
-		@Override
-		public void mouseExited(MouseEvent e){
-		}
+		public void mouseExited(MouseEvent e){}
 		
 		@Override
 		public void keyTyped(KeyEvent e){

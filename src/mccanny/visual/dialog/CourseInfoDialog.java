@@ -18,7 +18,7 @@ import java.awt.*;
 
 public class CourseInfoDialog extends InfoDialog<Course>{
 	
-	public static Course showDialog(Course course){
+	public static Course showInfoDialog(Course course){
 		CourseInfoDialog dialog = new CourseInfoDialog(course);
 		dialog.showDialog();
 		dialog.closeDialog();

@@ -37,11 +37,11 @@ public class JIndexedChooser extends JComponent{
 		this.processor(processor);
 		this.plus = new JButton("+".concat(step != 1 ? String.valueOf(step) : ""));
 		this.plus.addActionListener((actionEvent)->{
-			processShift(+this.step);
+			processShift(+this.step, true);
 		});
 		this.minus = new JButton("-".concat(step != 1 ? String.valueOf(step) : ""));
 		this.minus.addActionListener((actionEvent)->{
-			processShift(-this.step);
+			processShift(-this.step, true);
 		});
 		this.label = new JLabel();
 		this.label.setHorizontalAlignment(JLabel.CENTER);
@@ -49,7 +49,7 @@ public class JIndexedChooser extends JComponent{
 		this.plus.setFont(Display.CLEAR_SANS_BOLD);
 		this.minus.setFont(Display.CLEAR_SANS_BOLD);
 		addAction(parent);
-		processShift(init);
+		processShift(init, true);
 		Layouter.GridBagLayouter layouter = new GridBagLayouter(this);
 		switch(orientation){
 			case EQUILATERAL:
@@ -88,7 +88,7 @@ public class JIndexedChooser extends JComponent{
 								case JOptionPane.NO_OPTION:
 									return;
 								case JOptionPane.YES_OPTION:
-									processValue(min);
+									processValue(min, true);
 							}
 							break;
 						case 2:
@@ -96,7 +96,7 @@ public class JIndexedChooser extends JComponent{
 								case JOptionPane.NO_OPTION:
 									return;
 								case JOptionPane.YES_OPTION:
-									processValue(max);
+									processValue(max, true);
 							}
 							break;
 						case -1:
@@ -104,17 +104,17 @@ public class JIndexedChooser extends JComponent{
 						case 0:
 							break;
 					}
-					processValue(value);
+					processValue(value, true);
 				}
 			}
 		});
 	}
 	
-	public void processShift(double shift){
-		processValue(value + shift);
+	public void processShift(double shift, boolean trigger){
+		processValue(value + shift, trigger);
 	}
 	
-	public void processValue(double newValue){
+	public void processValue(double newValue, boolean trigger){
 		double shiftValue = newValue - value;
 		int    eventFlag  = shiftValue > 0 ? JIndexedChooserEvent.EVENT_INCREASE : JIndexedChooserEvent.EVENT_DECEASE;
 		switch(Utility.betweenPeaks(newValue, max, min)){
@@ -133,7 +133,7 @@ public class JIndexedChooser extends JComponent{
 				setValue(newValue);
 				break;
 		}
-		if(this.group != null)
+		if(trigger && this.group != null)
 			this.group.onTrigger(this, eventFlag, shiftValue);
 	}
 	
@@ -166,7 +166,7 @@ public class JIndexedChooser extends JComponent{
 	public void range(int min, int max){
 		this.max = Math.max(min, max);
 		this.min = Math.min(min, max);
-		processValue(value);
+		processValue(value, true);
 	}
 	
 	public ValueProcessor processor(){

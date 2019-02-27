@@ -39,7 +39,7 @@ import java.util.Collection;
 
 public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
 	
-	public static CoursePeriod showDialog(CoursePeriod coursePeriod){
+	public static CoursePeriod showInfoDialog(CoursePeriod coursePeriod){
 		PeriodInfoDialog dialog = new PeriodInfoDialog(coursePeriod);
 		dialog.showDialog();
 		dialog.closeDialog();
@@ -72,10 +72,10 @@ public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
 			ChooseField<Student> studentField = new ChooseField<>("Student", Student.students(), period == null ? null : period.students());
 			if(period != null){
 				basicField.courseField.setSelectedItem(period.course());
-				basicField.classroomNumberField.processValue(period.classroom());
+				basicField.classroomNumberField.processValue(period.classroom(), false);
 				periodField.weekdayField.setSelectedItem(period.weekday());
-				periodField.startField.processValue(period.start());
-				periodField.endField.processValue(period.end());
+				periodField.startField.processValue(period.start(), false);
+				periodField.endField.processValue(period.end(), false);
 			}
 			JButton confirm = new JButton("Confirm");
 			JButton cancel  = new JButton("Cancel");
@@ -256,11 +256,11 @@ public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
 		public void onTrigger(JIndexedChooserEvent e){
 			if(e.initiator() == startField){
 				if(startField.value() > endField.value()){
-					endField.processValue(startField.value());
+					endField.processValue(startField.value(), false);
 				}
 			}else{
 				if(startField.value() > endField.value()){
-					startField.processValue(endField.value());
+					startField.processValue(endField.value(), false);
 				}
 			}
 			updateTitle();
@@ -278,7 +278,7 @@ public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
 		}
 	}
 	
-	private class ChooseField<E extends ToolTipText> extends JScrollPane implements MouseMotionListener{
+	private class ChooseField<E extends ToolTipText> extends JScrollPane{
 		
 		final Color        color = Color.WHITE;
 		final String       title;
@@ -295,20 +295,11 @@ public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
 			this.getVerticalScrollBar().setBlockIncrement(40);
 			this.getVerticalScrollBar().setUnitIncrement(40);
 			this.setAutoscrolls(true);
-			this.addMouseMotionListener(this);
+			this.addMouseMotionListener(field);
 			this.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_AS_NEEDED);
 			this.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
 			updateTitle();
 		}
-		
-		@Override
-		public void mouseDragged(MouseEvent e){
-			Rectangle r = new Rectangle(e.getX(), e.getY(), 1, 1);
-			((JPanel) e.getSource()).scrollRectToVisible(r);
-		}
-		
-		@Override
-		public void mouseMoved(MouseEvent e){}
 		
 		void scrollToBottom(){
 			SwingUtilities.invokeLater(()->{
@@ -326,13 +317,22 @@ public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
 			return field.include;
 		}
 		
-		private class Field extends JPanel implements MouseListener{
+		private class Field extends JPanel implements MouseListener, MouseMotionListener{
 			
 			final ArrayList<E> exclude;
 			final ArrayList<E> include;
 			final JPopupMenu   leftClickMenu;
 			final StringDrawer notify;
 			final MyFlowLayout layout;
+			
+			@Override
+			public void mouseDragged(MouseEvent e){
+				Rectangle r = new Rectangle(e.getX(), e.getY(), 1, 1);
+				((JPanel) e.getSource()).scrollRectToVisible(r);
+			}
+			
+			@Override
+			public void mouseMoved(MouseEvent e){}
 			
 			public Field(Collection<E> data, Collection<E> added){
 				notify = new StringDrawer("Double Click To Add " + title);
@@ -496,9 +496,9 @@ public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
 					field.removeItem(this);
 				else if(e.getButton() == MouseEvent.BUTTON1){
 					if(this.item instanceof Student)
-						StudentInfoDialog.showDialog((Student) item);
+						StudentInfoDialog.showInfoDialog((Student) item);
 					else
-						TeacherInfoDialog.showDialog((Teacher) item);
+						TeacherInfoDialog.showInfoDialog((Teacher) item);
 					this.setText(item.toString());
 					this.setToolTipText(item.toolTip());
 					syncBestSize();

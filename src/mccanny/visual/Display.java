@@ -102,10 +102,8 @@ public class Display extends JFrame{
 //			StudentInfoDialog.showDialog(null);
 //			TeacherInfoDialog.showDialog(null);
 //			CourseInfoDialog.showDialog(null);
-//			PeriodInfoDialog.showDialog(null);
-			SelectionDialog<Student> dialog = new SelectionDialog<>("Student", Collections.emptyList(), Student.students());
-			dialog.showDialog();
-			dialog.closeDialog();
+//			PeriodInfoDialog.showInfoDialog(null);
+			SelectionDialog.showStudentDialog(this, Collections.emptyList(), Student.students());
 		});
 	}
 	

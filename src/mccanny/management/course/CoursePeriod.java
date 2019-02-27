@@ -431,7 +431,7 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	@Override
 	public void onMouseClick(MouseEvent e){
 		if(e.getButton() == MouseEvent.BUTTON1){
-			PeriodInfoDialog.showDialog(this);
+			PeriodInfoDialog.showInfoDialog(this);
 		}else if(e.getButton() == MouseEvent.BUTTON3){
 			int result = JOptionPane.showConfirmDialog(Display.getInstance(), "Are you sure to delete this Course Period?\n" + this.toString(), "Delete Confirmation", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null);
 			switch(result){

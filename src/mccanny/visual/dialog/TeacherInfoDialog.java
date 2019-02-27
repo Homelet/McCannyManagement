@@ -13,7 +13,7 @@ import javax.swing.*;
 
 public class TeacherInfoDialog extends InfoDialog<Teacher>{
 	
-	public static Teacher showDialog(Teacher teacher){
+	public static Teacher showInfoDialog(Teacher teacher){
 		TeacherInfoDialog dialog = new TeacherInfoDialog(teacher);
 		dialog.showDialog();
 		dialog.closeDialog();

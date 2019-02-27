@@ -32,6 +32,7 @@ public abstract class InfoDialog<E> extends JDialog{
 				super.windowClosing(e);
 			}
 		});
+		this.setFocusable(true);
 	}
 	
 	public void closeDialog(){
