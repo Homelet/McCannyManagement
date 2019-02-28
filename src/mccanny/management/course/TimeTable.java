@@ -17,53 +17,59 @@ import java.util.Collection;
 public class TimeTable implements Renderable{
 	
 	private static Color                            GRAY = new Color(0x999999);
-	private        Date                             startDate;
-	private        Date                             endDate;
 	private final  OrderedUniqueArray<CoursePeriod> periods;
-	private        Filter                           filter;
 	private final  StringDrawer                     nameDrawer;
 	private final  StringDrawer                     periodDrawer;
 	private final  StringDrawer                     timeDrawer;
 	private final  StringDrawer                     semiTimeDrawer;
+	private final  StringDrawer                     filterDrawer;
+	private        Date                             startDate;
+	private        Date                             endDate;
+	private        Filter                           filter;
 	
 	public TimeTable(Date startDate){
 		this.nameDrawer = new StringDrawer("McCanny TimeTable");
-		this.periodDrawer = new StringDrawer();
 		this.nameDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(30.0f));
-		this.periodDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(20.0f));
 		this.nameDrawer.setAlign(Alignment.TOP);
-		this.periodDrawer.setAlign(Alignment.TOP);
 		this.nameDrawer.setTextAlign(Alignment.TOP);
-		this.periodDrawer.setTextAlign(Alignment.TOP);
 		this.nameDrawer.setColor(Display.McCANNY_BLUE);
+		this.periodDrawer = new StringDrawer();
+		this.periodDrawer.setTextAlign(Alignment.TOP);
+		this.periodDrawer.setAlign(Alignment.BOTTOM);
+		this.periodDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(20.0f));
 		this.periodDrawer.setColor(GRAY);
-		this.periodDrawer.setInsetsTop(35);
+		this.filterDrawer = new StringDrawer();
+		this.filterDrawer.setAlign(Alignment.BOTTOM);
+		this.filterDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(15.0f));
+		this.filterDrawer.setTextAlign(Alignment.RIGHT);
+		this.filterDrawer.setColor(GRAY);
+		this.filterDrawer.setInsetsRight(5);
 		this.timeDrawer = new StringDrawer();
-		this.semiTimeDrawer = new StringDrawer();
 		this.timeDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(15.0f));
-		this.semiTimeDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(10.0f));
 		this.timeDrawer.setAlign(Alignment.BOTTOM_RIGHT);
-		this.semiTimeDrawer.setAlign(Alignment.BOTTOM_RIGHT);
 		this.timeDrawer.setTextAlign(Alignment.TOP_RIGHT);
-		this.semiTimeDrawer.setTextAlign(Alignment.TOP_RIGHT);
 		this.timeDrawer.setInsetsBottom(5);
 		this.timeDrawer.setInsetsRight(5);
+		this.timeDrawer.setColor(GRAY);
+		this.semiTimeDrawer = new StringDrawer();
+		this.semiTimeDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(10.0f));
+		this.semiTimeDrawer.setAlign(Alignment.BOTTOM_RIGHT);
+		this.semiTimeDrawer.setTextAlign(Alignment.TOP_RIGHT);
 		this.semiTimeDrawer.setInsetsBottom(3);
 		this.semiTimeDrawer.setInsetsRight(5);
-		this.timeDrawer.setColor(GRAY);
 		this.semiTimeDrawer.setColor(GRAY);
 		this.periods = new OrderedUniqueArray<>();
-		this.filter = Filter.NULL_FILTER;
+		applyFilter(Filter.NULL_FILTER);
 		startDate(startDate);
-	}
-	
-	public Date startDate(){
-		return startDate;
 	}
 	
 	public void startDate(Date startDate){
 		this.startDate = startDate;
 		this.periodDrawer.initializeContents(startDate.visibleMonth() + ", " + startDate.visibleYear());
+	}
+	
+	public Date startDate(){
+		return startDate;
 	}
 	
 	public void addAll(Collection<CoursePeriod> periods){
@@ -87,9 +93,12 @@ public class TimeTable implements Renderable{
 	}
 	
 	void applyFilter(Filter filter){
+		if(this.filter != null && this.filter.equals(filter))
+			return;
 		this.filter = filter;
 		for(CoursePeriod period : periods)
 			period.activate(filter.filter(period));
+		this.filterDrawer.initializeContents(this.filter.toString());
 	}
 	
 	@Override
@@ -97,16 +106,21 @@ public class TimeTable implements Renderable{
 	
 	@Override
 	public void render(Graphics2D g){
-		Rectangle bound = g.getClipBounds();
+		Rectangle bound      = g.getClipBounds();
+		Rectangle topPortion = new Rectangle(0, 0, bound.width, CourseManager.TOP_INSET - CourseManager.FIXED_HEADER_HEIGHT - 5);
 		this.nameDrawer.updateGraphics(g);
 		this.periodDrawer.updateGraphics(g);
-		this.nameDrawer.setFrame(bound);
-		this.periodDrawer.setFrame(bound);
+		this.filterDrawer.updateGraphics(g);
+		this.nameDrawer.setFrame(topPortion);
+		this.periodDrawer.setFrame(topPortion);
+		this.filterDrawer.setFrame(topPortion);
 		try{
 			nameDrawer.validate();
 			periodDrawer.validate();
+			filterDrawer.validate();
 			nameDrawer.draw();
 			periodDrawer.draw();
+			filterDrawer.draw();
 		}catch(StringDrawerException e){
 			e.printStackTrace();
 		}
@@ -142,5 +156,9 @@ public class TimeTable implements Renderable{
 			int renderOffset = Display.getInstance().manager().renderOffset(day);
 			g.fill(GH.rectangle(false, renderOffset - 5, CourseManager.TOP_INSET - 5, 5, CourseManager.TIMETABLE_DI.height + 5));
 		}
+	}
+	
+	public Filter filter(){
+		return filter;
 	}
 }

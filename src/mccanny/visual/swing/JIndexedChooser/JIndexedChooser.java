@@ -17,12 +17,12 @@ public class JIndexedChooser extends JComponent{
 	private final JLabel         label;
 	private final JButton        plus;
 	private final JButton        minus;
+	JIndexedChooserGroup group;
 	private       double         value;
 	private       double         step;
 	private       double         max;
 	private       double         min;
 	private       ValueProcessor processor;
-	JIndexedChooserGroup group;
 	
 	public JIndexedChooser(JComponent parent, double init, double step, Orientation orientation){
 		this(parent, step, init, Integer.MAX_VALUE, Integer.MIN_VALUE, orientation, DEFAULT_PROCESSOR);
@@ -117,39 +117,6 @@ public class JIndexedChooser extends JComponent{
 		processValue(value + shift, trigger);
 	}
 	
-	public void processValue(double newValue, boolean trigger){
-		double shiftValue = newValue - value;
-		int    eventFlag  = shiftValue > 0 ? JIndexedChooserEvent.EVENT_INCREASE : JIndexedChooserEvent.EVENT_DECEASE;
-		switch(Utility.betweenPeaks(newValue, max, min)){
-			case -2:
-			case -1:
-				setButtonEnable(false, true);
-				setValue(min);
-				break;
-			case 2:
-			case 1:
-				setButtonEnable(true, false);
-				setValue(max);
-				break;
-			case 0:
-				setButtonEnable(true, true);
-				setValue(newValue);
-				break;
-		}
-		if(trigger && this.group != null)
-			this.group.onTrigger(this, eventFlag, shiftValue);
-	}
-	
-	public void setButtonEnable(boolean decrease, boolean increase){
-		minus.setEnabled(decrease);
-		plus.setEnabled(increase);
-	}
-	
-	private void setValue(double value){
-		this.value = value;
-		label.setText(processor.process(value));
-	}
-	
 	public double value(){
 		return value;
 	}
@@ -184,6 +151,39 @@ public class JIndexedChooser extends JComponent{
 		this.max = Math.max(min, max);
 		this.min = Math.min(min, max);
 		processValue(value, true);
+	}
+	
+	public void processValue(double newValue, boolean trigger){
+		double shiftValue = newValue - value;
+		int    eventFlag  = shiftValue > 0 ? JIndexedChooserEvent.EVENT_INCREASE : JIndexedChooserEvent.EVENT_DECEASE;
+		switch(Utility.betweenPeaks(newValue, max, min)){
+			case -2:
+			case -1:
+				setButtonEnable(false, true);
+				setValue(min);
+				break;
+			case 2:
+			case 1:
+				setButtonEnable(true, false);
+				setValue(max);
+				break;
+			case 0:
+				setButtonEnable(true, true);
+				setValue(newValue);
+				break;
+		}
+		if(trigger && this.group != null)
+			this.group.onTrigger(this, eventFlag, shiftValue);
+	}
+	
+	public void setButtonEnable(boolean decrease, boolean increase){
+		minus.setEnabled(decrease);
+		plus.setEnabled(increase);
+	}
+	
+	private void setValue(double value){
+		this.value = value;
+		label.setText(processor.process(value));
 	}
 	
 	public ValueProcessor processor(){

@@ -58,40 +58,6 @@ public class StudentCourseDetail{
 		this.estimateFinish = estimateCourseFinishDate();
 	}
 	
-	public void addHours(double hours){
-		this.hours += hours;
-		this.estimateFinish = estimateCourseFinishDate();
-	}
-	
-	public void update(Date today){
-		this.lastUpdate = today;
-		this.estimateFinish = estimateCourseFinishDate();
-	}
-	
-	public void startDate(Date startDate){
-		this.startDate = startDate;
-	}
-	
-	public double hoursPerWeek(){
-		int accum = 0;
-		for(CoursePeriod period : periods){
-			accum += period.length();
-		}
-		return accum;
-	}
-	
-	public void join(CoursePeriod period){
-		if(period.course() != course){
-			throw new IllegalArgumentException("Can't join periods with different course");
-		}
-		this.periods.add(period);
-		this.periods.sort(null);
-	}
-	
-	public void remove(CoursePeriod period){
-		this.periods.remove(period);
-	}
-	
 	/**
 	 * estimate the date that the course is going to finnish
 	 */
@@ -108,5 +74,39 @@ public class StudentCourseDetail{
 				break;
 		}
 		return startDate.plus(weekCount * 7 + trailingDay);
+	}
+	
+	public double hoursPerWeek(){
+		int accum = 0;
+		for(CoursePeriod period : periods){
+			accum += period.length();
+		}
+		return accum;
+	}
+	
+	public void addHours(double hours){
+		this.hours += hours;
+		this.estimateFinish = estimateCourseFinishDate();
+	}
+	
+	public void update(Date today){
+		this.lastUpdate = today;
+		this.estimateFinish = estimateCourseFinishDate();
+	}
+	
+	public void startDate(Date startDate){
+		this.startDate = startDate;
+	}
+	
+	public void join(CoursePeriod period){
+		if(period.course() != course){
+			throw new IllegalArgumentException("Can't join periods with different course");
+		}
+		this.periods.add(period);
+		this.periods.sort(null);
+	}
+	
+	public void remove(CoursePeriod period){
+		this.periods.remove(period);
 	}
 }

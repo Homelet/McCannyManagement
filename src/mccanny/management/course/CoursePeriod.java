@@ -31,6 +31,26 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	public static final  int                                    WIDTH           = 50;
 	public static final  int                                    HEIGHT_PER_HOUR = 50;
 	private static final HashMap<Double, RenderThresholdConfig> configs         = new HashMap<>();
+	private final        Dimension                              size;
+	private final        Point                                  vertex;
+	// render
+	private final        StringDrawer                           classroomNumberDrawer;
+	private final        StringDrawer                           periodDrawer;
+	private final        StringDrawer                           courseCodeDrawer;
+	private final        StringDrawer                           teacherDrawer;
+	private final        StringDrawer                           studentDrawer;
+	private              Course                                 course;
+	private              int                                    classroomNumber;
+	private              double                                 start;
+	private              double                                 end;
+	private              double                                 length;
+	private              Weekday                                weekday;
+	private              int                                    lineIndex;
+	private              RenderThresholdConfig                  config;
+	private              boolean                                activate;
+	// participant
+	private              ArrayList<Teacher>                     teachers;
+	private              ArrayList<Student>                     students;
 	
 	static{
 		configs.put(0.5, new RenderThresholdConfig(false, false, 0, 0));
@@ -50,65 +70,6 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 		configs.put(7.5, new RenderThresholdConfig(true, true, 7, 20));
 		configs.put(8.0, new RenderThresholdConfig(true, true, 8, 21));
 	}
-	
-	static class RenderThresholdConfig{
-		
-		final boolean roomNumberFlag;
-		final boolean periodFlag;
-		final int     maxTeacher;
-		final int     maxStudent;
-		
-		RenderThresholdConfig(boolean roomNumberFlag, boolean periodFlag, int maxTeacher, int maxStudent){
-			this.roomNumberFlag = roomNumberFlag;
-			this.periodFlag = periodFlag;
-			this.maxTeacher = maxTeacher;
-			this.maxStudent = maxStudent;
-		}
-	}
-	
-	/**
-	 * to test the order of the periodFlag
-	 */
-	@Override
-	public int compareTo(CoursePeriod o){
-		int result = Integer.compare(this.weekday.index(), o.weekday.index());
-		if(result == 0){
-			return comparePeriod(this, o);
-		}else{
-			return result;
-		}
-	}
-	
-	private static int comparePeriod(CoursePeriod p1, CoursePeriod p2){
-		if(p1.start > p2.start){
-			return 1;
-		}else if(p1.start < p2.start){
-			return -1;
-		}else{
-			return Double.compare(p1.end, p2.end);
-		}
-	}
-	
-	private       Course                course;
-	private       int                   classroomNumber;
-	private       double                start;
-	private       double                end;
-	private       double                length;
-	private       Weekday               weekday;
-	private       int                   lineIndex;
-	private final Dimension             size;
-	private final Point                 vertex;
-	private       RenderThresholdConfig config;
-	private       boolean               activate;
-	// participant
-	private       ArrayList<Teacher>    teachers;
-	private       ArrayList<Student>    students;
-	// render
-	private final StringDrawer          classroomNumberDrawer;
-	private final StringDrawer          periodDrawer;
-	private final StringDrawer          courseCodeDrawer;
-	private final StringDrawer          teacherDrawer;
-	private final StringDrawer          studentDrawer;
 	
 	public CoursePeriod(Course course, int classroomNumber, Weekday weekday, double start, double end){
 		this.classroomNumberDrawer = new StringDrawer();
@@ -161,8 +122,18 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 		initPeriod(weekday, start, end);
 	}
 	
-	public double length(){
-		return length;
+	public void course(Course course){
+		if(this.course == null || !this.course.equals(course)){
+			this.course = course;
+			this.courseCodeDrawer.initializeContents(course.courseID());
+		}
+	}
+	
+	public void classroom(int classroomNumber){
+		if(this.classroomNumber == classroomNumber)
+			return;
+		this.classroomNumber = classroomNumber;
+		this.classroomNumberDrawer.initializeContents("Room " + classroomNumber);
 	}
 	
 	private void initPeriod(Weekday weekday, double start, double end){
@@ -179,14 +150,6 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 		pullConfig();
 		this.size.setSize(CoursePeriod.WIDTH, (int) (CoursePeriod.HEIGHT_PER_HOUR * length));
 		this.periodDrawer.initializeContents(Utility.time(start, Display.FORMAT_24), "~", Utility.time(end, Display.FORMAT_24));
-	}
-	
-	public void period(Weekday weekday, double start, double end){
-		if(this.start == start && this.end == end && this.weekday == weekday)
-			return;
-		Weekday previous = this.weekday;
-		initPeriod(weekday, start, end);
-		Display.getInstance().manager().update(this, previous);
 	}
 	
 	private void pullConfig(){
@@ -210,6 +173,69 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 		syncStudentApper();
 	}
 	
+	public void syncTeacherApper(){
+		teacherDrawer.clearAllContents();
+		for(int i = 0; i < teachers.size(); i++){
+			if(i < config.maxTeacher - 1){
+				teacherDrawer.addContent(teachers.get(i).identity());
+			}else if(i == config.maxTeacher){
+				if(teachers.size() - i > 0){
+					teacherDrawer.addContent("...");
+				}else{
+					teacherDrawer.addContent(teachers.get(i).identity());
+				}
+				break;
+			}
+		}
+	}
+	
+	public void syncStudentApper(){
+		studentDrawer.clearAllContents();
+		for(int i = 0; i < students.size(); i++){
+			if(i < config.maxStudent - 1){
+				studentDrawer.addContent(students.get(i).identity());
+			}else if(i == config.maxStudent){
+				if(students.size() - i > 0){
+					studentDrawer.addContent("...");
+				}else{
+					studentDrawer.addContent(students.get(i).identity());
+				}
+				break;
+			}
+		}
+	}
+	
+	/**
+	 * to test the order of the periodFlag
+	 */
+	@Override
+	public int compareTo(CoursePeriod o){
+		int result = Integer.compare(this.weekday.index(), o.weekday.index());
+		if(result == 0){
+			return comparePeriod(this, o);
+		}else{
+			return result;
+		}
+	}
+	
+	private static int comparePeriod(CoursePeriod p1, CoursePeriod p2){
+		if(p1.start > p2.start){
+			return 1;
+		}else if(p1.start < p2.start){
+			return -1;
+		}else{
+			return Double.compare(p1.end, p2.end);
+		}
+	}
+	
+	public void period(Weekday weekday, double start, double end){
+		if(this.start == start && this.end == end && this.weekday == weekday)
+			return;
+		Weekday previous = this.weekday;
+		initPeriod(weekday, start, end);
+		Display.getInstance().manager().update(this, previous);
+	}
+	
 	public int lineIndex(){
 		return lineIndex;
 	}
@@ -222,20 +248,6 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	
 	public void updateLocation(){
 		this.vertex.setLocation(Display.getInstance().manager().renderOffset(weekday) + lineIndex * WIDTH, CourseManager.TOP_INSET + (start - START_AT) * HEIGHT_PER_HOUR);
-	}
-	
-	public void course(Course course){
-		if(this.course == null || !this.course.equals(course)){
-			this.course = course;
-			this.courseCodeDrawer.initializeContents(course.courseID());
-		}
-	}
-	
-	public void classroom(int classroomNumber){
-		if(this.classroomNumber == classroomNumber)
-			return;
-		this.classroomNumber = classroomNumber;
-		this.classroomNumberDrawer.initializeContents("Room " + classroomNumber);
 	}
 	
 	public Course course(){
@@ -294,57 +306,12 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 		syncStudentApper();
 	}
 	
-	public void syncStudentApper(){
-		studentDrawer.clearAllContents();
-		for(int i = 0; i < students.size(); i++){
-			if(i < config.maxStudent - 1){
-				studentDrawer.addContent(students.get(i).identity());
-			}else if(i == config.maxStudent){
-				if(students.size() - i > 0){
-					studentDrawer.addContent("...");
-				}else{
-					studentDrawer.addContent(students.get(i).identity());
-				}
-				break;
-			}
-		}
-	}
-	
-	public void syncTeacherApper(){
-		teacherDrawer.clearAllContents();
-		for(int i = 0; i < teachers.size(); i++){
-			if(i < config.maxTeacher - 1){
-				teacherDrawer.addContent(teachers.get(i).identity());
-			}else if(i == config.maxTeacher){
-				if(teachers.size() - i > 0){
-					teacherDrawer.addContent("...");
-				}else{
-					teacherDrawer.addContent(teachers.get(i).identity());
-				}
-				break;
-			}
-		}
-	}
-	
 	public ArrayList<Teacher> teachers(){
 		return teachers;
 	}
 	
 	public ArrayList<Student> students(){
 		return students;
-	}
-	
-	@Override
-	public String toString(){
-//		return +
-//				"course=" + course +
-//				", classroomNumber=Room " + classroomNumber +
-//				", teachers=" + teachers +
-//				", students=" + students +
-//				'}';
-		return course + ", Room " + classroomNumber +
-				", " + weekday + " " + Utility.time(start, Display.FORMAT_24) + "~" + Utility.time(end, Display.FORMAT_24) + " (" + length() +
-				"h), Teachers:" + Utility.toString(teachers, 10) + ", Students:" + Utility.toString(students, 10);
 	}
 	
 	@Override
@@ -363,16 +330,6 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	
 	public void activate(boolean activate){
 		this.activate = activate;
-	}
-	
-	@Override
-	public boolean isTicking(){
-		return activate;
-	}
-	
-	@Override
-	public boolean isRendering(){
-		return activate;
 	}
 	
 	@Override
@@ -426,6 +383,16 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 		}
 	}
 	
+	@Override
+	public boolean isTicking(){
+		return activate;
+	}
+	
+	@Override
+	public boolean isRendering(){
+		return activate;
+	}
+	
 	/**
 	 * use for passive synchronising
 	 */
@@ -436,10 +403,6 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 		syncStudentApper();
 		syncTeacherApper();
 	}
-	
-	// TODO FUTURE IMPLEMENTATION
-	@Override
-	public void onMousePress(MouseEvent e){}
 	
 	@Override
 	public void onMouseClick(MouseEvent e){
@@ -453,6 +416,42 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 				case JOptionPane.OK_OPTION:
 			}
 			Display.getInstance().manager().remove(this);
+		}
+	}
+	
+	@Override
+	public String toString(){
+//		return +
+//				"course=" + course +
+//				", classroomNumber=Room " + classroomNumber +
+//				", teachers=" + teachers +
+//				", students=" + students +
+//				'}';
+		return course + ", Room " + classroomNumber +
+				", " + weekday + " " + Utility.time(start, Display.FORMAT_24) + "~" + Utility.time(end, Display.FORMAT_24) + " (" + length() +
+				"h), Teachers:[" + Utility.toString(teachers, 10) + "], Students:[" + Utility.toString(students, 10) + "]";
+	}
+	
+	public double length(){
+		return length;
+	}
+	
+	// TODO FUTURE IMPLEMENTATION
+	@Override
+	public void onMousePress(MouseEvent e){}
+	
+	static class RenderThresholdConfig{
+		
+		final boolean roomNumberFlag;
+		final boolean periodFlag;
+		final int     maxTeacher;
+		final int     maxStudent;
+		
+		RenderThresholdConfig(boolean roomNumberFlag, boolean periodFlag, int maxTeacher, int maxStudent){
+			this.roomNumberFlag = roomNumberFlag;
+			this.periodFlag = periodFlag;
+			this.maxTeacher = maxTeacher;
+			this.maxStudent = maxStudent;
 		}
 	}
 }

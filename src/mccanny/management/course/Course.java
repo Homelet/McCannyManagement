@@ -13,12 +13,6 @@ import java.util.HashMap;
  */
 public class Course implements ToolTipText, Distinguishable{
 	
-	private static HashMap<String, Course> courses = new HashMap<>();
-	
-	public static Collection<Course> courses(){
-		return courses.values();
-	}
-	
 	public static Course findCourse(String courseID){
 		return courses.get(courseID);
 	}
@@ -29,6 +23,19 @@ public class Course implements ToolTipText, Distinguishable{
 				return course;
 		}
 		return null;
+	}
+	
+	public static Collection<Course> courses(){
+		return courses.values();
+	}
+	
+	@Override
+	public String UID(){
+		return UID;
+	}
+	
+	public static Course newCourse(String courseID, double courseHour, Color color){
+		return loadCourse(Utility.fetchUUID32(), courseID, courseHour, color);
 	}
 	
 	public static Course loadCourse(String UID, String courseID, double courseHour, Color color){
@@ -43,14 +50,14 @@ public class Course implements ToolTipText, Distinguishable{
 		}
 	}
 	
-	public static Course newCourse(String courseID, double courseHour, Color color){
-		return loadCourse(Utility.fetchUUID32(), courseID, courseHour, color);
-	}
-	
 	public static boolean removeCourse(Course course){
 		return courses.remove(course.courseID(), course);
 	}
 	
+	public String courseID(){
+		return courseID;
+	}
+	private static HashMap<String, Course> courses = new HashMap<>();
 	private final String UID;
 	private       String courseID;
 	private       double courseHour;
@@ -61,10 +68,6 @@ public class Course implements ToolTipText, Distinguishable{
 		this.courseID = courseID;
 		this.courseHour = courseHour;
 		this.color = color;
-	}
-	
-	public String courseID(){
-		return courseID;
 	}
 	
 	public boolean courseID(String courseID){
@@ -101,11 +104,6 @@ public class Course implements ToolTipText, Distinguishable{
 	}
 	
 	@Override
-	public String toString(){
-		return courseID;
-	}
-	
-	@Override
 	public boolean equals(Object o){
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
@@ -114,13 +112,13 @@ public class Course implements ToolTipText, Distinguishable{
 	}
 	
 	@Override
-	public String toolTip(){
-		return courseID + "(" + courseHour + ")";
+	public String toString(){
+		return courseID;
 	}
 	
 	@Override
-	public String UID(){
-		return UID;
+	public String toolTip(){
+		return courseID + "(" + courseHour + ")";
 	}
 }
 

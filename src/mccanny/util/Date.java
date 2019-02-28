@@ -9,25 +9,15 @@ public class Date implements Comparable<Date>{
 		Calendar calendar = new GregorianCalendar();
 		return new Date(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE) - 1);
 	}
-	
-	@Override
-	public int compareTo(Date o){
-		int result = Integer.compare(this.year, o.year);
-		if(result == 0){
-			result = Integer.compare(this.month.index(), o.month.index());
-			if(result == 0){
-				return Integer.compare(this.day, o.day);
-			}else{
-				return result;
-			}
-		}else{
-			return result;
-		}
-	}
-	
 	private final Weekday weekday;
 	private final Month   month;
 	private final int     year, day;
+	/**
+	 * if you wish to use the normal way use this constructor
+	 */
+	public Date(int year, double month, double day){
+		this(year, (int) (month - 1), (int) (day - 1));
+	}
 	
 	/**
 	 * month start at 0 and caped at 11,
@@ -44,11 +34,19 @@ public class Date implements Comparable<Date>{
 		this.weekday = Utility.getWeekday(year, this.month, day);
 	}
 	
-	/**
-	 * if you wish to use the normal way use this constructor
-	 */
-	public Date(int year, double month, double day){
-		this(year, (int) (month - 1), (int) (day - 1));
+	@Override
+	public int compareTo(Date o){
+		int result = Integer.compare(this.year, o.year);
+		if(result == 0){
+			result = Integer.compare(this.month.index(), o.month.index());
+			if(result == 0){
+				return Integer.compare(this.day, o.day);
+			}else{
+				return result;
+			}
+		}else{
+			return result;
+		}
 	}
 	
 	public Date floorNextWeek(){
@@ -116,6 +114,11 @@ public class Date implements Comparable<Date>{
 		}
 	}
 	
+	@Override
+	public String toString(){
+		return visibleYear() + "/" + visibleMonth() + "/" + visibleDay() + " (" + weekday() + ")";
+	}
+	
 	public int visibleYear(){
 		return year;
 	}
@@ -130,10 +133,5 @@ public class Date implements Comparable<Date>{
 	
 	public Weekday weekday(){
 		return weekday;
-	}
-	
-	@Override
-	public String toString(){
-		return visibleYear() + "/" + visibleMonth() + "/" + visibleDay() + " (" + weekday() + ")";
 	}
 }

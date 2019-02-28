@@ -1,7 +1,7 @@
 package mccanny.management.exception;
 
-import mccanny.management.teacher.Teacher;
 import mccanny.management.course.CoursePeriod;
+import mccanny.management.teacher.Teacher;
 
 import java.util.Arrays;
 

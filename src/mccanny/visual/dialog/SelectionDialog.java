@@ -22,6 +22,59 @@ import java.util.Collection;
 
 public class SelectionDialog<E> extends InfoDialog<Collection<E>>{
 	
+	public static SelectionDialog<Student> showStudentDialog(Collection<Student> include, Collection<Student> exclude, NewItemListener itemListener){
+		return showStudentDialog(Display.getInstance(), include, exclude, itemListener);
+	}
+
+	public static SelectionDialog<Student> showStudentDialog(Frame frameOwner, Collection<Student> include, Collection<Student> exclude, NewItemListener itemListener){
+		SelectionDialog<Student> studentSelectionDialog = new SelectionDialog<>(frameOwner, STUDENT_COLUMN_HEADER, include, exclude, Utility.STUDENT_FLAG, itemListener);
+		studentSelectionDialog.showDialog();
+		studentSelectionDialog.removeDialog();
+		return studentSelectionDialog;
+	}
+
+	public static SelectionDialog<Student> showStudentDialog(Dialog frameOwner, Collection<Student> include, Collection<Student> exclude, NewItemListener itemListener){
+		SelectionDialog<Student> studentSelectionDialog = new SelectionDialog<>(frameOwner, STUDENT_COLUMN_HEADER, include, exclude, Utility.STUDENT_FLAG, itemListener);
+		studentSelectionDialog.showDialog();
+		studentSelectionDialog.removeDialog();
+		return studentSelectionDialog;
+	}
+
+	public static SelectionDialog<Teacher> showTeacherDialog(Collection<Teacher> include, Collection<Teacher> exclude, NewItemListener itemListener){
+		return showTeacherDialog(Display.getInstance(), include, exclude, itemListener);
+	}
+
+	public static SelectionDialog<Teacher> showTeacherDialog(Frame frameOwner, Collection<Teacher> include, Collection<Teacher> exclude, NewItemListener itemListener){
+		SelectionDialog<Teacher> teacherSelectionDialog = new SelectionDialog<>(frameOwner, TEACHER_COLUMN_HEADER, include, exclude, Utility.TEACHER_FLAG, itemListener);
+		teacherSelectionDialog.showDialog();
+		teacherSelectionDialog.removeDialog();
+		return teacherSelectionDialog;
+	}
+
+	public static SelectionDialog<Teacher> showTeacherDialog(Dialog frameOwner, Collection<Teacher> include, Collection<Teacher> exclude, NewItemListener itemListener){
+		SelectionDialog<Teacher> teacherSelectionDialog = new SelectionDialog<>(frameOwner, TEACHER_COLUMN_HEADER, include, exclude, Utility.TEACHER_FLAG, itemListener);
+		teacherSelectionDialog.showDialog();
+		teacherSelectionDialog.removeDialog();
+		return teacherSelectionDialog;
+	}
+
+	public static SelectionDialog<Course> showCourseDialog(Collection<Course> include, Collection<Course> exclude, NewItemListener itemListener){
+		return showCourseDialog(Display.getInstance(), include, exclude, itemListener);
+	}
+
+	public static SelectionDialog<Course> showCourseDialog(Frame frameOwner, Collection<Course> include, Collection<Course> exclude, NewItemListener itemListener){
+		SelectionDialog<Course> courseSelectionDialog = new SelectionDialog<>(frameOwner, COURSE_COLUMN_HEADER, include, exclude, Utility.COURSE_FLAG, itemListener);
+		courseSelectionDialog.showDialog();
+		courseSelectionDialog.removeDialog();
+		return courseSelectionDialog;
+	}
+
+	public static SelectionDialog<Course> showCourseDialog(Dialog frameOwner, Collection<Course> include, Collection<Course> exclude, NewItemListener itemListener){
+		SelectionDialog<Course> courseSelectionDialog = new SelectionDialog<>(frameOwner, COURSE_COLUMN_HEADER, include, exclude, Utility.COURSE_FLAG, itemListener);
+		courseSelectionDialog.showDialog();
+		courseSelectionDialog.removeDialog();
+		return courseSelectionDialog;
+	}
 	private static final String[]        STUDENT_COLUMN_HEADER = new String[]{ null, "Identity", "OEN" };
 	private static final String[]        TEACHER_COLUMN_HEADER = new String[]{ null, "Identity", "MEN" };
 	private static final String[]        COURSE_COLUMN_HEADER  = new String[]{ null, "CourseID", "CourseHour" };
@@ -54,60 +107,6 @@ public class SelectionDialog<E> extends InfoDialog<Collection<E>>{
 		init(Utility.flag(flag), columnHeader, include, exclude, flag, itemListener);
 	}
 	
-	public static SelectionDialog<Student> showStudentDialog(Collection<Student> include, Collection<Student> exclude, NewItemListener itemListener){
-		return showStudentDialog(Display.getInstance(), include, exclude, itemListener);
-	}
-	
-	public static SelectionDialog<Student> showStudentDialog(Frame frameOwner, Collection<Student> include, Collection<Student> exclude, NewItemListener itemListener){
-		SelectionDialog<Student> studentSelectionDialog = new SelectionDialog<>(frameOwner, STUDENT_COLUMN_HEADER, include, exclude, Utility.STUDENT_FLAG, itemListener);
-		studentSelectionDialog.showDialog();
-		studentSelectionDialog.removeDialog();
-		return studentSelectionDialog;
-	}
-	
-	public static SelectionDialog<Student> showStudentDialog(Dialog frameOwner, Collection<Student> include, Collection<Student> exclude, NewItemListener itemListener){
-		SelectionDialog<Student> studentSelectionDialog = new SelectionDialog<>(frameOwner, STUDENT_COLUMN_HEADER, include, exclude, Utility.STUDENT_FLAG, itemListener);
-		studentSelectionDialog.showDialog();
-		studentSelectionDialog.removeDialog();
-		return studentSelectionDialog;
-	}
-	
-	public static SelectionDialog<Teacher> showTeacherDialog(Collection<Teacher> include, Collection<Teacher> exclude, NewItemListener itemListener){
-		return showTeacherDialog(Display.getInstance(), include, exclude, itemListener);
-	}
-	
-	public static SelectionDialog<Teacher> showTeacherDialog(Frame frameOwner, Collection<Teacher> include, Collection<Teacher> exclude, NewItemListener itemListener){
-		SelectionDialog<Teacher> teacherSelectionDialog = new SelectionDialog<>(frameOwner, TEACHER_COLUMN_HEADER, include, exclude, Utility.TEACHER_FLAG, itemListener);
-		teacherSelectionDialog.showDialog();
-		teacherSelectionDialog.removeDialog();
-		return teacherSelectionDialog;
-	}
-	
-	public static SelectionDialog<Teacher> showTeacherDialog(Dialog frameOwner, Collection<Teacher> include, Collection<Teacher> exclude, NewItemListener itemListener){
-		SelectionDialog<Teacher> teacherSelectionDialog = new SelectionDialog<>(frameOwner, TEACHER_COLUMN_HEADER, include, exclude, Utility.TEACHER_FLAG, itemListener);
-		teacherSelectionDialog.showDialog();
-		teacherSelectionDialog.removeDialog();
-		return teacherSelectionDialog;
-	}
-	
-	public static SelectionDialog<Course> showCourseDialog(Collection<Course> include, Collection<Course> exclude, NewItemListener itemListener){
-		return showCourseDialog(Display.getInstance(), include, exclude, itemListener);
-	}
-	
-	public static SelectionDialog<Course> showCourseDialog(Frame frameOwner, Collection<Course> include, Collection<Course> exclude, NewItemListener itemListener){
-		SelectionDialog<Course> courseSelectionDialog = new SelectionDialog<>(frameOwner, COURSE_COLUMN_HEADER, include, exclude, Utility.COURSE_FLAG, itemListener);
-		courseSelectionDialog.showDialog();
-		courseSelectionDialog.removeDialog();
-		return courseSelectionDialog;
-	}
-	
-	public static SelectionDialog<Course> showCourseDialog(Dialog frameOwner, Collection<Course> include, Collection<Course> exclude, NewItemListener itemListener){
-		SelectionDialog<Course> courseSelectionDialog = new SelectionDialog<>(frameOwner, COURSE_COLUMN_HEADER, include, exclude, Utility.COURSE_FLAG, itemListener);
-		courseSelectionDialog.showDialog();
-		courseSelectionDialog.removeDialog();
-		return courseSelectionDialog;
-	}
-	
 	@Override
 	public Collection<E> result(){
 		return include();
@@ -123,11 +122,6 @@ public class SelectionDialog<E> extends InfoDialog<Collection<E>>{
 	
 	public boolean acceptResult(){
 		return acceptResult;
-	}
-	
-	public interface NewItemListener{
-		
-		void addNewItem(Object item);
 	}
 	
 	class NestedPanel extends JBasePanel{
@@ -444,5 +438,10 @@ public class SelectionDialog<E> extends InfoDialog<Collection<E>>{
 			}
 			data[rowIndex][1] = newValue;
 		}
+	}
+	
+	public interface NewItemListener{
+		
+		void addNewItem(Object item);
 	}
 }

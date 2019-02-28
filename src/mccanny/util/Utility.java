@@ -10,10 +10,6 @@ import java.util.*;
 
 public class Utility{
 	
-	public static final int STUDENT_FLAG = 0;
-	public static final int TEACHER_FLAG = 1;
-	public static final int COURSE_FLAG  = 2;
-	
 	public static String flag(int flag){
 		switch(flag){
 			case STUDENT_FLAG:
@@ -24,25 +20,6 @@ public class Utility{
 				return "Course";
 		}
 		return null;
-	}
-	
-	/**
-	 * Pad string with a certain padder from start or end.
-	 *
-	 * @param i             the
-	 * @param desiredLength the desired length
-	 * @param padder        the padder
-	 * @param fromStart     from start or not
-	 * @return the string
-	 */
-	public static String padString(String i, int desiredLength, char padder, boolean fromStart){
-		if(i.length() >= desiredLength)
-			return i;
-		StringBuilder builder = new StringBuilder();
-		for(int adder = 0; adder < desiredLength - i.length(); adder++){
-			builder.append(padder);
-		}
-		return (fromStart ? builder.append(i) : builder.insert(0, i)).toString();
 	}
 	
 	/**
@@ -119,6 +96,25 @@ public class Utility{
 		}else{
 			return (hour > 12 ? String.valueOf(hour - 12) : hour) + ":" + padString(String.valueOf(minute), 2, '0', true) + (hour > 12 ? " PM" : " AM");
 		}
+	}
+	
+	/**
+	 * Pad string with a certain padder from start or end.
+	 *
+	 * @param i             the
+	 * @param desiredLength the desired length
+	 * @param padder        the padder
+	 * @param fromStart     from start or not
+	 * @return the string
+	 */
+	public static String padString(String i, int desiredLength, char padder, boolean fromStart){
+		if(i.length() >= desiredLength)
+			return i;
+		StringBuilder builder = new StringBuilder();
+		for(int adder = 0; adder < desiredLength - i.length(); adder++){
+			builder.append(padder);
+		}
+		return (fromStart ? builder.append(i) : builder.insert(0, i)).toString();
 	}
 	
 	public static Color translateColor(String context){
@@ -205,7 +201,7 @@ public class Utility{
 	}
 	
 	public static String toString(List objects, int limit){
-		StringBuilder builder = new StringBuilder("[");
+		StringBuilder builder = new StringBuilder();
 		for(int index = 0; index < objects.size(); index++){
 			if(index >= limit){
 				builder.append(" ...").append(objects.size() - limit).append(" more");
@@ -216,12 +212,41 @@ public class Utility{
 					builder.append(", ");
 			}
 		}
-		builder.append("]");
 		return builder.toString();
 	}
 	
 	public static String fetchUUID32(){
 		return UUID.randomUUID().toString().replace("-", "").toLowerCase();
+	}
+	
+	public static final int STUDENT_FLAG = 0;
+	public static final int TEACHER_FLAG = 1;
+	public static final int COURSE_FLAG  = 2;
+	
+	public static <E> boolean identical(Collection<E> collection1, Collection<E> collection2){
+		if(collection1.size() != collection2.size())
+			return false;
+		for(E item : collection1){
+			if(!collection2.contains(item)){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public static <E> boolean identical(E[] arr1, E[] arr2){
+		if(arr1 == arr2)
+			return true;
+		if(arr1 == null || arr2 == null)
+			return false;
+		if(arr1.length != arr2.length)
+			return false;
+		for(E e : arr1){
+			if(Arrays.binarySearch(arr2, e) < 0){
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	public interface PeriodComparator<E>{

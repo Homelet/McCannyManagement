@@ -34,30 +34,14 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collection;
 
 public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
-	
-	private final Border       DEFAULT_BORDER = BorderFactory.createLineBorder(Color.BLACK, 5, true);
-	private       CoursePeriod period;
-	
-	private PeriodInfoDialog(Frame owner, CoursePeriod period){
-		super(owner, "Course Period");
-		init(period);
-	}
-	
-	private void init(CoursePeriod period){
-		this.period = period;
-		NestedPanel panel = new NestedPanel();
-		this.setContentPane(panel);
-		this.pack();
-	}
-	private PeriodInfoDialog(Dialog owner, CoursePeriod period){
-		super(owner, "Course Period");
-		init(period);
-	}
 	
 	public static CoursePeriod showInfoDialog(CoursePeriod coursePeriod){
 		return showInfoDialog(Display.getInstance(), coursePeriod);
@@ -80,6 +64,26 @@ public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
 		dialog.showDialog();
 		dialog.removeDialog();
 		return dialog.result();
+	}
+	
+	private final Border       DEFAULT_BORDER = BorderFactory.createLineBorder(Color.BLACK, 5, true);
+	private       CoursePeriod period;
+	
+	private PeriodInfoDialog(Frame owner, CoursePeriod period){
+		super(owner, "Course Period");
+		init(period);
+	}
+	
+	private void init(CoursePeriod period){
+		this.period = period;
+		NestedPanel panel = new NestedPanel();
+		this.setContentPane(panel);
+		this.pack();
+	}
+	
+	private PeriodInfoDialog(Dialog owner, CoursePeriod period){
+		super(owner, "Course Period");
+		init(period);
 	}
 	
 	private class NestedPanel extends JBasePanel{
@@ -349,10 +353,8 @@ public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
 			this.border = BorderFactory.createTitledBorder(DEFAULT_BORDER, "", TitledBorder.LEADING, TitledBorder.BELOW_TOP, Display.CLEAR_SANS_BOLD);
 			this.setBorder(this.border);
 			this.setViewportView(field);
-			this.setAutoscrolls(true);
 			this.getVerticalScrollBar().setUnitIncrement(30);
 			this.getVerticalScrollBar().setBlockIncrement(30);
-			this.addMouseMotionListener(field);
 			this.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_AS_NEEDED);
 			this.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
 			this.setFocusable(true);
@@ -375,7 +377,7 @@ public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
 			return field.include;
 		}
 		
-		private class Field extends JPanel implements MouseListener, MouseMotionListener, NewItemListener{
+		private class Field extends JPanel implements MouseListener, NewItemListener{
 			
 			final ArrayList<E> exclude;
 			final ArrayList<E> include;
@@ -478,15 +480,6 @@ public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
 			private void syncBestSize(){
 				this.setSize(layout.prefDimension());
 			}
-			
-			@Override
-			public void mouseDragged(MouseEvent e){
-				Rectangle r = new Rectangle(e.getX(), e.getY(), 1, 1);
-				((JPanel) e.getSource()).scrollRectToVisible(r);
-			}
-			
-			@Override
-			public void mouseMoved(MouseEvent e){}
 			
 			public void removeItem(Item item){
 				exclude.add(item.item);

@@ -19,29 +19,10 @@ import java.awt.*;
 
 public class CourseInfoDialog extends InfoDialog<Course>{
 	
-	private static ColorBank colorBank = new ColorBank();
-	private        Course    course;
-	
-	private CourseInfoDialog(Dialog owner, Course course){
-		super(owner, "Course Info");
-		init(course);
-	}
-	
-	private void init(Course course){
-		this.course = course;
-		NestedPanel panel = new NestedPanel();
-		this.setContentPane(panel);
-		this.pack();
-	}
-	private CourseInfoDialog(Frame owner, Course course){
-		super(owner, "Course Info");
-		init(course);
-	}
-	
 	public static Course showInfoDialog(Course course){
 		return showInfoDialog(Display.getInstance(), course);
 	}
-	
+
 	public static Course showInfoDialog(Frame owner, Course course){
 		CourseInfoDialog dialog = new CourseInfoDialog(owner, course);
 		dialog.showDialog();
@@ -59,6 +40,25 @@ public class CourseInfoDialog extends InfoDialog<Course>{
 		dialog.showDialog();
 		dialog.removeDialog();
 		return dialog.result();
+	}
+	private static ColorBank colorBank = new ColorBank();
+	private        Course    course;
+	
+	private CourseInfoDialog(Dialog owner, Course course){
+		super(owner, "Course Info");
+		init(course);
+	}
+	
+	private void init(Course course){
+		this.course = course;
+		NestedPanel panel = new NestedPanel();
+		this.setContentPane(panel);
+		this.pack();
+	}
+	
+	private CourseInfoDialog(Frame owner, Course course){
+		super(owner, "Course Info");
+		init(course);
 	}
 	
 	private class NestedPanel extends JBasePanel{

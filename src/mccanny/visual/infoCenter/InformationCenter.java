@@ -20,17 +20,27 @@ import java.awt.event.*;
 
 public class InformationCenter extends JDialog{
 	
-	private static InformationCenter informationCenter;
-	
 	public static void showInformationCenter(){
 		if(informationCenter == null)
 			informationCenter = new InformationCenter();
 		informationCenter.showDialog();
 	}
 	
+	private void showDialog(){
+		syncAll();
+		this.setLocation(Utility.frameVertex(Display.getInstance().getBounds(), this.getBounds()));
+		this.setVisible(true);
+	}
+	
+	private void syncAll(){
+		panel.studentPanel.syncTableModule();
+		panel.teacherPanel.syncTableModule();
+		panel.coursePanel.syncTableModule();
+	}
 	private static final String[]    STUDENT_HEADER = new String[]{ "Identity", "OEN" };
 	private static final String[]    TEACHER_HEADER = new String[]{ "Identity", "MEN" };
 	private static final String[]    COURSE_HEADER  = new String[]{ "Course ID", "Course Hour" };
+	private static InformationCenter informationCenter;
 	private final        NestedPanel panel;
 	
 	private InformationCenter(){
@@ -52,18 +62,6 @@ public class InformationCenter extends JDialog{
 	
 	private void closeDialog(){
 		this.setVisible(false);
-	}
-	
-	private void showDialog(){
-		syncAll();
-		this.setLocation(Utility.frameVertex(Display.getInstance().getBounds(), this.getBounds()));
-		this.setVisible(true);
-	}
-	
-	private void syncAll(){
-		panel.studentPanel.syncTableModule();
-		panel.teacherPanel.syncTableModule();
-		panel.coursePanel.syncTableModule();
 	}
 	
 	class NestedPanel extends JBasePanel{
@@ -126,10 +124,10 @@ public class InformationCenter extends JDialog{
 	
 	class InformationPanel extends JScrollPane implements MouseListener, KeyListener, FocusListener{
 		
-		TableModule tableModule;
 		final   JTable   table;
 		final   String[] columnHeader;
 		final   int      flag;
+		TableModule tableModule;
 		private boolean  shiftDown = false;
 		
 		InformationPanel(int flag){
@@ -157,13 +155,6 @@ public class InformationCenter extends JDialog{
 			this.setViewportView(table);
 		}
 		
-		void syncTableModule(){
-			tableModule = new TableModule(columnHeader);
-			table.setModel(tableModule);
-			table.setRowSorter(new TableRowSorter<>(tableModule));
-			table.getRowSorter().toggleSortOrder(0);
-		}
-		
 		@Override
 		public void focusGained(FocusEvent e){
 		}
@@ -171,6 +162,10 @@ public class InformationCenter extends JDialog{
 		@Override
 		public void focusLost(FocusEvent e){
 			shiftDown = false;
+		}
+		
+		@Override
+		public void keyTyped(KeyEvent e){
 		}
 		
 		@Override
@@ -206,14 +201,17 @@ public class InformationCenter extends JDialog{
 			}
 		}
 		
+		void syncTableModule(){
+			tableModule = new TableModule(columnHeader);
+			table.setModel(tableModule);
+			table.setRowSorter(new TableRowSorter<>(tableModule));
+			table.getRowSorter().toggleSortOrder(0);
+		}
+		
 		@Override
 		public void keyReleased(KeyEvent e){
 			if(e.getKeyCode() == KeyEvent.VK_SHIFT)
 				shiftDown = false;
-		}
-		
-		@Override
-		public void keyTyped(KeyEvent e){
 		}
 		
 		@Override
@@ -268,9 +266,9 @@ public class InformationCenter extends JDialog{
 		
 		class TableModule extends AbstractTableModel{
 			
+			private final String[]   columnName;
 			// row, col
 			private       Object[][] data;
-			private final String[]   columnName;
 			
 			TableModule(String[] columnName){
 				this.columnName = columnName;
@@ -327,6 +325,11 @@ public class InformationCenter extends JDialog{
 			}
 			
 			@Override
+			public Object getValueAt(int rowIndex, int columnIndex){
+				return data[rowIndex][columnIndex + 1];
+			}
+			
+			@Override
 			public String getColumnName(int columnIndex){
 				return columnName[columnIndex];
 			}
@@ -339,11 +342,6 @@ public class InformationCenter extends JDialog{
 			@Override
 			public boolean isCellEditable(int rowIndex, int columnIndex){
 				return false;
-			}
-			
-			@Override
-			public Object getValueAt(int rowIndex, int columnIndex){
-				return data[rowIndex][columnIndex + 1];
 			}
 			
 			@Override

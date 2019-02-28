@@ -74,16 +74,12 @@ public class CourseManager implements Renderable{
 		for(CoursePeriod period : timeTable.periods()){
 			thread.getRenderManager().addTargets(period);
 			Day day = days.get(period.weekday());
-			day.periods.add(period);
 			day.events.add(new Event(period, period.start(), Event.START));
 			day.events.add(new Event(period, period.end(), Event.END));
 			weekdays.add(period.weekday());
 		}
 		analyze();
-		for(Weekday weekday : weekdays){
-			for(CoursePeriod period : days.get(weekday).periods)
-				period.updateLocation();
-		}
+		syncAllLocation();
 	}
 	
 	public void analyze(){
@@ -124,6 +120,7 @@ public class CourseManager implements Renderable{
 			accum += day.width();
 		}
 		TIMETABLE_DI.width = accum - LEFT_INSET;
+		Display.getInstance().updateDimension();
 	}
 	
 	private void check(CoursePeriod period1, PeriodBuffer buffer, ArrayList<CourseCollusion> errors){
@@ -146,6 +143,8 @@ public class CourseManager implements Renderable{
 	}
 	
 	public void applyFilter(Filter filter){
+		if(this.timeTable.filter().equals(filter))
+			return;
 		timeTable.applyFilter(filter);
 		analyze();
 		for(CoursePeriod period : timeTable.periods())
@@ -156,12 +155,19 @@ public class CourseManager implements Renderable{
 	 * call this method if a coursePeriod has changes it's start or finish or weekday
 	 */
 	public void update(CoursePeriod period, Weekday previousDay){
-		OrderedUniqueArray<Event> day = days.get(period.weekday()).events;
-		day.removeIf(event->event.period == period);
-		day.add(new Event(period, period.start(), Event.START));
-		day.add(new Event(period, period.end(), Event.END));
+		Day previous = days.get(previousDay);
+		Day current  = days.get(period.weekday());
+		// first delete the previous event
+		previous.events.removeIf(event->event.period == period);
+		// add the current event
+		OrderedUniqueArray<Event> eventArray = current.events;
+		eventArray.add(new Event(period, period.start(), Event.START));
+		eventArray.add(new Event(period, period.end(), Event.END));
+		if(previousDay != period.weekday()){
+			analyze(previousDay, false);
+		}
 		analyze(period.weekday(), true);
-		period.updateLocation();
+		syncAllLocation();
 	}
 	
 	public void addAll(Collection<CoursePeriod> periods){
@@ -172,7 +178,6 @@ public class CourseManager implements Renderable{
 			timeTable.add(period);
 			thread.getRenderManager().addTargets(period);
 			Day day = days.get(period.weekday());
-			day.periods.add(period);
 			day.events.add(new Event(period, period.start(), Event.START));
 			day.events.add(new Event(period, period.end(), Event.END));
 			weekdays.add(period.weekday());
@@ -180,22 +185,17 @@ public class CourseManager implements Renderable{
 		for(Weekday weekday : weekdays){
 			analyze(weekday, true);
 		}
-		for(Weekday weekday : weekdays){
-			for(CoursePeriod period : days.get(weekday).periods)
-				period.updateLocation();
-		}
+		syncAllLocation();
 	}
 	
 	public void add(CoursePeriod period){
 		timeTable.add(period);
 		thread.getRenderManager().addTargets(period);
 		Day day = days.get(period.weekday());
-		day.periods.add(period);
 		day.events.add(new Event(period, period.start(), Event.START));
 		day.events.add(new Event(period, period.end(), Event.END));
 		analyze(period.weekday(), true);
-		for(CoursePeriod p : day.periods)
-			p.updateLocation();
+		syncAllLocation();
 	}
 	
 	public void remove(CoursePeriod period){
@@ -203,10 +203,13 @@ public class CourseManager implements Renderable{
 		thread.getRenderManager().removeTargets(period);
 		Day day = days.get(period.weekday());
 		day.events.removeIf(event->event.period == period);
-		day.periods.remove(period);
 		analyze(period.weekday(), true);
-		for(CoursePeriod p : day.periods)
-			p.updateLocation();
+		syncAllLocation();
+	}
+	
+	private void syncAllLocation(){
+		for(CoursePeriod period : timeTable.periods())
+			period.updateLocation();
 	}
 	
 	public void syncAll(){
@@ -258,7 +261,6 @@ public class CourseManager implements Renderable{
 		final         Weekday                    weekday;
 		final         ArrayList<CourseCollusion> errors;
 		final         OrderedUniqueArray<Event>  events;
-		final         ArrayList<CoursePeriod>    periods;
 		private       int                        renderOffset;
 		private       int                        maxCount;
 		private final Dimension                  size;
@@ -269,7 +271,6 @@ public class CourseManager implements Renderable{
 			this.weekday = weekday;
 			errors = new ArrayList<>();
 			events = new OrderedUniqueArray<>();
-			periods = new ArrayList<>();
 			renderOffset = 0;
 			maxCount = 0;
 			this.size = new Dimension(0, FIXED_HEADER_HEIGHT + TIMETABLE_DI.height);

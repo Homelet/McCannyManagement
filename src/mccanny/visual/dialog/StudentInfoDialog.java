@@ -15,25 +15,6 @@ import java.awt.*;
 
 public class StudentInfoDialog extends InfoDialog<Student>{
 	
-	private Student student;
-	
-	private StudentInfoDialog(Frame owner, Student student){
-		super(owner, "Student Info");
-		init(student);
-	}
-	
-	private void init(Student student){
-		this.student = student;
-		NestedPanel nestedPanel = new NestedPanel();
-		this.setContentPane(nestedPanel);
-		this.pack();
-	}
-	
-	private StudentInfoDialog(Dialog owner, Student student){
-		super(owner, "Student Info");
-		init(student);
-	}
-	
 	public static Student showInfoDialog(Student student){
 		return showInfoDialog(Display.getInstance(), student);
 	}
@@ -55,6 +36,25 @@ public class StudentInfoDialog extends InfoDialog<Student>{
 		dialog.showDialog();
 		dialog.removeDialog();
 		return dialog.result();
+	}
+	
+	private Student student;
+	
+	private StudentInfoDialog(Frame owner, Student student){
+		super(owner, "Student Info");
+		init(student);
+	}
+	
+	private void init(Student student){
+		this.student = student;
+		NestedPanel nestedPanel = new NestedPanel();
+		this.setContentPane(nestedPanel);
+		this.pack();
+	}
+	
+	private StudentInfoDialog(Dialog owner, Student student){
+		super(owner, "Student Info");
+		init(student);
 	}
 	
 	private class NestedPanel extends JBasePanel{

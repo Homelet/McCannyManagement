@@ -1,5 +1,6 @@
 package mccanny.management.teacher;
 
+import mccanny.util.Date;
 import mccanny.util.Distinguishable;
 import mccanny.util.ToolTipText;
 import mccanny.util.Utility;
@@ -8,12 +9,6 @@ import java.util.Collection;
 import java.util.HashMap;
 
 public class Teacher implements ToolTipText, Distinguishable{
-	
-	private static HashMap<String, Teacher> teachers = new HashMap<>();
-	
-	public static Collection<Teacher> teachers(){
-		return teachers.values();
-	}
 	
 	public static Teacher findTeacher(String MEN){
 		return teachers.get(MEN);
@@ -25,6 +20,19 @@ public class Teacher implements ToolTipText, Distinguishable{
 				return teacher;
 		}
 		return null;
+	}
+	
+	public static Collection<Teacher> teachers(){
+		return teachers.values();
+	}
+	
+	@Override
+	public String UID(){
+		return UID;
+	}
+	
+	public static Teacher newTeacher(String MEN, String identity){
+		return loadTeacher(Utility.fetchUUID32(), MEN, identity);
 	}
 	
 	public static Teacher loadTeacher(String UID, String MEN, String identity){
@@ -39,26 +47,26 @@ public class Teacher implements ToolTipText, Distinguishable{
 		}
 	}
 	
-	public static Teacher newTeacher(String MEN, String identity){
-		return loadTeacher(Utility.fetchUUID32(), MEN, identity);
-	}
-	
 	public static boolean removeTeacher(Teacher teacher){
 		return teachers.remove(teacher.MEN(), teacher);
 	}
 	
-	private final String UID;
-	private       String MEN;
-	private       String identity;
+	public String MEN(){
+		return MEN;
+	}
+	
+	private static HashMap<String, Teacher> teachers = new HashMap<>();
+	private final  String                   UID;
+	private        String                   MEN;
+	private        String                   identity;
+	// TODO FUTURE IMPLEMENTATION
+	private        Date                     birthday;
+	private        String                   email;
 	
 	private Teacher(String UID, String MEN, String identity){
 		this.UID = UID;
 		this.identity = identity;
 		this.MEN = MEN;
-	}
-	
-	public String MEN(){
-		return MEN;
 	}
 	
 	public boolean MEN(String MEN){
@@ -84,11 +92,6 @@ public class Teacher implements ToolTipText, Distinguishable{
 	}
 	
 	@Override
-	public String toString(){
-		return identity;
-	}
-	
-	@Override
 	public boolean equals(Object o){
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
@@ -97,12 +100,12 @@ public class Teacher implements ToolTipText, Distinguishable{
 	}
 	
 	@Override
-	public String toolTip(){
-		return identity + "(" + MEN + ")";
+	public String toString(){
+		return identity;
 	}
 	
 	@Override
-	public String UID(){
-		return UID;
+	public String toolTip(){
+		return identity + "(" + MEN + ")";
 	}
 }

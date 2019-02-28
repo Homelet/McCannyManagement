@@ -29,6 +29,13 @@ public enum Month{
 		return index(index + 1);
 	}
 	
+	public static Month index(int index){
+		if(index < 0 || index > 11){
+			throw new IllegalArgumentException("Don't have month " + index);
+		}
+		return Month.values()[index];
+	}
+	
 	public int days(int year){
 		switch(this.index){
 			case 1:
@@ -53,13 +60,6 @@ public enum Month{
 			default:
 				return -1;
 		}
-	}
-	
-	public static Month index(int index){
-		if(index < 0 || index > 11){
-			throw new IllegalArgumentException("Don't have month " + index);
-		}
-		return Month.values()[index];
 	}
 	
 	@Override

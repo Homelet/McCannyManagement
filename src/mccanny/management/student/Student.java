@@ -1,6 +1,7 @@
 package mccanny.management.student;
 
 import mccanny.management.course.Course;
+import mccanny.util.Date;
 import mccanny.util.Distinguishable;
 import mccanny.util.ToolTipText;
 import mccanny.util.Utility;
@@ -9,12 +10,6 @@ import java.util.Collection;
 import java.util.HashMap;
 
 public class Student implements ToolTipText, Distinguishable{
-	
-	private static HashMap<String, Student> students = new HashMap<>();
-	
-	public static Collection<Student> students(){
-		return students.values();
-	}
 	
 	public static Student findStudent(String OEN){
 		return students.get(OEN);
@@ -26,6 +21,19 @@ public class Student implements ToolTipText, Distinguishable{
 				return student;
 		}
 		return null;
+	}
+	
+	public static Collection<Student> students(){
+		return students.values();
+	}
+	
+	@Override
+	public String UID(){
+		return UID;
+	}
+	
+	public static Student newStudent(String OEN, String identity){
+		return loadStudent(Utility.fetchUUID32(), OEN, identity);
 	}
 	
 	public static Student loadStudent(String UID, String OEN, String identity){
@@ -40,28 +48,28 @@ public class Student implements ToolTipText, Distinguishable{
 		}
 	}
 	
-	public static Student newStudent(String OEN, String identity){
-		return loadStudent(Utility.fetchUUID32(), OEN, identity);
-	}
-	
 	public static boolean removeStudent(Student student){
 		return students.remove(student.OEN(), student);
 	}
 	
-	private final HashMap<Course, StudentCourseDetail> studentCourseDetailMap;
-	private final String                               UID;
-	private       String                               OEN;
-	private       String                               identity;
+	public String OEN(){
+		return OEN;
+	}
+	
+	private static HashMap<String, Student>             students = new HashMap<>();
+	private final  HashMap<Course, StudentCourseDetail> studentCourseDetailMap;
+	private final  String                               UID;
+	private        String                               OEN;
+	private        String                               identity;
+	// TODO FUTURE IMPLEMENTATION
+	private        Date                                 birthday;
+	private        String                               email;
 	
 	private Student(String UID, String OEN, String identity){
 		this.UID = UID;
 		this.OEN = OEN;
 		this.identity = identity;
 		this.studentCourseDetailMap = new HashMap<>();
-	}
-	
-	public String OEN(){
-		return OEN;
 	}
 	
 	public boolean OEN(String OEN){
@@ -87,11 +95,6 @@ public class Student implements ToolTipText, Distinguishable{
 	}
 	
 	@Override
-	public String toString(){
-		return identity;
-	}
-	
-	@Override
 	public boolean equals(Object o){
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
@@ -100,12 +103,12 @@ public class Student implements ToolTipText, Distinguishable{
 	}
 	
 	@Override
-	public String toolTip(){
-		return identity + "(" + OEN + ")";
+	public String toString(){
+		return identity;
 	}
 	
 	@Override
-	public String UID(){
-		return UID;
+	public String toolTip(){
+		return identity + "(" + OEN + ")";
 	}
 }
