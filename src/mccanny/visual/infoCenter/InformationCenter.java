@@ -21,8 +21,6 @@ import java.awt.event.*;
 public class InformationCenter extends JDialog{
 	
 	public static void showInformationCenter(){
-		if(informationCenter == null)
-			informationCenter = new InformationCenter();
 		informationCenter.showDialog();
 	}
 	
@@ -37,11 +35,12 @@ public class InformationCenter extends JDialog{
 		panel.teacherPanel.syncTableModule();
 		panel.coursePanel.syncTableModule();
 	}
-	private static final String[]    STUDENT_HEADER = new String[]{ "Identity", "OEN" };
-	private static final String[]    TEACHER_HEADER = new String[]{ "Identity", "MEN" };
-	private static final String[]    COURSE_HEADER  = new String[]{ "Course ID", "Course Hour" };
-	private static InformationCenter informationCenter;
-	private final        NestedPanel panel;
+	
+	private static final String[]          STUDENT_HEADER    = new String[]{ "Identity", "OEN" };
+	private static final String[]          TEACHER_HEADER    = new String[]{ "Identity", "MEN" };
+	private static final String[]          COURSE_HEADER     = new String[]{ "Course ID", "Course Hour" };
+	private static final InformationCenter informationCenter = new InformationCenter();
+	private final        NestedPanel       panel;
 	
 	private InformationCenter(){
 		super(Display.getInstance(), "Information Center", true);
@@ -124,11 +123,11 @@ public class InformationCenter extends JDialog{
 	
 	class InformationPanel extends JScrollPane implements MouseListener, KeyListener, FocusListener{
 		
-		final   JTable   table;
-		final   String[] columnHeader;
-		final   int      flag;
+		final JTable   table;
+		final String[] columnHeader;
+		final int      flag;
 		TableModule tableModule;
-		private boolean  shiftDown = false;
+		private boolean shiftDown = false;
 		
 		InformationPanel(int flag){
 			this.flag = flag;

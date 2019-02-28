@@ -13,6 +13,30 @@ public class Filter{
 		return new Filter(polar, (Course[]) courses.toArray(new Course[0]), (Student[]) students.toArray(new Student[0]), (Teacher[]) teachers.toArray(new Teacher[0]));
 	}
 	
+	public static Filter createFilter(boolean polar, Object object){
+		Course[]  courses;
+		Student[] students;
+		Teacher[] teachers;
+		if(object instanceof Course){
+			courses = new Course[]{ (Course) object };
+			students = null;
+			teachers = null;
+		}else if(object instanceof Student){
+			courses = null;
+			students = new Student[]{ (Student) object };
+			teachers = null;
+		}else if(object instanceof Teacher){
+			courses = null;
+			students = null;
+			teachers = new Teacher[]{ (Teacher) object };
+		}else{
+			courses = null;
+			students = null;
+			teachers = null;
+		}
+		return new Filter(polar, courses, students, teachers);
+	}
+	
 	/**
 	 * a filter that won't filter anything
 	 */

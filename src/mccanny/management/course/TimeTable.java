@@ -27,6 +27,43 @@ public class TimeTable implements Renderable{
 	private        Date                             endDate;
 	private        Filter                           filter;
 	
+	private TimeTable(TimeTable parent, Object object, Filter filter, Date startDate){
+		this.nameDrawer = new StringDrawer("McCanny TimeTable (" + object + ")");
+		this.nameDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(30.0f));
+		this.nameDrawer.setAlign(Alignment.TOP);
+		this.nameDrawer.setTextAlign(Alignment.TOP);
+		this.nameDrawer.setColor(Display.McCANNY_BLUE);
+		this.periodDrawer = new StringDrawer();
+		this.periodDrawer.setTextAlign(Alignment.TOP);
+		this.periodDrawer.setAlign(Alignment.BOTTOM);
+		this.periodDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(20.0f));
+		this.periodDrawer.setColor(GRAY);
+		this.filterDrawer = new StringDrawer();
+		this.filterDrawer.setAlign(Alignment.BOTTOM);
+		this.filterDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(15.0f));
+		this.filterDrawer.setTextAlign(Alignment.RIGHT);
+		this.filterDrawer.setColor(GRAY);
+		this.filterDrawer.setInsetsRight(5);
+		this.timeDrawer = new StringDrawer();
+		this.timeDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(15.0f));
+		this.timeDrawer.setAlign(Alignment.BOTTOM_RIGHT);
+		this.timeDrawer.setTextAlign(Alignment.TOP_RIGHT);
+		this.timeDrawer.setInsetsBottom(5);
+		this.timeDrawer.setInsetsRight(5);
+		this.timeDrawer.setColor(GRAY);
+		this.semiTimeDrawer = new StringDrawer();
+		this.semiTimeDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(10.0f));
+		this.semiTimeDrawer.setAlign(Alignment.BOTTOM_RIGHT);
+		this.semiTimeDrawer.setTextAlign(Alignment.TOP_RIGHT);
+		this.semiTimeDrawer.setInsetsBottom(3);
+		this.semiTimeDrawer.setInsetsRight(5);
+		this.semiTimeDrawer.setColor(GRAY);
+		this.periods = new OrderedUniqueArray<>();
+		
+		applyFilter(filter);
+		startDate(startDate);
+	}
+	
 	public TimeTable(Date startDate){
 		this.nameDrawer = new StringDrawer("McCanny TimeTable");
 		this.nameDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(30.0f));
@@ -104,6 +141,10 @@ public class TimeTable implements Renderable{
 	@Override
 	public void tick(){}
 	
+	/**
+	 * 130 - 60 - 5 = 65
+	 * 65 - 5 - 5 - 10 - 10 = 35
+	 */
 	@Override
 	public void render(Graphics2D g){
 		Rectangle bound      = g.getClipBounds();

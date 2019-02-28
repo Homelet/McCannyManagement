@@ -6,6 +6,7 @@ import homelet.GH.handlers.GH;
 import homelet.GH.utils.Alignment;
 import homelet.GH.visual.ActionsManager;
 import homelet.GH.visual.CanvasThread;
+import homelet.GH.visual.RenderManager;
 import homelet.GH.visual.interfaces.LocatableRender;
 import homelet.GH.visual.interfaces.Renderable;
 import mccanny.management.exception.ClassroomCollusion;
@@ -15,11 +16,18 @@ import mccanny.management.exception.TeacherCollusion;
 import mccanny.management.student.Student;
 import mccanny.management.teacher.Teacher;
 import mccanny.util.OrderedUniqueArray;
+import mccanny.util.Picture;
 import mccanny.util.Utility;
 import mccanny.util.Weekday;
 import mccanny.visual.Display;
+import mccanny.visual.dialog.FilterDialog;
+import mccanny.visual.dialog.PeriodInfoDialog;
+import mccanny.visual.infoCenter.InformationCenter;
+import mccanny.visual.rendered.IconButtonAction;
+import mccanny.visual.rendered.IconButtonManager;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.util.*;
 
 //@SuppressWarnings("all")
@@ -33,6 +41,7 @@ public class CourseManager implements Renderable{
 	public static final int                   BOTTOM_INSET        = 0;
 	public static final int                   FIXED_HEADER_HEIGHT = 60;
 	private             TimeTable             timeTable;
+	private final       IconButtonManager     iconButtonManager;
 	private final       HashMap<Weekday, Day> days;
 	private final       CanvasThread          thread;
 	
@@ -46,8 +55,65 @@ public class CourseManager implements Renderable{
 		this.days.put(Weekday.FRIDAY, new Day(Weekday.FRIDAY));
 		this.days.put(Weekday.SATURDAY, new Day(Weekday.SATURDAY));
 		this.days.put(Weekday.SUNDAY, new Day(Weekday.SUNDAY));
+		this.iconButtonManager = new IconButtonManager(thread);
+		this.iconButtonManager.set(0, Picture.pic().MENU, new IconButtonAction(){
+			@Override
+			public void onLeftClick(MouseEvent e){
+			}
+			
+			@Override
+			public void onRightClick(MouseEvent e){
+			}
+		});
+		this.iconButtonManager.set(1, Picture.pic().INFO, new IconButtonAction(){
+			@Override
+			public void onLeftClick(MouseEvent e){
+				InformationCenter.showInformationCenter();
+			}
+			
+			@Override
+			public void onRightClick(MouseEvent e){
+				InformationCenter.showInformationCenter();
+			}
+		});
+		this.iconButtonManager.set(2, Picture.pic().FILTER, new IconButtonAction(){
+			@Override
+			public void onLeftClick(MouseEvent e){
+				FilterDialog.showInfoDialog();
+			}
+			
+			@Override
+			public void onRightClick(MouseEvent e){
+				FilterDialog.showInfoDialog();
+			}
+		});
+		this.iconButtonManager.set(3, Picture.pic().WARNING, new IconButtonAction(){
+			@Override
+			public void onLeftClick(MouseEvent e){
+			}
+			
+			@Override
+			public void onRightClick(MouseEvent e){
+			}
+		});
+		this.iconButtonManager.set(4, Picture.pic().NEW, new IconButtonAction(){
+			@Override
+			public void onLeftClick(MouseEvent e){
+				PeriodInfoDialog.showInfoDialog(null);
+			}
+			
+			@Override
+			public void onRightClick(MouseEvent e){
+				do{
+					if(PeriodInfoDialog.showInfoDialog(null) == null)
+						break;
+				}while(true);
+			}
+		});
+		this.renderManager = new RenderManager();
 		thread.getRenderManager().addPreTargets(this);
-		thread.getRenderManager().addPreTargets(this.days.values().toArray(new LocatableRender[0]));
+		Renderable[] d = this.days.values().toArray(new LocatableRender[0]);
+		thread.getRenderManager().addPreTargets(d);
 	}
 	
 	@Override
@@ -65,6 +131,7 @@ public class CourseManager implements Renderable{
 	public void initializeTimeTable(TimeTable timeTable){
 		this.timeTable = timeTable;
 		thread.getRenderManager().addPreTargets(timeTable);
+		this.addPreTargets(timeTable);
 		for(Weekday weekday : Weekday.weekdays()){
 			Day day = days.get(weekday);
 			day.errors.clear();
@@ -177,6 +244,7 @@ public class CourseManager implements Renderable{
 		for(CoursePeriod period : periods){
 			timeTable.add(period);
 			thread.getRenderManager().addTargets(period);
+			this.addTargets(period);
 			Day day = days.get(period.weekday());
 			day.events.add(new Event(period, period.start(), Event.START));
 			day.events.add(new Event(period, period.end(), Event.END));

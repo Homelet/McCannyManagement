@@ -12,8 +12,6 @@ import mccanny.management.student.Student;
 import mccanny.management.teacher.Teacher;
 import mccanny.util.Date;
 import mccanny.util.Utility;
-import mccanny.visual.dialog.FilterDialog;
-import mccanny.visual.dialog.PeriodInfoDialog;
 import mccanny.visual.swing.JBasePanel;
 
 import javax.swing.*;
@@ -52,8 +50,8 @@ public class Display extends JFrame{
 	 * 21 for mac
 	 */
 	public void updateDimension(){
-		Dimension dimension = new Dimension(CourseManager.TIMETABLE_DI.width + CourseManager.LEFT_INSET + CourseManager.RIGHT_INSET, CourseManager.TIMETABLE_DI.height + CourseManager.BOTTOM_INSET + CourseManager.TOP_INSET + 39);
-		this.setSize(dimension);
+		DISPLAY_DIMENSION.setSize(CourseManager.TIMETABLE_DI.width + CourseManager.LEFT_INSET + CourseManager.RIGHT_INSET, CourseManager.TIMETABLE_DI.height + CourseManager.BOTTOM_INSET + CourseManager.TOP_INSET + 39);
+		this.setSize(DISPLAY_DIMENSION);
 		this.revalidate();
 	}
 	
@@ -61,14 +59,17 @@ public class Display extends JFrame{
 		return display;
 	}
 	
-	public static final Color         McCANNY_BLUE = new Color(0x00205E);
-	public static final String        VERSION      = "V0.1";
+	public static final Color         McCANNY_BLUE                = new Color(0x00205E);
+	public static final String        VERSION                     = "V0.1";
+	public static final Dimension     DISPLAY_DIMENSION           = new Dimension();
+	public static       String        TIME_TABLE_OUTPUT_DIRECTORY = "/Users/homeletwei/Workspaces/IntelliJ IDEA/McCannyManagement/timeTable";
 	public static       Font          CLEAR_SANS_BOLD;
 	public static       Dimension     SCREEN_DIMENSION;
-	public static       boolean       FORMAT_24    = false;
+	public static       boolean       FORMAT_24                   = false;
 	private static      Display       display;
 	private final       JCanvas       canvas;
 	private final       CourseManager manager;
+	;
 	
 	static{
 		try{
@@ -109,11 +110,7 @@ public class Display extends JFrame{
 //			StudentInfoDialog.showDialog(null);
 //			TeacherInfoDialog.showDialog(null);
 //			CourseInfoDialog.showDialog(null);
-			FilterDialog.showInfoDialog();
-			do{
-				if(PeriodInfoDialog.showInfoDialog(null) == null)
-					break;
-			}while(true);
+//			FilterDialog.showInfoDialog();
 //			SelectionDialog.showCourseDialog(this, Collections.emptyList(), Course.courses(), null);
 //			InformationCenter.showInformationCenter();
 		});

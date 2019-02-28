@@ -7,8 +7,16 @@ import java.io.IOException;
 
 public class Picture{
 	
-	public static final int           DEFAULT_ICON_WIDTH  = 65;
-	public static final int           DEFAULT_ICON_HEIGHT = 65;
+	private static Picture picture;
+	
+	public static Picture pic(){
+		if(picture == null)
+			picture = new Picture();
+		return picture;
+	}
+	
+	public static final int           DEFAULT_ICON_WIDTH  = 35;
+	public static final int           DEFAULT_ICON_HEIGHT = 35;
 	public static final String        SPRITE_SHEET_PATH   = "assets/spriteSheet/McCannyManagementSpriteSheet.png";
 	private             BufferedImage sheet;
 	public final        BufferedImage MENU;
