@@ -6,7 +6,6 @@ import homelet.GH.handlers.GH;
 import homelet.GH.utils.Alignment;
 import homelet.GH.visual.ActionsManager;
 import homelet.GH.visual.CanvasThread;
-import homelet.GH.visual.RenderManager;
 import homelet.GH.visual.interfaces.LocatableRender;
 import homelet.GH.visual.interfaces.Renderable;
 import mccanny.management.exception.ClassroomCollusion;
@@ -110,7 +109,7 @@ public class CourseManager implements Renderable{
 				}while(true);
 			}
 		});
-		this.renderManager = new RenderManager();
+//		this.renderManager = new RenderManager();
 		thread.getRenderManager().addPreTargets(this);
 		Renderable[] d = this.days.values().toArray(new LocatableRender[0]);
 		thread.getRenderManager().addPreTargets(d);
@@ -131,7 +130,7 @@ public class CourseManager implements Renderable{
 	public void initializeTimeTable(TimeTable timeTable){
 		this.timeTable = timeTable;
 		thread.getRenderManager().addPreTargets(timeTable);
-		this.addPreTargets(timeTable);
+//		this.addPreTargets(timeTable);
 		for(Weekday weekday : Weekday.weekdays()){
 			Day day = days.get(weekday);
 			day.errors.clear();
@@ -244,7 +243,7 @@ public class CourseManager implements Renderable{
 		for(CoursePeriod period : periods){
 			timeTable.add(period);
 			thread.getRenderManager().addTargets(period);
-			this.addTargets(period);
+//			this.addTargets(period);
 			Day day = days.get(period.weekday());
 			day.events.add(new Event(period, period.start(), Event.START));
 			day.events.add(new Event(period, period.end(), Event.END));

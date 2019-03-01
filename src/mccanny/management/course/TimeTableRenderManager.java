@@ -24,7 +24,6 @@ public class TimeTableRenderManager implements Renderable{
 	}
 	
 	public void start(){
-	
 	}
 	
 	public void addPreTargets(Renderable... r){

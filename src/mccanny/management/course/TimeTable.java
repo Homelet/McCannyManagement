@@ -59,7 +59,6 @@ public class TimeTable implements Renderable{
 		this.semiTimeDrawer.setInsetsRight(5);
 		this.semiTimeDrawer.setColor(GRAY);
 		this.periods = new OrderedUniqueArray<>();
-		
 		applyFilter(filter);
 		startDate(startDate);
 	}
