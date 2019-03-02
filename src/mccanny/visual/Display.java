@@ -6,8 +6,9 @@ import homelet.GH.handlers.Layouter.GridBagLayouter.GridConstrain.Anchor;
 import homelet.GH.handlers.Layouter.GridBagLayouter.GridConstrain.Fill;
 import homelet.GH.visual.JCanvas;
 import mccanny.management.course.Course;
-import mccanny.management.course.CourseManager;
-import mccanny.management.course.TimeTable;
+import mccanny.management.course.manager.CourseManager;
+import mccanny.management.course.manager.OneClickImageRenderer;
+import mccanny.management.course.manager.TimeTable;
 import mccanny.management.student.Student;
 import mccanny.management.teacher.Teacher;
 import mccanny.util.Date;
@@ -34,10 +35,6 @@ public class Display extends JFrame{
 		Course.newCourse("MHF4U", 110, Color.ORANGE);
 		Course.newCourse("MDM4U", 110, Color.RED);
 		Course.newCourse("ENG4U", 110, Color.CYAN);
-//		for(int index = 0; index < 101; index++){
-//			Teacher.newTeacher(String.valueOf(index), String.valueOf(index * index));
-//			Student.newStudent(String.valueOf(index), String.valueOf(index * index * index * index));
-//		}
 		Teacher.newTeacher("000", "Patric");
 		Student.newStudent("111", "Homelet");
 		Student.newStudent("112", "Harry");
@@ -59,17 +56,17 @@ public class Display extends JFrame{
 		return display;
 	}
 	
-	public static final Color         McCANNY_BLUE                = new Color(0x00205E);
-	public static final String        VERSION                     = "V0.1";
-	public static final Dimension     DISPLAY_DIMENSION           = new Dimension();
-	public static       String        TIME_TABLE_OUTPUT_DIRECTORY = "/Users/homeletwei/Workspaces/IntelliJ IDEA/McCannyManagement/timeTable";
-	public static       Font          CLEAR_SANS_BOLD;
-	public static       Dimension     SCREEN_DIMENSION;
-	public static       boolean       FORMAT_24                   = false;
-	private static      Display       display;
-	private final       JCanvas       canvas;
-	private final       CourseManager manager;
-	;
+	public static final Color                 McCANNY_BLUE                = new Color(0x00205E);
+	public static final String                VERSION                     = "V0.1";
+	public static final Dimension             DISPLAY_DIMENSION           = new Dimension();
+	public static       String                TIME_TABLE_OUTPUT_DIRECTORY = "/Users/homeletwei/Workspaces/IntelliJ IDEA/McCannyManagement/timeTable";
+	public static       Font                  CLEAR_SANS_BOLD;
+	public static       Dimension             SCREEN_DIMENSION;
+	public static       boolean               FORMAT_24                   = false;
+	private static      Display               display;
+	private final       JCanvas               canvas;
+	private final       CourseManager         manager;
+	private final       OneClickImageRenderer renderer;
 	
 	static{
 		try{
@@ -88,6 +85,7 @@ public class Display extends JFrame{
 		this.canvas.getCanvasThread().setPrintNoticeInConsole(false);
 		this.canvas.getCanvasThread().setFPS(30);
 		this.manager = new CourseManager(canvas.getCanvasThread());
+		this.renderer = new OneClickImageRenderer();
 		JBasePanel               panel    = new JBasePanel();
 		Layouter.GridBagLayouter layouter = new GridBagLayouter(panel);
 		layouter.put(layouter.instanceOf(canvas, 0, 0).setWeight(100, 100).setFill(Fill.BOTH).setAnchor(Anchor.CENTER));
@@ -100,6 +98,10 @@ public class Display extends JFrame{
 	
 	public CourseManager manager(){
 		return manager;
+	}
+	
+	public OneClickImageRenderer renderer(){
+		return renderer;
 	}
 	
 	public void showDisplay(){

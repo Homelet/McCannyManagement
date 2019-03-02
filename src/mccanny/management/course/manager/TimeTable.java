@@ -1,20 +1,18 @@
-package mccanny.management.course;
+package mccanny.management.course.manager;
 
 import homelet.GH.StringDrawer.StringDrawer.StringDrawer;
 import homelet.GH.StringDrawer.StringDrawer.StringDrawerException;
 import homelet.GH.handlers.GH;
 import homelet.GH.utils.Alignment;
 import homelet.GH.visual.interfaces.Renderable;
-import mccanny.util.Date;
-import mccanny.util.OrderedUniqueArray;
-import mccanny.util.Utility;
-import mccanny.util.Weekday;
+import mccanny.management.course.CoursePeriod;
+import mccanny.util.*;
 import mccanny.visual.Display;
 
 import java.awt.*;
 import java.util.Collection;
 
-public class TimeTable implements Renderable{
+public class TimeTable implements Renderable, ImageRenderable{
 	
 	private static Color                            GRAY = new Color(0x999999);
 	private final  OrderedUniqueArray<CoursePeriod> periods;
@@ -27,7 +25,8 @@ public class TimeTable implements Renderable{
 	private        Date                             endDate;
 	private        Filter                           filter;
 	
-	private TimeTable(TimeTable parent, Object object, Filter filter, Date startDate){
+	// for sub Timetable
+	public TimeTable(TimeTable parent, Object object, Filter filter){
 		this.nameDrawer = new StringDrawer("McCanny TimeTable (" + object + ")");
 		this.nameDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(30.0f));
 		this.nameDrawer.setAlign(Alignment.TOP);
@@ -38,7 +37,7 @@ public class TimeTable implements Renderable{
 		this.periodDrawer.setAlign(Alignment.BOTTOM);
 		this.periodDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(20.0f));
 		this.periodDrawer.setColor(GRAY);
-		this.filterDrawer = new StringDrawer();
+		this.filterDrawer = new StringDrawer(filter.toString());
 		this.filterDrawer.setAlign(Alignment.BOTTOM);
 		this.filterDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(15.0f));
 		this.filterDrawer.setTextAlign(Alignment.RIGHT);
@@ -59,8 +58,12 @@ public class TimeTable implements Renderable{
 		this.semiTimeDrawer.setInsetsRight(5);
 		this.semiTimeDrawer.setColor(GRAY);
 		this.periods = new OrderedUniqueArray<>();
-		applyFilter(filter);
-		startDate(startDate);
+		for(CoursePeriod period : parent.periods){
+			if(filter.filter(period))
+				periods.add(period);
+		}
+		this.filter = filter;
+		startDate(parent.startDate);
 	}
 	
 	public TimeTable(Date startDate){
@@ -135,6 +138,11 @@ public class TimeTable implements Renderable{
 		for(CoursePeriod period : periods)
 			period.activate(filter.filter(period));
 		this.filterDrawer.initializeContents(this.filter.toString());
+	}
+	
+	@Override
+	public void renderImage(Graphics2D g){
+		render(g);
 	}
 	
 	@Override

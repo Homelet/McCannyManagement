@@ -5,7 +5,7 @@ import homelet.GH.handlers.Layouter.SpringLayouter;
 import homelet.GH.handlers.Layouter.SpringLayouter.Position;
 import homelet.GH.utils.ToolBox;
 import mccanny.management.course.Course;
-import mccanny.management.course.Filter;
+import mccanny.management.course.manager.Filter;
 import mccanny.management.student.Student;
 import mccanny.management.teacher.Teacher;
 import mccanny.util.Utility;

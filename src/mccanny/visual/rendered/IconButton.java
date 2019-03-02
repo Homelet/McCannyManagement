@@ -34,7 +34,7 @@ public class IconButton extends ActionsManager implements LocatableRender{
 	void index(int index){
 		if(index >= 0 && index < IconButtonManager.MAX_BUTTON){
 			active = true;
-			vertex.x = 10 + index * (10 + ICON_DIMENSION.width);
+			vertex.x = 15 + index * (15 + ICON_DIMENSION.width);
 		}else{
 			active = false;
 		}

@@ -1,5 +1,7 @@
-package mccanny.management.course;
+package mccanny.management.course.manager;
 
+import mccanny.management.course.Course;
+import mccanny.management.course.CoursePeriod;
 import mccanny.management.student.Student;
 import mccanny.management.teacher.Teacher;
 import mccanny.util.Utility;

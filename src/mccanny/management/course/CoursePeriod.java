@@ -7,8 +7,11 @@ import homelet.GH.utils.Alignment;
 import homelet.GH.utils.Border;
 import homelet.GH.visual.ActionsManager;
 import homelet.GH.visual.interfaces.LocatableRender;
+import mccanny.management.course.manager.CourseManager;
 import mccanny.management.student.Student;
 import mccanny.management.teacher.Teacher;
+import mccanny.util.ImageLocateable;
+import mccanny.util.ImageRenderable;
 import mccanny.util.Utility;
 import mccanny.util.Weekday;
 import mccanny.visual.Display;
@@ -21,10 +24,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
-/**
- * a course periodFlag is
- */
-public class CoursePeriod extends ActionsManager implements Comparable<CoursePeriod>, LocatableRender{
+public class CoursePeriod extends ActionsManager implements Comparable<CoursePeriod>, LocatableRender, ImageRenderable, ImageLocateable{
 	
 	public static final  double                                 START_AT        = 8.0;
 	public static final  double                                 END_AT          = 20.0;
@@ -240,10 +240,8 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 		return lineIndex;
 	}
 	
-	public void lineIndex(int lineIndex, boolean updateLocation){
+	public void lineIndex(int lineIndex){
 		this.lineIndex = lineIndex;
-		if(updateLocation)
-			updateLocation();
 	}
 	
 	public void updateLocation(){
@@ -314,6 +312,14 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 		return students;
 	}
 	
+	public boolean activate(){
+		return activate;
+	}
+	
+	public void activate(boolean activate){
+		this.activate = activate;
+	}
+	
 	@Override
 	public Dimension getSize(){
 		return size;
@@ -324,12 +330,54 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 		return vertex;
 	}
 	
-	public boolean activate(){
-		return activate;
+	@Override
+	public Point getVertex(int renderOffset, int lineIndex){
+		return new Point(renderOffset + lineIndex * WIDTH, (int) (CourseManager.TOP_INSET + (start - START_AT) * HEIGHT_PER_HOUR));
 	}
 	
-	public void activate(boolean activate){
-		this.activate = activate;
+	@Override
+	public void renderImage(Graphics2D g){
+		Rectangle bound = g.getClipBounds();
+		g.setColor(course.color());
+		g.fill(bound);
+		try{
+			Rectangle up;
+			Rectangle down;
+			if(config.maxStudent == 0){
+				up = bound;
+			}else{
+				up = new Rectangle(0, 0, bound.width, bound.height / 2);
+				down = new Rectangle(0, bound.height / 2, bound.width, bound.height / 2);
+				studentDrawer.updateGraphics(g);
+				studentDrawer.setFrame(down);
+				studentDrawer.validate();
+				studentDrawer.draw();
+			}
+			if(config.roomNumberFlag){
+				classroomNumberDrawer.updateGraphics(g);
+				classroomNumberDrawer.setFrame(up);
+				classroomNumberDrawer.validate();
+				classroomNumberDrawer.draw();
+			}
+			if(config.periodFlag){
+				periodDrawer.updateGraphics(g);
+				periodDrawer.setFrame(up);
+				periodDrawer.validate();
+				periodDrawer.draw();
+			}
+			if(config.maxTeacher != 0){
+				teacherDrawer.updateGraphics(g);
+				teacherDrawer.setFrame(up);
+				teacherDrawer.validate();
+				teacherDrawer.draw();
+			}
+			courseCodeDrawer.updateGraphics(g);
+			courseCodeDrawer.setFrame(up);
+			courseCodeDrawer.validate();
+			courseCodeDrawer.draw();
+		}catch(StringDrawerException e){
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
