@@ -3,6 +3,7 @@ package mccanny.io;
 import mccanny.management.course.Course;
 import mccanny.management.student.Student;
 import mccanny.management.teacher.Teacher;
+import mccanny.util.Utility;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
@@ -15,6 +16,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
@@ -58,7 +60,7 @@ public class Builder{
 	
 	public static void parseTest(){
 		Builder  parser   = new Builder();
-		Document document = parser.parse("data\\book.xml");
+		Document document = parser.parse(Utility.join("data", "book.xml"));
 		if(document == null)
 			return;
 		//get root element
@@ -146,7 +148,26 @@ public class Builder{
 			UID.appendChild(document.createTextNode(student.UID()));
 			stdElement.appendChild(UID);
 		}
-		builder.write(document, "data\\students.xml");
+		builder.write(document, Utility.join("data", "students.xml"));
+	}
+	
+	public static void loadStudents(){
+		Builder  parser   = new Builder();
+		Document document = parser.parse(Utility.join("data", "students.xml"));
+		if(document == null)
+			return;
+		//get root element
+		Element  rootElement = document.getDocumentElement();
+		NodeList nodeList    = rootElement.getElementsByTagName("student");
+		if(nodeList != null){
+			for(int i = 0; i < nodeList.getLength(); i++){
+				Element element  = (Element) nodeList.item(i);
+				String  identity = element.getElementsByTagName("identity").item(0).getTextContent();
+				String  OEN      = element.getElementsByTagName("OEN").item(0).getTextContent();
+				String  UID      = element.getElementsByTagName("UID").item(0).getTextContent();
+				Student.loadStudent(UID, OEN, identity);
+			}
+		}
 	}
 	
 	public static void writeTeachers(){
@@ -174,7 +195,26 @@ public class Builder{
 			UID.appendChild(document.createTextNode(teacher.UID()));
 			teaElement.appendChild(UID);
 		}
-		builder.write(document, "data\\teachers.xml");
+		builder.write(document, Utility.join("data", "teachers.xml"));
+	}
+	
+	public static void loadTeachers(){
+		Builder  parser   = new Builder();
+		Document document = parser.parse(Utility.join("data", "teachers.xml"));
+		if(document == null)
+			return;
+		//get root element
+		Element  rootElement = document.getDocumentElement();
+		NodeList nodeList    = rootElement.getElementsByTagName("teacher");
+		if(nodeList != null){
+			for(int i = 0; i < nodeList.getLength(); i++){
+				Element element  = (Element) nodeList.item(i);
+				String  identity = element.getElementsByTagName("identity").item(0).getTextContent();
+				String  MEN      = element.getElementsByTagName("MEN").item(0).getTextContent();
+				String  UID      = element.getElementsByTagName("UID").item(0).getTextContent();
+				Teacher.loadTeacher(UID, MEN, identity);
+			}
+		}
 	}
 	
 	public static void writeCourses(){
@@ -185,23 +225,48 @@ public class Builder{
 		// root element
 		Element root = document.createElement("courses");
 		document.appendChild(root);
+		System.out.println(Course.courses().toString());
 		for(Course course : Course.courses()){
-			// student element
+			// course element
 			Element courElement = document.createElement("course");
 			root.appendChild(courElement);
 			// courseID element
-			Element identity = document.createElement("courseID");
-			identity.appendChild(document.createTextNode(course.courseID()));
-			courElement.appendChild(identity);
+			Element courseID = document.createElement("courseID");
+			courseID.appendChild(document.createTextNode(course.courseID()));
+			courElement.appendChild(courseID);
 			// courseHour element
-			Element MEN = document.createElement("courseHour");
-			MEN.appendChild(document.createTextNode(String.valueOf(course.courseHour())));
-			courElement.appendChild(MEN);
+			Element courseHour = document.createElement("courseHour");
+			courseHour.appendChild(document.createTextNode(String.valueOf(course.courseHour())));
+			courElement.appendChild(courseHour);
 			// UID element
 			Element UID = document.createElement("UID");
 			UID.appendChild(document.createTextNode(course.UID()));
 			courElement.appendChild(UID);
+			// Color element
+			Element color = document.createElement("color");
+			color.appendChild(document.createTextNode(Integer.toString(course.color().getRGB(), 16)));
+			courElement.appendChild(color);
 		}
-		builder.write(document, "data\\courses.xml");
+		builder.write(document, Utility.join("data", "courses.xml"));
+	}
+	
+	public static void loadCourses(){
+		Builder  parser   = new Builder();
+		Document document = parser.parse(Utility.join("data", "courses.xml"));
+		if(document == null)
+			return;
+		//get root element
+		Element  rootElement = document.getDocumentElement();
+		NodeList nodeList    = rootElement.getElementsByTagName("course");
+		if(nodeList != null){
+			for(int i = 0; i < nodeList.getLength(); i++){
+				Element element    = (Element) nodeList.item(i);
+				String  courseID   = element.getElementsByTagName("courseID").item(0).getTextContent();
+				String  courseHour = element.getElementsByTagName("courseHour").item(0).getTextContent();
+				String  UID        = element.getElementsByTagName("UID").item(0).getTextContent();
+				String  color      = element.getElementsByTagName("color").item(0).getTextContent();
+				Course.loadCourse(UID, courseID, Double.valueOf(courseHour), new Color(Integer.valueOf(color, 16)));
+			}
+		}
 	}
 }

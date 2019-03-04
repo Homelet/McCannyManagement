@@ -187,7 +187,7 @@ public class CourseManager implements Renderable{
 		Day current  = days.get(period.weekday());
 		// first delete the previous event
 		previous.events.removeIf(event->event.period == period);
-		// add the current event ac s scc   A
+		// add the current event
 		OrderedUniqueArray<PeriodEvent> eventArray = current.events;
 		eventArray.add(new PeriodEvent(period, period.start(), PeriodEvent.START));
 		eventArray.add(new PeriodEvent(period, period.end(), PeriodEvent.END));

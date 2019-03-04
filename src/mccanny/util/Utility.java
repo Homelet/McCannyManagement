@@ -5,10 +5,13 @@ import mccanny.management.exception.CourseCollusion;
 import mccanny.visual.Display;
 
 import java.awt.*;
+import java.io.File;
 import java.util.List;
 import java.util.*;
 
 public class Utility{
+	
+	public static final String FILE_SEPARATOR = File.separator;
 	
 	public static String flag(int flag){
 		switch(flag){
@@ -247,6 +250,13 @@ public class Utility{
 			}
 		}
 		return true;
+	}
+	
+	public static String join(String root, String... layers){
+		StringBuilder builder = new StringBuilder(root);
+		for(String s : layers)
+			builder.append(FILE_SEPARATOR).append(s);
+		return builder.toString();
 	}
 	
 	public interface PeriodComparator<E>{
