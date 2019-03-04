@@ -22,7 +22,7 @@ public class CourseInfoDialog extends InfoDialog<Course>{
 	public static Course showInfoDialog(Course course){
 		return showInfoDialog(Display.getInstance(), course);
 	}
-
+	
 	public static Course showInfoDialog(Frame owner, Course course){
 		CourseInfoDialog dialog = new CourseInfoDialog(owner, course);
 		dialog.showDialog();
@@ -41,8 +41,10 @@ public class CourseInfoDialog extends InfoDialog<Course>{
 		dialog.removeDialog();
 		return dialog.result();
 	}
-	private static ColorBank colorBank = new ColorBank();
-	private        Course    course;
+	
+	private static ColorBank   colorBank = new ColorBank();
+	private        NestedPanel panel;
+	private        Course      course;
 	
 	private CourseInfoDialog(Dialog owner, Course course){
 		super(owner, "Course Info");
@@ -51,7 +53,7 @@ public class CourseInfoDialog extends InfoDialog<Course>{
 	
 	private void init(Course course){
 		this.course = course;
-		NestedPanel panel = new NestedPanel();
+		panel = new NestedPanel();
 		this.setContentPane(panel);
 		this.pack();
 	}
@@ -63,11 +65,13 @@ public class CourseInfoDialog extends InfoDialog<Course>{
 	
 	private class NestedPanel extends JBasePanel{
 		
+		final JInputField courseIDField;
+		
 		NestedPanel(){
-			JLabel      courseID      = new JLabel("Course Name");
-			JLabel      courseHour    = new JLabel("Course Required Hour");
-			JLabel      courseColor   = new JLabel("Course Color");
-			JInputField courseIDField = new JInputField("Ex: MHF4U", true);
+			JLabel courseID    = new JLabel("Course Name");
+			JLabel courseHour  = new JLabel("Course Required Hour");
+			JLabel courseColor = new JLabel("Course Color");
+			courseIDField = new JInputField("Ex: MHF4U", true);
 			courseIDField.getTextComponent().setToolTipText("The Course Code for a Course.\nTypically 5 digit long.");
 			JIndexedChooser courseHourField = new JIndexedChooser(this, 5, course != null ? course.courseHour() : 110, Integer.MAX_VALUE, 0, Orientation.HORIZONTAL, (value->value + "h"));
 			courseHourField.setButtonToolTipText("+ 5 hour", "- 5 hour");
@@ -143,5 +147,10 @@ public class CourseInfoDialog extends InfoDialog<Course>{
 			ToolBox.setPreferredSize(confirm, FIXED_BUTTON_DIMENSION);
 			courseIDField.getTextComponent().requestFocusInWindow();
 		}
+	}
+	
+	@Override
+	protected Component firstFocus(){
+		return panel.courseIDField.getTextComponent();
 	}
 }

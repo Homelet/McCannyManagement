@@ -4,6 +4,7 @@ import mccanny.util.Utility;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.FocusEvent.Cause;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -42,6 +43,8 @@ public abstract class InfoDialog<E> extends JDialog{
 	
 	public void showDialog(){
 		this.setLocation(Utility.frameVertex(this.getOwner().getBounds(), this.getBounds()));
+		if(firstFocus() != null)
+			firstFocus().requestFocusInWindow(Cause.ACTIVATION);
 		this.setVisible(true);
 	}
 	
@@ -50,4 +53,6 @@ public abstract class InfoDialog<E> extends JDialog{
 	}
 	
 	public abstract E result();
+	
+	protected abstract Component firstFocus();
 }

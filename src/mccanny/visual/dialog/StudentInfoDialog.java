@@ -38,7 +38,8 @@ public class StudentInfoDialog extends InfoDialog<Student>{
 		return dialog.result();
 	}
 	
-	private Student student;
+	private Student     student;
+	private NestedPanel nestedPanel;
 	
 	private StudentInfoDialog(Frame owner, Student student){
 		super(owner, "Student Info");
@@ -47,7 +48,7 @@ public class StudentInfoDialog extends InfoDialog<Student>{
 	
 	private void init(Student student){
 		this.student = student;
-		NestedPanel nestedPanel = new NestedPanel();
+		nestedPanel = new NestedPanel();
 		this.setContentPane(nestedPanel);
 		this.pack();
 	}
@@ -57,13 +58,20 @@ public class StudentInfoDialog extends InfoDialog<Student>{
 		init(student);
 	}
 	
+	@Override
+	protected Component firstFocus(){
+		return nestedPanel.studentIdentityField.getTextComponent();
+	}
+	
 	private class NestedPanel extends JBasePanel{
 		
+		final JInputField studentIdentityField;
+		
 		NestedPanel(){
-			JLabel      studentIdentity      = new JLabel("Student Identity");
-			JLabel      studentOEN           = new JLabel("OEN");
-			JInputField studentIdentityField = new JInputField("Ex: Homelet", true);
-			JInputField studentOENField      = new JInputField("Ex: XXXXXXXXX", true);
+			JLabel studentIdentity = new JLabel("Student Identity");
+			JLabel studentOEN      = new JLabel("OEN");
+			studentIdentityField = new JInputField("Ex: Homelet", true);
+			JInputField studentOENField = new JInputField("Ex: XXXXXXXXX", true);
 			studentIdentityField.getTextComponent().setToolTipText("The Identity for a student, typically the student's name.");
 			studentOENField.getTextComponent().setToolTipText("The OEN is a student identification number that is assigned by the Ministry of Education");
 			if(student != null){
@@ -125,7 +133,6 @@ public class StudentInfoDialog extends InfoDialog<Student>{
 			ToolBox.setPreferredSize(studentOENField, FIXED_FIELD_DIMENSION);
 			ToolBox.setPreferredSize(cancel, FIXED_BUTTON_DIMENSION);
 			ToolBox.setPreferredSize(confirm, FIXED_BUTTON_DIMENSION);
-			studentIdentityField.getTextComponent().requestFocusInWindow();
 		}
 	}
 }

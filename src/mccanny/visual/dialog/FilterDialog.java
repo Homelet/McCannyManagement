@@ -65,6 +65,11 @@ public class FilterDialog extends InfoDialog<Filter>{
 		return filter;
 	}
 	
+	@Override
+	protected Component firstFocus(){
+		return null;
+	}
+	
 	class NestedPanel extends JBasePanel{
 		
 		NestedPanel(){

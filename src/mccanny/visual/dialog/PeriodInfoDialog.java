@@ -68,6 +68,7 @@ public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
 	
 	private final Border       DEFAULT_BORDER = BorderFactory.createLineBorder(Color.BLACK, 5, true);
 	private       CoursePeriod period;
+	private       NestedPanel  panel;
 	
 	private PeriodInfoDialog(Frame owner, CoursePeriod period){
 		super(owner, "Course Period");
@@ -76,7 +77,7 @@ public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
 	
 	private void init(CoursePeriod period){
 		this.period = period;
-		NestedPanel panel = new NestedPanel();
+		panel = new NestedPanel();
 		this.setContentPane(panel);
 		this.pack();
 	}
@@ -86,11 +87,18 @@ public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
 		init(period);
 	}
 	
+	@Override
+	protected Component firstFocus(){
+		return panel.basicField.courseField;
+	}
+	
 	private class NestedPanel extends JBasePanel{
 		
+		final BasicModule basicField;
+		
 		NestedPanel(){
-			JInputArea           announcement = new JInputArea("No Announcement Yet", false);
-			BasicModule          basicField   = new BasicModule();
+			JInputArea announcement = new JInputArea("No Announcement Yet", false);
+			basicField = new BasicModule();
 			PeriodModule         periodField  = new PeriodModule();
 			ChooseField<Teacher> teacherField = new ChooseField<>(Teacher.teachers(), period == null ? null : period.teachers(), Utility.TEACHER_FLAG);
 			ChooseField<Student> studentField = new ChooseField<>(Student.students(), period == null ? null : period.students(), Utility.STUDENT_FLAG);
@@ -183,7 +191,6 @@ public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
 			layouter.put(layouter.instanceOf(announcement).put(Position.VALUE_WIDTH, 200).put(Position.VALUE_HEIGHT, 308));
 			layouter.put(layouter.instanceOf(cancel).put(Position.VALUE_HEIGHT, FIXED_BUTTON_DIMENSION.height));
 			layouter.put(layouter.instanceOf(confirm).put(Position.CONSTRAIN_X, 726 / 3).put(Position.VALUE_HEIGHT, FIXED_BUTTON_DIMENSION.height));
-			basicField.courseField.requestFocusInWindow();
 		}
 	}
 	

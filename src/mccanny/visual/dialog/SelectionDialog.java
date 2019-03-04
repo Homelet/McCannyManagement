@@ -124,6 +124,11 @@ public class SelectionDialog<E> extends InfoDialog<Collection<E>>{
 		return acceptResult;
 	}
 	
+	@Override
+	protected Component firstFocus(){
+		return null;
+	}
+	
 	class NestedPanel extends JBasePanel{
 		
 		public NestedPanel(String[] columnHeader){

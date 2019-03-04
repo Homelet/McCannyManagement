@@ -37,7 +37,9 @@ public class TeacherInfoDialog extends InfoDialog<Teacher>{
 		dialog.removeDialog();
 		return dialog.result();
 	}
-	private Teacher teacher;
+	
+	private Teacher     teacher;
+	private NestedPanel nestedPanel;
 	
 	private TeacherInfoDialog(Frame owner, Teacher teacher){
 		super(owner, "Teacher Info");
@@ -46,7 +48,7 @@ public class TeacherInfoDialog extends InfoDialog<Teacher>{
 	
 	private void init(Teacher teacher){
 		this.teacher = teacher;
-		NestedPanel nestedPanel = new NestedPanel();
+		nestedPanel = new NestedPanel();
 		this.setContentPane(nestedPanel);
 		this.pack();
 	}
@@ -58,11 +60,13 @@ public class TeacherInfoDialog extends InfoDialog<Teacher>{
 	
 	private class NestedPanel extends JBasePanel{
 		
+		final JInputField teacherIdentityField;
+		
 		NestedPanel(){
-			JLabel      teacherIdentity      = new JLabel("Teacher Identity");
-			JLabel      teacherMEN           = new JLabel("MEN");
-			JInputField teacherIdentityField = new JInputField("Ex: Alireza Rafiee", true);
-			JInputField teacherMENField      = new JInputField("Ex: XXXXXXXXX", true);
+			JLabel teacherIdentity = new JLabel("Teacher Identity");
+			JLabel teacherMEN      = new JLabel("MEN");
+			teacherIdentityField = new JInputField("Ex: Alireza Rafiee", true);
+			JInputField teacherMENField = new JInputField("Ex: XXXXXXXXX", true);
 			teacherIdentityField.getTextComponent().setToolTipText("The Identity for a teacher, typically the teacher's name.");
 			teacherMENField.getTextComponent().setToolTipText("A Ministry Educator Number (MEN) is a unique identifier which is assigned to all educators in the province.");
 			if(teacher != null){
@@ -124,7 +128,11 @@ public class TeacherInfoDialog extends InfoDialog<Teacher>{
 			ToolBox.setPreferredSize(teacherMENField, FIXED_FIELD_DIMENSION);
 			ToolBox.setPreferredSize(cancel, FIXED_BUTTON_DIMENSION);
 			ToolBox.setPreferredSize(confirm, FIXED_BUTTON_DIMENSION);
-			teacherIdentityField.getTextComponent().requestFocusInWindow();
 		}
+	}
+	
+	@Override
+	protected Component firstFocus(){
+		return nestedPanel.teacherIdentityField.getTextComponent();
 	}
 }
