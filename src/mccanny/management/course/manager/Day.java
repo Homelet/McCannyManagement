@@ -7,8 +7,6 @@ import homelet.GH.utils.Alignment;
 import homelet.GH.visual.ActionsManager;
 import homelet.GH.visual.interfaces.LocatableRender;
 import mccanny.management.course.CoursePeriod;
-import mccanny.management.course.manager.CourseManager;
-import mccanny.management.course.manager.PeriodEvent;
 import mccanny.management.exception.CourseCollusion;
 import mccanny.util.ImageRenderable;
 import mccanny.util.OrderedUniqueArray;

@@ -26,7 +26,7 @@ import java.util.HashMap;
 
 public class CoursePeriod extends ActionsManager implements Comparable<CoursePeriod>, LocatableRender, ImageRenderable, ImageLocateable{
 	
-	public static final  double                                 START_AT        = 8.0;
+	public static final  double                                 START_AT        = 9.0;
 	public static final  double                                 END_AT          = 20.0;
 	public static final  int                                    WIDTH           = 50;
 	public static final  int                                    HEIGHT_PER_HOUR = 50;
@@ -57,8 +57,8 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 		configs.put(1.0, new RenderThresholdConfig(true, false, 2, 0));
 		configs.put(1.5, new RenderThresholdConfig(true, false, 5, 0));
 		configs.put(2.0, new RenderThresholdConfig(true, false, 2, 5));
-		configs.put(2.5, new RenderThresholdConfig(true, true, 1, 6));
-		configs.put(3.0, new RenderThresholdConfig(true, true, 1, 7));
+		configs.put(2.5, new RenderThresholdConfig(true, true, 2, 6));
+		configs.put(3.0, new RenderThresholdConfig(true, true, 2, 7));
 		configs.put(3.5, new RenderThresholdConfig(true, true, 2, 9));
 		configs.put(4.0, new RenderThresholdConfig(true, true, 3, 19));
 		configs.put(4.5, new RenderThresholdConfig(true, true, 3, 12));
@@ -77,16 +77,21 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 		this.courseCodeDrawer = new StringDrawer();
 		this.teacherDrawer = new StringDrawer();
 		this.studentDrawer = new StringDrawer();
+//		this.classroomNumberDrawer.setTextWidth(WIDTH, WIDTH);
+//		this.periodDrawer.setTextWidth(WIDTH, WIDTH);
+//		this.courseCodeDrawer.setTextWidth(WIDTH, WIDTH);
+//		this.teacherDrawer.setTextWidth(WIDTH, WIDTH);
+//		this.studentDrawer.setTextWidth(WIDTH, WIDTH);
 		this.classroomNumberDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(10.0f));
 		this.periodDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(10.0f));
 		this.courseCodeDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(13.0f));
 		this.teacherDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(10.0f));
 		this.studentDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(10.0f));
-		this.classroomNumberDrawer.setLinePolicy(LinePolicy.NEVER_BREAK);
-		this.periodDrawer.setLinePolicy(LinePolicy.NEVER_BREAK);
-		this.courseCodeDrawer.setLinePolicy(LinePolicy.NEVER_BREAK);
-		this.teacherDrawer.setLinePolicy(LinePolicy.NEVER_BREAK);
-		this.studentDrawer.setLinePolicy(LinePolicy.NEVER_BREAK);
+		this.classroomNumberDrawer.setLinePolicy(LinePolicy.BREAK_WHERE_NECESSARY);
+		this.periodDrawer.setLinePolicy(LinePolicy.BREAK_WHERE_NECESSARY);
+		this.courseCodeDrawer.setLinePolicy(LinePolicy.BREAK_WHERE_NECESSARY);
+		this.teacherDrawer.setLinePolicy(LinePolicy.BREAK_WHERE_NECESSARY);
+		this.studentDrawer.setLinePolicy(LinePolicy.BREAK_WHERE_NECESSARY);
 		this.periodDrawer.setParagraphSpacing(-8);
 		this.teacherDrawer.setParagraphSpacing(-5);
 		this.studentDrawer.setParagraphSpacing(-5);
@@ -454,6 +459,8 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	
 	@Override
 	public void onMouseClick(MouseEvent e){
+		if(!activate)
+			return;
 		if(e.getButton() == MouseEvent.BUTTON1){
 			PeriodInfoDialog.showInfoDialog(this);
 		}else if(e.getButton() == MouseEvent.BUTTON3){
@@ -469,12 +476,6 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	
 	@Override
 	public String toString(){
-//		return +
-//				"course=" + course +
-//				", classroomNumber=Room " + classroomNumber +
-//				", teachers=" + teachers +
-//				", students=" + students +
-//				'}';
 		return course + ", Room " + classroomNumber +
 				", " + weekday + " " + Utility.time(start, Display.FORMAT_24) + "~" + Utility.time(end, Display.FORMAT_24) + " (" + length() +
 				"h), Teachers:[" + Utility.toString(teachers, 10) + "], Students:[" + Utility.toString(students, 10) + "]";

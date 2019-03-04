@@ -123,6 +123,10 @@ public class OrderedUniqueArray<E extends Comparable<E>> implements Iterable<E>{
 		return size;
 	}
 	
+	public boolean isEmpty(){
+		return size == 0;
+	}
+	
 	@Override
 	public Iterator<E> iterator(){
 		return new Itr();

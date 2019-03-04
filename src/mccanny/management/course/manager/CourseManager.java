@@ -37,6 +37,21 @@ public class CourseManager implements Renderable{
 	private final       HashMap<Weekday, Day> days;
 	private final       CanvasThread          thread;
 	
+	public void printError(){
+		for(Weekday weekday : Weekday.weekdays()){
+			Day day = days.get(weekday);
+			System.out.println(weekday + ": " + print(day.errors));
+		}
+	}
+	
+	private String print(ArrayList arrayList){
+		StringBuilder builder = new StringBuilder("[");
+		for(Object o : arrayList){
+			builder.append(o).append("\n");
+		}
+		return builder.append("]").toString();
+	}
+	
 	public CourseManager(CanvasThread thread){
 		this.thread = thread;
 		this.days = new HashMap<>();
@@ -81,6 +96,8 @@ public class CourseManager implements Renderable{
 		int          maxCount = 0;
 		PeriodBuffer buffer   = new PeriodBuffer();
 		for(PeriodEvent event : day.events){
+			if(!event.period.activate())
+				continue;
 			if(event.status){
 				check(event.period, buffer, day.errors);
 				event.period.lineIndex(buffer.join(event.period));
@@ -154,8 +171,8 @@ public class CourseManager implements Renderable{
 	}
 	
 	public void applyFilter(Filter filter){
-		if(this.timeTable.filter().equals(filter))
-			return;
+//		if(this.timeTable.filter().equals(filter))
+//			return;
 		timeTable.applyFilter(filter);
 		analyze();
 		updateOffsets();

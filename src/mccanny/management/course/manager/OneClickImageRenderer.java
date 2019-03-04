@@ -9,10 +9,12 @@ import mccanny.util.ImageRenderable;
 import mccanny.util.PeriodBuffer;
 import mccanny.util.Weekday;
 
-import javax.imageio.ImageIO;
+import javax.imageio.*;
+import javax.imageio.stream.ImageOutputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.*;
@@ -43,13 +45,12 @@ public class OneClickImageRenderer implements ImageRenderable{
 		}
 	}
 	
+	public int renderOffset(Weekday weekday){
+		return days.get(weekday).renderOffset();
+	}
+	
 	public void start(TimeTable timeTable){
-		BufferedImage image = renderImage(timeTable);
-		try{
-			ImageIO.write(image, "png", new File(ROOT + "\\timetable" + ".png"));
-		}catch(IOException e){
-			e.printStackTrace();
-		}
+		createRenderedImage(timeTable, null, Filter.NULL_FILTER, ROOT);
 		createTimeTable(timeTable, Student.students(), STUDENTS_ROOT);
 		createTimeTable(timeTable, Teacher.teachers(), TEACHER_ROOT);
 		createTimeTable(timeTable, Course.courses(), COURSES_ROOT);
@@ -57,19 +58,36 @@ public class OneClickImageRenderer implements ImageRenderable{
 	
 	private void createTimeTable(TimeTable parent, Collection collection, String path){
 		for(Object o : collection){
-			TimeTable     timeTable = new TimeTable(parent, o, Filter.createFilter(Filter.POSITIVE, o));
-			BufferedImage image     = renderImage(timeTable);
-			try{
-				ImageIO.write(image, "png", new File(path + "\\" + o.toString() + ".png"));
-			}catch(IOException e){
-				e.printStackTrace();
-			}
+			createRenderedImage(parent, o, Filter.createFilter(Filter.POSITIVE, o), path);
+		}
+	}
+	
+	private void createRenderedImage(TimeTable parent, Object o, Filter filter, String path){
+		TimeTable     timeTable = new TimeTable(parent, o, filter);
+		BufferedImage image     = renderImage(timeTable);
+		try{
+			String filename = o != null ? o.toString().trim().replace("/", "_").replace("\\", "_") + ".png" : "timetable.png";
+			System.out.println(filename);
+			Iterator<ImageWriter> writers     = ImageIO.getImageWritersByFormatName("png");
+			ImageWriter           imageWriter = writers.next();
+			ImageWriteParam       pngparams   = imageWriter.getDefaultWriteParam();
+			pngparams.setCompressionMode(ImageWriteParam.MODE_COPY_FROM_METADATA);
+//			pngparams.setCompressionQuality(1.0F);
+			pngparams.setProgressiveMode(ImageWriteParam.MODE_COPY_FROM_METADATA);
+			pngparams.setDestinationType(new ImageTypeSpecifier(image.getColorModel(), image.getSampleModel()));
+			ImageOutputStream imageOutputStream = ImageIO.createImageOutputStream(new FileOutputStream(new File(path + "/" + filename)));
+			imageWriter.setOutput(imageOutputStream);
+			imageWriter.write(null, new IIOImage(image, null, null), pngparams);
+			imageOutputStream.close();
+			imageWriter.dispose();
+		}catch(IOException e){
+			e.printStackTrace();
 		}
 	}
 	
 	private BufferedImage renderImage(TimeTable timeTable){
 		Dimension     size  = initTimeTable(timeTable);
-		BufferedImage image = new BufferedImage(size.width, size.height, BufferedImage.TYPE_4BYTE_ABGR);
+		BufferedImage image = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
 		renderImage((Graphics2D) image.createGraphics().create(0, 0, size.width, size.height));
 		image.flush();
 		return image;
@@ -127,6 +145,8 @@ public class OneClickImageRenderer implements ImageRenderable{
 	
 	@Override
 	public void renderImage(Graphics2D g){
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g.setColor(Color.WHITE);
 		g.fill(g.getClipBounds());
 		preRender(g);

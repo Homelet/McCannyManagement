@@ -12,6 +12,7 @@ public enum Weekday{
 	FRIDAY(4, "Friday"),
 	SATURDAY(5, "Saturday"),
 	SUNDAY(6, "Sunday");
+	
 	public static Weekday[] weekdays(Weekday from){
 		Weekday[] weekdays = new Weekday[7];
 		int       cursor   = from.index;
@@ -23,18 +24,18 @@ public enum Weekday{
 		}
 		return weekdays;
 	}
-
+	
 	public static Weekday index(int index){
 		return weekdays().get(index);
 	}
-
+	
 	public static ArrayList<Weekday> weekdays(){
 		if(!isValidated){
 			validate();
 		}
 		return weekdays;
 	}
-
+	
 	public static void validate(){
 		for(Weekday weekday : Weekday.values()){
 			int offset = weekday.offset - Weekday.FIRST_DAY_OF_WEEK.offset;
@@ -43,7 +44,7 @@ public enum Weekday{
 		weekdays.sort(Comparator.comparingInt(o->o.index));
 		isValidated = true;
 	}
-
+	
 	public static Weekday phrase(int index){
 		switch(index){
 			case Calendar.MONDAY:
@@ -64,11 +65,12 @@ public enum Weekday{
 				return null;
 		}
 	}
-
+	
 	public static void firstDayOfWeek(Weekday firstDayOfWeek){
 		FIRST_DAY_OF_WEEK = firstDayOfWeek;
 		validate();
 	}
+	
 	public static  Weekday            FIRST_DAY_OF_WEEK = Weekday.MONDAY;
 	private static boolean            isValidated       = false;
 	private static ArrayList<Weekday> weekdays;

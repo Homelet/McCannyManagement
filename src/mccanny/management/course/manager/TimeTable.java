@@ -27,7 +27,7 @@ public class TimeTable implements Renderable, ImageRenderable{
 	
 	// for sub Timetable
 	public TimeTable(TimeTable parent, Object object, Filter filter){
-		this.nameDrawer = new StringDrawer("McCanny TimeTable (" + object + ")");
+		this.nameDrawer = new StringDrawer("McCanny TimeTable" + (object != null ? (" (" + object + ")") : ""));
 		this.nameDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(30.0f));
 		this.nameDrawer.setAlign(Alignment.TOP);
 		this.nameDrawer.setTextAlign(Alignment.TOP);
@@ -122,6 +122,10 @@ public class TimeTable implements Renderable, ImageRenderable{
 		return periods;
 	}
 	
+	public boolean isEmpty(){
+		return periods.isEmpty();
+	}
+	
 	void add(CoursePeriod period){
 		this.periods.add(period);
 		period.activate(filter.filter(period));
@@ -132,8 +136,8 @@ public class TimeTable implements Renderable, ImageRenderable{
 	}
 	
 	void applyFilter(Filter filter){
-		if(this.filter != null && this.filter.equals(filter))
-			return;
+//		if(this.filter != null && this.filter.equals(filter))
+//			return;
 		this.filter = filter;
 		for(CoursePeriod period : periods)
 			period.activate(filter.filter(period));
@@ -142,7 +146,56 @@ public class TimeTable implements Renderable, ImageRenderable{
 	
 	@Override
 	public void renderImage(Graphics2D g){
-		render(g);
+		Rectangle bound      = g.getClipBounds();
+		Rectangle topPortion = new Rectangle(0, 0, bound.width, CourseManager.TOP_INSET - CourseManager.FIXED_HEADER_HEIGHT - 5);
+		this.nameDrawer.updateGraphics(g);
+		this.periodDrawer.updateGraphics(g);
+		this.filterDrawer.updateGraphics(g);
+		this.nameDrawer.setFrame(topPortion);
+		this.periodDrawer.setFrame(topPortion);
+		this.filterDrawer.setFrame(topPortion);
+		try{
+			nameDrawer.validate();
+			periodDrawer.validate();
+			filterDrawer.validate();
+			nameDrawer.draw();
+			periodDrawer.draw();
+			filterDrawer.draw();
+		}catch(StringDrawerException e){
+			e.printStackTrace();
+		}
+		timeDrawer.updateGraphics(g);
+		semiTimeDrawer.updateGraphics(g);
+		int          heightOffset = CourseManager.TOP_INSET;
+		boolean      wholeFlag    = CoursePeriod.START_AT - Math.floor(CoursePeriod.START_AT) == 0;
+		StringDrawer drawer;
+		for(double timeCount = CoursePeriod.START_AT; timeCount <= CoursePeriod.END_AT; timeCount += 0.5, heightOffset += CoursePeriod.HEIGHT_PER_HOUR / 2){
+			g.setColor(GRAY);
+			if(wholeFlag){
+				drawer = timeDrawer;
+				g.fill(GH.rectangle(false, 0, heightOffset - 5, bound.width, 5));
+				drawer.setFrame(new Rectangle(0, 0, CourseManager.LEFT_INSET, heightOffset));
+			}else{
+				drawer = semiTimeDrawer;
+				g.fill(GH.rectangle(false, 30, heightOffset - 2, bound.width - 30, 2));
+				drawer.setFrame(new Rectangle(10, 0, CourseManager.LEFT_INSET - 10, heightOffset));
+			}
+			drawer.initializeContents(Utility.time(timeCount, Display.FORMAT_24));
+			try{
+				drawer.validate();
+				drawer.draw();
+			}catch(StringDrawerException e){
+				e.printStackTrace();
+			}
+			wholeFlag = !wholeFlag;
+		}
+		g.setColor(Color.BLACK);
+		for(Weekday day : Weekday.weekdays()){
+			if(day == Weekday.FIRST_DAY_OF_WEEK)
+				continue;
+			int renderOffset = Display.getInstance().renderer().renderOffset(day);
+			g.fill(GH.rectangle(false, renderOffset - 5, CourseManager.TOP_INSET - 5, 5, CourseManager.TIMETABLE_DI.height + 5));
+		}
 	}
 	
 	@Override
