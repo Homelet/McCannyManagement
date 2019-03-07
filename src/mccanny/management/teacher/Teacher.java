@@ -8,7 +8,7 @@ import mccanny.util.Utility;
 import java.util.Collection;
 import java.util.HashMap;
 
-public class Teacher implements ToolTipText, Distinguishable{
+public class Teacher implements ToolTipText, Distinguishable, Comparable<Teacher>{
 	
 	public static Teacher findTeacher(String MEN){
 		return teachers.get(MEN);
@@ -31,15 +31,15 @@ public class Teacher implements ToolTipText, Distinguishable{
 		return UID;
 	}
 	
-	public static Teacher newTeacher(String MEN, String identity){
-		return loadTeacher(Utility.fetchUUID32(), MEN, identity);
+	public static Teacher newTeacher(String MEN, String identity, Date birthday, String email){
+		return loadTeacher(Utility.fetchUUID32(), MEN, identity, birthday, email);
 	}
 	
-	public static Teacher loadTeacher(String UID, String MEN, String identity){
+	public static Teacher loadTeacher(String UID, String MEN, String identity, Date birthday, String email){
 		// if null means no such teacher exist yet
 		// else means such teacher have already been registered
 		if(teachers.get(MEN) == null){
-			Teacher teacher = new Teacher(UID, MEN, identity);
+			Teacher teacher = new Teacher(UID, MEN, identity, birthday, email);
 			teachers.put(MEN, teacher);
 			return teacher;
 		}else{
@@ -59,23 +59,33 @@ public class Teacher implements ToolTipText, Distinguishable{
 	private final  String                   UID;
 	private        String                   MEN;
 	private        String                   identity;
-	// TODO FUTURE IMPLEMENTATION
 	private        Date                     birthday;
 	private        String                   email;
 	
-	private Teacher(String UID, String MEN, String identity){
+	@Override
+	public int compareTo(Teacher o){
+		int result = identity.compareTo(o.identity);
+		if(result == 0){
+			return birthday.compareTo(o.birthday);
+		}else{
+			return result;
+		}
+	}
+	
+	private Teacher(String UID, String MEN, String identity, Date birthday, String email){
 		this.UID = UID;
 		this.identity = identity;
 		this.MEN = MEN;
+		this.birthday = birthday;
+		this.email = email;
 	}
 	
-	public boolean MEN(String MEN){
+	public void MEN(String MEN){
 		if(this.MEN.equals(MEN))
-			return false;
+			return;
 		if(teachers.get(MEN) == null){
 			teachers.put(MEN, teachers.remove(this.MEN));
 			this.MEN = MEN;
-			return true;
 		}else
 			throw new IllegalArgumentException("Teacher with the same MEN have registered (" + teachers.get(MEN) + ")");
 	}
@@ -89,6 +99,22 @@ public class Teacher implements ToolTipText, Distinguishable{
 			return false;
 		this.identity = identity;
 		return true;
+	}
+	
+	public Date birthday(){
+		return birthday;
+	}
+	
+	public void birthday(Date birthday){
+		this.birthday = birthday;
+	}
+	
+	public String email(){
+		return email;
+	}
+	
+	public void email(String email){
+		this.email = email;
 	}
 	
 	@Override

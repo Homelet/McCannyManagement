@@ -2,10 +2,10 @@ package mccanny.visual.rendered;
 
 import homelet.GH.visual.CanvasThread;
 import mccanny.util.Picture;
-import mccanny.visual.Display;
 import mccanny.visual.dialog.FilterDialog;
 import mccanny.visual.dialog.PeriodInfoDialog;
 import mccanny.visual.infoCenter.InformationCenter;
+import mccanny.visual.infoCenter.OneClickImageDialog;
 
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -53,7 +53,7 @@ public class IconButtonManager{
 		this.set(3, Picture.pic().WARNING, new IconButtonAction(){
 			@Override
 			public void onLeftClick(MouseEvent e){
-				Display.getInstance().renderer().start(Display.getInstance().manager().timeTable());
+				OneClickImageDialog.showOneClickDialog();
 			}
 			
 			@Override

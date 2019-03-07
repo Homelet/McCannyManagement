@@ -18,11 +18,11 @@ public class JIndexedChooser extends JComponent{
 	private final JButton        plus;
 	private final JButton        minus;
 	JIndexedChooserGroup group;
-	private       double         value;
-	private       double         step;
-	private       double         max;
-	private       double         min;
-	private       ValueProcessor processor;
+	private double         value;
+	private double         step;
+	private double         max;
+	private double         min;
+	private ValueProcessor processor;
 	
 	public JIndexedChooser(JComponent parent, double init, double step, Orientation orientation){
 		this(parent, step, init, Integer.MAX_VALUE, Integer.MIN_VALUE, orientation, DEFAULT_PROCESSOR);
@@ -56,14 +56,14 @@ public class JIndexedChooser extends JComponent{
 		switch(orientation){
 			case EQUILATERAL:
 			case HORIZONTAL:
-				layouter.put(layouter.instanceOf(minus, 0, 0).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(0, 100));
-				layouter.put(layouter.instanceOf(label, 1, 0).setAnchor(Anchor.CENTER).setFill(Fill.VERTICAL).setWeight(100, 100));
-				layouter.put(layouter.instanceOf(plus, 2, 0).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(0, 100));
+				layouter.put(layouter.instanceOf(minus, 0, 0).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(20, 100));
+				layouter.put(layouter.instanceOf(label, 1, 0).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(60, 100));
+				layouter.put(layouter.instanceOf(plus, 2, 0).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(20, 100));
 				break;
 			case VERTICAL:
-				layouter.put(layouter.instanceOf(minus, 0, 0).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(0, 100));
-				layouter.put(layouter.instanceOf(label, 0, 1).setAnchor(Anchor.CENTER).setFill(Fill.HORIZONTAL).setWeight(100, 100));
-				layouter.put(layouter.instanceOf(plus, 0, 2).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(0, 100));
+				layouter.put(layouter.instanceOf(minus, 0, 0).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(100, 20));
+				layouter.put(layouter.instanceOf(label, 0, 1).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(100, 60));
+				layouter.put(layouter.instanceOf(plus, 0, 2).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(100, 20));
 				break;
 		}
 		this.setFocusable(true);
@@ -147,7 +147,7 @@ public class JIndexedChooser extends JComponent{
 		return min;
 	}
 	
-	public void range(int min, int max){
+	public void range(double min, double max){
 		this.max = Math.max(min, max);
 		this.min = Math.min(min, max);
 		processValue(value, true);
@@ -155,7 +155,7 @@ public class JIndexedChooser extends JComponent{
 	
 	public void processValue(double newValue, boolean trigger){
 		double shiftValue = newValue - value;
-		int    eventFlag  = shiftValue > 0 ? JIndexedChooserEvent.EVENT_INCREASE : JIndexedChooserEvent.EVENT_DECEASE;
+		int    eventFlag  = shiftValue >= 0 ? JIndexedChooserEvent.EVENT_INCREASE : JIndexedChooserEvent.EVENT_DECEASE;
 		switch(Utility.betweenPeaks(newValue, max, min)){
 			case -2:
 			case -1:

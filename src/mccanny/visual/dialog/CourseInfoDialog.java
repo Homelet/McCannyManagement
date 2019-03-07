@@ -80,7 +80,7 @@ public class CourseInfoDialog extends InfoDialog<Course>{
 			if(course != null){
 				courseIDField.setContent(course.courseID());
 			}
-			JButton confirm = new JButton("Confirm");
+			JButton confirm = new JButton(course != null ? "Apply Changes" : "Create Course");
 			JButton cancel  = new JButton("Cancel");
 			confirm.addActionListener((action)->{
 				String courseIDValue    = courseIDField.getContent().trim();
@@ -132,20 +132,19 @@ public class CourseInfoDialog extends InfoDialog<Course>{
 			confirm.setFont(Display.CLEAR_SANS_BOLD);
 			cancel.setFont(Display.CLEAR_SANS_BOLD);
 			Layouter.GridBagLayouter layouter = new GridBagLayouter(this);
-			layouter.put(layouter.instanceOf(courseID, 0, 0).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(0, 100).setInsets(10, 10, 10, 10));
-			layouter.put(layouter.instanceOf(courseIDField, 1, 0).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(100, 100).setInsets(10, 10, 0, 10));
-			layouter.put(layouter.instanceOf(courseHour, 0, 1).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(0, 100).setInsets(0, 10, 10, 10));
-			layouter.put(layouter.instanceOf(courseHourField, 1, 1).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(100, 100).setInsets(0, 10, 0, 10));
-			layouter.put(layouter.instanceOf(courseColor, 0, 2).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(0, 100).setInsets(0, 10, 10, 10));
-			layouter.put(layouter.instanceOf(courseColorField, 1, 2).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(100, 100).setInsets(0, 10, 0, 10));
-			layouter.put(layouter.instanceOf(cancel, 0, 3).setAnchor(Anchor.LEFT).setFill(Fill.BOTH).setWeight(100, 100).setInsets(0, 10, 10, 10));
-			layouter.put(layouter.instanceOf(confirm, 1, 3).setAnchor(Anchor.RIGHT).setFill(Fill.BOTH).setWeight(100, 100).setInsets(0, 10, 0, 10));
+			layouter.put(layouter.instanceOf(courseID, 0, 0).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(34, 25).setInsets(10, 10, 10, 10));
+			layouter.put(layouter.instanceOf(courseIDField, 1, 0).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(66, 25).setInsets(10, 10, 0, 10));
+			layouter.put(layouter.instanceOf(courseHour, 0, 1).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(34, 25).setInsets(0, 10, 10, 10));
+			layouter.put(layouter.instanceOf(courseHourField, 1, 1).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(66, 25).setInsets(0, 10, 0, 10));
+			layouter.put(layouter.instanceOf(courseColor, 0, 2).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(34, 25).setInsets(0, 10, 10, 10));
+			layouter.put(layouter.instanceOf(courseColorField, 1, 2).setAnchor(Anchor.CENTER).setFill(Fill.BOTH).setWeight(66, 25).setInsets(0, 10, 0, 10));
+			layouter.put(layouter.instanceOf(cancel, 0, 3).setAnchor(Anchor.LEFT).setFill(Fill.BOTH).setWeight(34, 25).setInsets(0, 10, 10, 10));
+			layouter.put(layouter.instanceOf(confirm, 1, 3).setAnchor(Anchor.RIGHT).setFill(Fill.BOTH).setWeight(66, 25).setInsets(0, 10, 0, 10));
 			ToolBox.setPreferredSize(courseIDField, FIXED_FIELD_DIMENSION);
 			ToolBox.setPreferredSize(courseHourField, FIXED_FIELD_DIMENSION);
 			ToolBox.setPreferredSize(courseColorField, FIXED_FIELD_DIMENSION);
 			ToolBox.setPreferredSize(cancel, FIXED_BUTTON_DIMENSION);
 			ToolBox.setPreferredSize(confirm, FIXED_BUTTON_DIMENSION);
-			courseIDField.getTextComponent().requestFocusInWindow();
 		}
 	}
 	

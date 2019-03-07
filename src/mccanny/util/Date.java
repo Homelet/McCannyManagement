@@ -5,13 +5,16 @@ import java.util.GregorianCalendar;
 
 public class Date implements Comparable<Date>{
 	
-	private static Date today(){
+	public static Date today(){
 		Calendar calendar = new GregorianCalendar();
-		return new Date(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE) - 1);
+		calendar.setFirstDayOfWeek(Weekday.FIRST_DAY_OF_WEEK.phrase());
+		return new Date(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE) - 1, Weekday.phrase(calendar.get(Calendar.DAY_OF_WEEK)));
 	}
+	
 	private final Weekday weekday;
 	private final Month   month;
 	private final int     year, day;
+	
 	/**
 	 * if you wish to use the normal way use this constructor
 	 */
@@ -32,6 +35,16 @@ public class Date implements Comparable<Date>{
 			throw new IllegalArgumentException("illegal day number");
 		}
 		this.weekday = Utility.getWeekday(year, this.month, day);
+	}
+	
+	/**
+	 * private constructor for creating a date
+	 */
+	private Date(int year, int month, int day, Weekday weekday){
+		this.year = year;
+		this.month = Month.index(month);
+		this.day = day;
+		this.weekday = weekday;
 	}
 	
 	@Override
@@ -95,13 +108,13 @@ public class Date implements Comparable<Date>{
 	private Date minusSequence(int[] date, int dayBuffer){
 		// month start at 0 and caped at 11,
 		// day start at 0 and caped at either 27, 28, 29 or 30
-		int dayleftThisMonth = date[2];
-		if(dayBuffer > dayleftThisMonth){
-			dayBuffer -= dayleftThisMonth;
+		int dayLeftThisMonth = date[2];
+		if(dayBuffer > dayLeftThisMonth){
+			dayBuffer -= dayLeftThisMonth;
 			date[1] -= 1;
 			date[2] = Month.index(date[1]).days(date[0]);
 		}else{
-			date[2] = dayleftThisMonth - dayBuffer;
+			date[2] = dayLeftThisMonth - dayBuffer;
 			dayBuffer = 0;
 		}
 		if(date[1] < 0){
@@ -116,7 +129,11 @@ public class Date implements Comparable<Date>{
 	
 	@Override
 	public String toString(){
-		return visibleYear() + "/" + visibleMonth() + "/" + visibleDay() + " (" + weekday() + ")";
+		return dateOnly() + " (" + weekday() + ")";
+	}
+	
+	public String dateOnly(){
+		return visibleMonth() + " " + visibleDay() + ", " + visibleYear();
 	}
 	
 	public int visibleYear(){
@@ -129,6 +146,18 @@ public class Date implements Comparable<Date>{
 	
 	public int visibleDay(){
 		return day + 1;
+	}
+	
+	public Month month(){
+		return month;
+	}
+	
+	public int year(){
+		return year;
+	}
+	
+	public int day(){
+		return day;
 	}
 	
 	public Weekday weekday(){

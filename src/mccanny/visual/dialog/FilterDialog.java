@@ -41,7 +41,8 @@ public class FilterDialog extends InfoDialog<Filter>{
 		return dialog.result();
 	}
 	
-	private Filter filter;
+	private Filter      filter;
+	private NestedPanel panel;
 	
 	private FilterDialog(Frame frameOwner, Filter filter){
 		super(frameOwner, "Filter");
@@ -50,7 +51,7 @@ public class FilterDialog extends InfoDialog<Filter>{
 	
 	private void init(Filter filter){
 		this.filter = filter;
-		NestedPanel panel = new NestedPanel();
+		panel = new NestedPanel();
 		this.setContentPane(panel);
 		this.pack();
 	}
@@ -67,10 +68,12 @@ public class FilterDialog extends InfoDialog<Filter>{
 	
 	@Override
 	protected Component firstFocus(){
-		return null;
+		return panel.confirm;
 	}
 	
 	class NestedPanel extends JBasePanel{
+		
+		final JButton confirm;
 		
 		NestedPanel(){
 			JLabel                  showing_all_coursePeriod_ = new JLabel("Showing All CoursePeriod Who ");
@@ -78,8 +81,8 @@ public class FilterDialog extends InfoDialog<Filter>{
 			SelectionLabel<Student> students                  = new SelectionLabel<>(Utility.STUDENT_FLAG, filter != null ? filter.students : null);
 			SelectionLabel<Teacher> teachers                  = new SelectionLabel<>(Utility.TEACHER_FLAG, filter != null ? filter.teachers : null);
 			SelectionLabel<Course>  course                    = new SelectionLabel<>(Utility.COURSE_FLAG, filter != null ? filter.courses : null);
-			JButton                 confirm                   = new JButton("Apply Filter");
-			JButton                 cancel                    = new JButton("Cancel");
+			confirm = new JButton("Apply Filter");
+			JButton cancel = new JButton("Cancel");
 			confirm.addActionListener((action)->{
 				filter = Filter.createFilter(polar.polar(), course.include, students.include, teachers.include);
 				Display.getInstance().manager().applyFilter(filter);

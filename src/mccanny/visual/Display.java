@@ -6,16 +6,18 @@ import homelet.GH.handlers.Layouter.GridBagLayouter.GridConstrain.Anchor;
 import homelet.GH.handlers.Layouter.GridBagLayouter.GridConstrain.Fill;
 import homelet.GH.visual.JCanvas;
 import mccanny.io.Builder;
+import mccanny.io.TimeTableBuilder.TimeTableBuilder;
 import mccanny.management.course.Course;
 import mccanny.management.course.CoursePeriod;
 import mccanny.management.course.manager.CourseManager;
-import mccanny.management.course.manager.OneClickImageRenderer;
 import mccanny.management.course.manager.TimeTable;
 import mccanny.management.student.Student;
 import mccanny.management.teacher.Teacher;
-import mccanny.util.Date;
 import mccanny.util.Utility;
 import mccanny.util.Weekday;
+import mccanny.visual.dialog.*;
+import mccanny.visual.infoCenter.InformationCenter;
+import mccanny.visual.infoCenter.OneClickImageDialog;
 import mccanny.visual.swing.JBasePanel;
 
 import javax.swing.*;
@@ -34,11 +36,12 @@ public class Display extends JFrame{
 	}
 	
 	private void construct(){
-		this.manager.initializeTimeTable(new TimeTable(new Date(2019, 03.f, 10.f)));
+		if(!Builder.loadCourses() | !Builder.loadStudents() | !Builder.loadTeachers())
+			JOptionPane.showMessageDialog(this, "Error Loading Data Base!\nPlease Contact Administer!", "Error", JOptionPane.ERROR_MESSAGE, null);
+		TimeTable timeTable = TimeTableBuilder.decode(Utility.join("data", "timetable.timetable"));
+		this.manager.initializeTimeTable(timeTable);
+//		this.manager.initializeTimeTable(new TimeTable("McCanny TimeTable", new Date(2019, 3.0, 1), new Date(2019, 3.0, 29)));
 		updateDimension();
-		Builder.loadCourses();
-		Builder.loadStudents();
-		Builder.loadTeachers();
 //		Course ESL_GLS1O         = Course.newCourse("ESL", 110, Color.RED);
 //		Course ENG4U_3U          = Course.newCourse("ENG", 110, Color.BLUE);
 //		Course ASM4M_3M          = Course.newCourse("ASM", 110, Color.GREEN);
@@ -64,80 +67,82 @@ public class Display extends JFrame{
 //		Course MCR3U_AMC8        = Course.newCourse("MCR,AMC", 110, new Color(0x3412c4));
 //		Course MUSIC_PORTFOLIO   = Course.newCourse("Portfolios", 110, new Color(0x124599));
 //		Course MODEL_3D          = Course.newCourse("3D Model", 110, new Color(0xc12496e));
+//		Date   date              = Date.today();
+//		String email             = "homeltwei@gmail.com";
 //		//
-//		Teacher Alice    = Teacher.newTeacher("000", "Alice");
-//		Teacher Amanda   = Teacher.newTeacher("001", "Amanda");
-//		Teacher Naiyelli = Teacher.newTeacher("002", "Naiyelli");
-//		Teacher Dr_Golam = Teacher.newTeacher("003", "Dr.Golam");
-//		Teacher Liang    = Teacher.newTeacher("004", "Liang");
-//		Teacher Alberto  = Teacher.newTeacher("005", "Alberto");
-//		Teacher Eleanor  = Teacher.newTeacher("006", "Eleanor");
-//		Teacher Elaine   = Teacher.newTeacher("007", "Elaine");
-//		Teacher Michelle = Teacher.newTeacher("008", "Michelle");
-//		Teacher Stein    = Teacher.newTeacher("009", "Stein");
-//		Teacher Wenxiang = Teacher.newTeacher("010", "Wenxiang");
-//		Teacher Jack     = Teacher.newTeacher("011", "Jack");
-//		Teacher Patrick  = Teacher.newTeacher("012", "Patrick");
-//		Teacher Dr_Ali   = Teacher.newTeacher("013", "Dr.Ali");
-//		Teacher Bill     = Teacher.newTeacher("014", "Bill");
-//		Teacher Irene    = Teacher.newTeacher("015", "Irene");
+//		Teacher Alice    = Teacher.newTeacher("000", "Alice", date, email);
+//		Teacher Amanda   = Teacher.newTeacher("001", "Amanda", date, email);
+//		Teacher Naiyelli = Teacher.newTeacher("002", "Naiyelli", date, email);
+//		Teacher Dr_Golam = Teacher.newTeacher("003", "Dr.Golam", date, email);
+//		Teacher Liang    = Teacher.newTeacher("004", "Liang", date, email);
+//		Teacher Alberto  = Teacher.newTeacher("005", "Alberto", date, email);
+//		Teacher Eleanor  = Teacher.newTeacher("006", "Eleanor", date, email);
+//		Teacher Elaine   = Teacher.newTeacher("007", "Elaine", date, email);
+//		Teacher Michelle = Teacher.newTeacher("008", "Michelle", date, email);
+//		Teacher Stein    = Teacher.newTeacher("009", "Stein", date, email);
+//		Teacher Wenxiang = Teacher.newTeacher("010", "Wenxiang", date, email);
+//		Teacher Jack     = Teacher.newTeacher("011", "Jack", date, email);
+//		Teacher Patrick  = Teacher.newTeacher("012", "Patrick", date, email);
+//		Teacher Dr_Ali   = Teacher.newTeacher("013", "Dr.Ali", date, email);
+//		Teacher Bill     = Teacher.newTeacher("014", "Bill", date, email);
+//		Teacher Irene    = Teacher.newTeacher("015", "Irene", date, email);
 //		//
-//		Student Owen         = Student.newStudent("111", "Owen");
-//		Student Kevin        = Student.newStudent("112", "Kevin");
-//		Student Cytheria     = Student.newStudent("113", "Cytheria");
-//		Student Mandy        = Student.newStudent("114", "Mandy");
-//		Student Emma         = Student.newStudent("115", "Emma");
-//		Student Yuki         = Student.newStudent("116", "Yuki");
-//		Student Gloria       = Student.newStudent("117", "Gloria");
-//		Student Harry        = Student.newStudent("118", "Harry");
-//		Student Ethan        = Student.newStudent("119", "Ethan");
-//		Student Andy         = Student.newStudent("121", "Andy");
-//		Student Oliver       = Student.newStudent("122", "Oliver");
-//		Student Steve        = Student.newStudent("123", "Steve");
-//		Student William      = Student.newStudent("124", "William");
-//		Student Olivia       = Student.newStudent("125", "Olivia");
-//		Student Rachel       = Student.newStudent("126", "Rachel");
-//		Student Chloe        = Student.newStudent("127", "Chloe");
-//		Student Shizhuo      = Student.newStudent("128", "Shizhuo");
-//		Student Finnick      = Student.newStudent("129", "Finnick");
-//		Student Lily         = Student.newStudent("130", "Lily");
-//		Student Felix        = Student.newStudent("131", "Felix");
-//		Student Gavin        = Student.newStudent("132", "Gavin");
-//		Student Kailey       = Student.newStudent("133", "Kailey");
-//		Student Karen        = Student.newStudent("134", "Karen");
-//		Student Yi           = Student.newStudent("135", "Yi");
-//		Student Grantarie    = Student.newStudent("136", "Grantarie");
-//		Student Tony         = Student.newStudent("137", "Tony");
-//		Student Eric         = Student.newStudent("138", "Eric");
-//		Student Jack_student = Student.newStudent("139", "Jack");
-//		Student Homelet      = Student.newStudent("140", "Homelet");
-//		Student Lanhui       = Student.newStudent("141", "Lanhui");
-//		Student Jo           = Student.newStudent("142", "Jo");
-//		Student Brendon      = Student.newStudent("143", "Brendon");
-//		Student Rain         = Student.newStudent("144", "Rain");
-//		Student Ryan         = Student.newStudent("145", "Ryan");
-//		Student Joe          = Student.newStudent("146", "Joe");
-//		Student Joel         = Student.newStudent("147", "Joel");
-//		Student Kris         = Student.newStudent("148", "Kris");
-//		Student Vincent      = Student.newStudent("149", "Vincent");
-//		Student Toney        = Student.newStudent("150", "Toney");
-//		Student Bruce        = Student.newStudent("151", "Bruce");
-//		Student Doris        = Student.newStudent("152", "Doris");
-//		Student Bob          = Student.newStudent("153", "Bob");
-//		Student Ken          = Student.newStudent("154", "Ken");
-//		Student Hank         = Student.newStudent("155", "Hank");
-//		Student Oscar        = Student.newStudent("156", "Oscar");
-//		Student Alex         = Student.newStudent("157", "Alex");
-//		Student Alimee       = Student.newStudent("158", "Alimee");
-//		Student Krystal      = Student.newStudent("159", "Krystal");
-//		Student Lina         = Student.newStudent("160", "Lina");
-//		Student Penny        = Student.newStudent("161", "Penny");
-//		Student Harley       = Student.newStudent("162", "Harley");
-//		Student Jason        = Student.newStudent("163", "Jason");
-//		Student Duncan       = Student.newStudent("164", "Duncan");
-//		Student Zhifei       = Student.newStudent("165", "Zhifei");
-//		Student Rosalia      = Student.newStudent("166", "Rosalia");
-//		Student Kaylina      = Student.newStudent("167", "Kaylina");
+//		Student Owen         = Student.newStudent("111", "Owen", date, email);
+//		Student Kevin        = Student.newStudent("112", "Kevin", date, email);
+//		Student Cytheria     = Student.newStudent("113", "Cytheria", date, email);
+//		Student Mandy        = Student.newStudent("114", "Mandy", date, email);
+//		Student Emma         = Student.newStudent("115", "Emma", date, email);
+//		Student Yuki         = Student.newStudent("116", "Yuki", date, email);
+//		Student Gloria       = Student.newStudent("117", "Gloria", date, email);
+//		Student Harry        = Student.newStudent("118", "Harry", date, email);
+//		Student Ethan        = Student.newStudent("119", "Ethan", date, email);
+//		Student Andy         = Student.newStudent("121", "Andy", date, email);
+//		Student Oliver       = Student.newStudent("122", "Oliver", date, email);
+//		Student Steve        = Student.newStudent("123", "Steve", date, email);
+//		Student William      = Student.newStudent("124", "William", date, email);
+//		Student Olivia       = Student.newStudent("125", "Olivia", date, email);
+//		Student Rachel       = Student.newStudent("126", "Rachel", date, email);
+//		Student Chloe        = Student.newStudent("127", "Chloe", date, email);
+//		Student Shizhuo      = Student.newStudent("128", "Shizhuo", date, email);
+//		Student Finnick      = Student.newStudent("129", "Finnick", date, email);
+//		Student Lily         = Student.newStudent("130", "Lily", date, email);
+//		Student Felix        = Student.newStudent("131", "Felix", date, email);
+//		Student Gavin        = Student.newStudent("132", "Gavin", date, email);
+//		Student Kailey       = Student.newStudent("133", "Kailey", date, email);
+//		Student Karen        = Student.newStudent("134", "Karen", date, email);
+//		Student Yi           = Student.newStudent("135", "Yi", date, email);
+//		Student Grantarie    = Student.newStudent("136", "Grantarie", date, email);
+//		Student Tony         = Student.newStudent("137", "Tony", date, email);
+//		Student Eric         = Student.newStudent("138", "Eric", date, email);
+//		Student Jack_student = Student.newStudent("139", "Jack", date, email);
+//		Student Homelet      = Student.newStudent("140", "Homelet", date, email);
+//		Student Lanhui       = Student.newStudent("141", "Lanhui", date, email);
+//		Student Jo           = Student.newStudent("142", "Jo", date, email);
+//		Student Brendon      = Student.newStudent("143", "Brendon", date, email);
+//		Student Rain         = Student.newStudent("144", "Rain", date, email);
+//		Student Ryan         = Student.newStudent("145", "Ryan", date, email);
+//		Student Joe          = Student.newStudent("146", "Joe", date, email);
+//		Student Joel         = Student.newStudent("147", "Joel", date, email);
+//		Student Kris         = Student.newStudent("148", "Kris", date, email);
+//		Student Vincent      = Student.newStudent("149", "Vincent", date, email);
+//		Student Toney        = Student.newStudent("150", "Toney", date, email);
+//		Student Bruce        = Student.newStudent("151", "Bruce", date, email);
+//		Student Doris        = Student.newStudent("152", "Doris", date, email);
+//		Student Bob          = Student.newStudent("153", "Bob", date, email);
+//		Student Ken          = Student.newStudent("154", "Ken", date, email);
+//		Student Hank         = Student.newStudent("155", "Hank", date, email);
+//		Student Oscar        = Student.newStudent("156", "Oscar", date, email);
+//		Student Alex         = Student.newStudent("157", "Alex", date, email);
+//		Student Alimee       = Student.newStudent("158", "Alimee", date, email);
+//		Student Krystal      = Student.newStudent("159", "Krystal", date, email);
+//		Student Lina         = Student.newStudent("160", "Lina", date, email);
+//		Student Penny        = Student.newStudent("161", "Penny", date, email);
+//		Student Harley       = Student.newStudent("162", "Harley", date, email);
+//		Student Jason        = Student.newStudent("163", "Jason", date, email);
+//		Student Duncan       = Student.newStudent("164", "Duncan", date, email);
+//		Student Zhifei       = Student.newStudent("165", "Zhifei", date, email);
+//		Student Rosalia      = Student.newStudent("166", "Rosalia", date, email);
+//		Student Kaylina      = Student.newStudent("167", "Kaylina", date, email);
 //		create(ESL_GLS1O, Weekday.MONDAY, 9.25, 12.25, new Teacher[]{ Alice }, Owen, Kevin, Cytheria, Mandy, Emma, Yuki);
 //		create(ENG4U_3U, Weekday.MONDAY, 9.25, 12.25, new Teacher[]{ Amanda }, Gloria, Harry, Ethan, Andy, Oliver, Steve, William, Olivia, Rachel);
 //		create(ASM4M_3M, Weekday.MONDAY, 12.75, 15.75, new Teacher[]{ Naiyelli }, Chloe, Shizhuo, Gloria, Finnick, Olivia, Rachel, Cytheria, Mandy, Lily);
@@ -196,8 +201,8 @@ public class Display extends JFrame{
 	
 	private void create(Course course, Weekday weekday, double start, double end, Teacher[] teacher, Student... student){
 		CoursePeriod p = new CoursePeriod(course, 1, weekday, start, end);
-		p.addTeacher(true, Arrays.asList(teacher));
-		p.addStudent(true, Arrays.asList(student));
+		p.replaceTeacher(Arrays.asList(teacher));
+		p.replaceStudent(Arrays.asList(student));
 		manager.add(p);
 	}
 	
@@ -206,7 +211,7 @@ public class Display extends JFrame{
 	 * 21 for mac
 	 */
 	public void updateDimension(){
-		DISPLAY_DIMENSION.setSize(CourseManager.TIMETABLE_DI.width + CourseManager.LEFT_INSET + CourseManager.RIGHT_INSET, CourseManager.TIMETABLE_DI.height + CourseManager.BOTTOM_INSET + CourseManager.TOP_INSET + 39);
+		DISPLAY_DIMENSION.setSize(CourseManager.TIMETABLE_DI.width + CourseManager.LEFT_INSET + CourseManager.RIGHT_INSET, CourseManager.TIMETABLE_DI.height + CourseManager.BOTTOM_INSET + CourseManager.TOP_INSET + 39 + 23);
 		this.setSize(DISPLAY_DIMENSION);
 		this.revalidate();
 	}
@@ -215,17 +220,15 @@ public class Display extends JFrame{
 		return display;
 	}
 	
-	public static final Color                 McCANNY_BLUE                = new Color(0x00205E);
-	public static final String                VERSION                     = "V1.0 BETA";
-	public static final Dimension             DISPLAY_DIMENSION           = new Dimension();
-	public static       String                TIME_TABLE_OUTPUT_DIRECTORY = "/Users/homeletwei/Workspaces/IntelliJ IDEA/McCannyManagement/timeTable";
-	public static       Font                  CLEAR_SANS_BOLD;
-	public static       Dimension             SCREEN_DIMENSION;
-	public static       boolean               FORMAT_24                   = false;
-	private static      Display               display;
-	private final       JCanvas               canvas;
-	private final       CourseManager         manager;
-	private final       OneClickImageRenderer renderer;
+	public static final Color         McCANNY_BLUE      = new Color(0x00205E);
+	public static final String        VERSION           = "V1.0 BETA";
+	public static final Dimension     DISPLAY_DIMENSION = new Dimension();
+	public static       Font          CLEAR_SANS_BOLD;
+	public static       Dimension     SCREEN_DIMENSION;
+	public static       boolean       FORMAT_24         = false;
+	private static      Display       display;
+	private final       JCanvas       canvas;
+	private final       CourseManager manager;
 	
 	static{
 		try{
@@ -244,11 +247,110 @@ public class Display extends JFrame{
 		this.canvas.getCanvasThread().setPrintNoticeInConsole(false);
 		this.canvas.getCanvasThread().setFPS(30);
 		this.manager = new CourseManager(canvas.getCanvasThread());
-		this.renderer = new OneClickImageRenderer();
-		JBasePanel               panel    = new JBasePanel();
+		JBasePanel panel = new JBasePanel();
+		createMenu();
 		Layouter.GridBagLayouter layouter = new GridBagLayouter(panel);
 		layouter.put(layouter.instanceOf(canvas, 0, 0).setWeight(100, 100).setFill(Fill.BOTH).setAnchor(Anchor.CENTER));
 		this.setContentPane(panel);
+	}
+	
+	private void createMenu(){
+		JMenuBar menuBar = new JMenuBar();
+		// File
+		JMenu     file         = new JMenu("File");
+		JMenuItem newTimeTable = new JMenuItem("New");
+		JMenuItem openRecent   = new JMenuItem("Recent");
+		JMenuItem saveAs       = new JMenuItem("Save as...");
+		JMenuItem save         = new JMenuItem("Save");
+		JMenuItem setting      = new JMenuItem("Setting");
+		JMenuItem exit         = new JMenuItem("Exit");
+		file.add(newTimeTable);
+		file.add(openRecent);
+		file.addSeparator();
+		file.add(save);
+		file.add(saveAs);
+		file.addSeparator();
+		file.add(setting);
+		file.addSeparator();
+		file.add(exit);
+		newTimeTable.addActionListener(action->{
+		});
+		save.addActionListener(action->{
+			manager.timeTable().save();
+		});
+		saveAs.addActionListener(action->{
+			manager.timeTable().saveAs();
+		});
+		openRecent.addActionListener(action->{
+		});
+		setting.addActionListener(action->{
+		});
+		exit.addActionListener(action->{
+		});
+		// Edit
+		JMenu             info            = new JMenu("Info");
+		JCheckBoxMenuItem massProduction  = new JCheckBoxMenuItem("Mass Production Mode", false);
+		JMenuItem         newStudent      = new JMenuItem("New Student");
+		JMenuItem         newTeacher      = new JMenuItem("New Teacher");
+		JMenuItem         newCourse       = new JMenuItem("New Course");
+		JMenuItem         newCoursePeriod = new JMenuItem("New CoursePeriod");
+		JMenuItem         Info            = new JMenuItem("Info Center");
+		info.add(massProduction);
+		info.addSeparator();
+		info.add(newStudent);
+		info.add(newTeacher);
+		info.add(newCourse);
+		info.addSeparator();
+		info.add(newCoursePeriod);
+		info.addSeparator();
+		info.add(Info);
+		newStudent.addActionListener(action->{
+			do{
+				if(StudentInfoDialog.showInfoDialog(null) == null)
+					break;
+			}while(massProduction.isSelected());
+		});
+		newTeacher.addActionListener(action->{
+			do{
+				if(TeacherInfoDialog.showInfoDialog(null) == null)
+					break;
+			}while(massProduction.isSelected());
+		});
+		newCourse.addActionListener(action->{
+			do{
+				if(CourseInfoDialog.showInfoDialog(null) == null)
+					break;
+			}while(massProduction.isSelected());
+		});
+		newCoursePeriod.addActionListener(action->{
+			do{
+				if(PeriodInfoDialog.showInfoDialog(null) == null)
+					break;
+			}while(massProduction.isSelected());
+		});
+		Info.addActionListener(action->{
+			InformationCenter.showInformationCenter();
+		});
+		// Filter
+		JMenu     filter      = new JMenu("Filter");
+		JMenuItem applyFilter = new JMenuItem("Apply Filter");
+		applyFilter.addActionListener(action->{
+			FilterDialog.showInfoDialog();
+		});
+		filter.add(applyFilter);
+		// Utility
+		JMenu     utility           = new JMenu("Utility");
+		JMenuItem oneClickGenerator = new JMenuItem("One Click Generator");
+		oneClickGenerator.addActionListener(action->{
+			OneClickImageDialog.showOneClickDialog();
+		});
+		utility.add(oneClickGenerator);
+		//
+		menuBar.add(file);
+		menuBar.add(info);
+		menuBar.add(filter);
+		menuBar.add(utility);
+		this.setJMenuBar(menuBar);
 	}
 	
 	public JCanvas canvas(){
@@ -259,35 +361,32 @@ public class Display extends JFrame{
 		return manager;
 	}
 	
-	public OneClickImageRenderer renderer(){
-		return renderer;
-	}
-	
 	public void showDisplay(){
 		this.setLocation(Utility.frameVertex(new Rectangle(SCREEN_DIMENSION), this.getBounds()));
 		this.setVisible(true);
 		this.canvas.startRendering();
 		SwingUtilities.invokeLater(()->{
-//			StudentInfoDialog.showDialog(null);
-//			TeacherInfoDialog.showDialog(null);
-//			CourseInfoDialog.showDialog(null);
-//			FilterDialog.showInfoDialog();
-//			SelectionDialog.showCourseDialog(this, Collections.emptyList(), Course.courses(), null);
-//			InformationCenter.showInformationCenter();
+			TimeTableInfoDialog.showInfoDialog();
 		});
 	}
 	
 	@Override
 	protected void processWindowEvent(WindowEvent e){
-		if(e.getID() == WindowEvent.WINDOW_CLOSING)
-			onExit();
+		if(e.getID() == WindowEvent.WINDOW_CLOSING){
+			if(!onExit())
+				return;
+		}
 		super.processWindowEvent(e);
 	}
 	
-	private void onExit(){
-		Builder.writeStudents();
-		Builder.writeTeachers();
-		Builder.writeCourses();
-		System.out.println("Exiting!");
+	private boolean onExit(){
+		if(Builder.writeStudents() & Builder.writeTeachers() & Builder.writeCourses() & manager.timeTable().close()){
+			System.out.println("Exiting!");
+			return true;
+		}else{
+			JOptionPane.showMessageDialog(this, "Error shutting Down!\nPlease Contact Administer!", "Error", JOptionPane.ERROR_MESSAGE, null);
+			System.err.println("Error shutting Down!");
+			return false;
+		}
 	}
 }

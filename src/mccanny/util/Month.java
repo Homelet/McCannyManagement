@@ -36,6 +36,10 @@ public enum Month{
 		return Month.values()[index];
 	}
 	
+	/**
+	 * return the day in this month for a particular year
+	 * start at 1 and capped at what ever day has ( 28, 29, 30, 31 )
+	 */
 	public int days(int year){
 		switch(this.index){
 			case 1:

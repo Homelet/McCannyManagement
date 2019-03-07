@@ -10,9 +10,9 @@ import java.awt.event.WindowEvent;
 
 public abstract class InfoDialog<E> extends JDialog{
 	
-	static final Dimension FIXED_BUTTON_DIMENSION        = new Dimension(100, 30);
-	static final Dimension FIXED_SQUARE_BUTTON_DIMENSION = new Dimension(30, 30);
-	static final Dimension FIXED_FIELD_DIMENSION         = new Dimension(200, 30);
+	public static final Dimension FIXED_BUTTON_DIMENSION        = new Dimension(100, 30);
+	public static final Dimension FIXED_SQUARE_BUTTON_DIMENSION = new Dimension(30, 30);
+	public static final Dimension FIXED_FIELD_DIMENSION         = new Dimension(200, 30);
 	
 	InfoDialog(Frame frameOwner, String title){
 		super(frameOwner, title, true);

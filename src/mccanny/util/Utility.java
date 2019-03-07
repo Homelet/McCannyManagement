@@ -11,7 +11,7 @@ import java.util.*;
 
 public class Utility{
 	
-	public static final String FILE_SEPARATOR = File.separator;
+	public static final String PATH_SEPARATOR = File.separator;
 	
 	public static String flag(int flag){
 		switch(flag){
@@ -255,8 +255,12 @@ public class Utility{
 	public static String join(String root, String... layers){
 		StringBuilder builder = new StringBuilder(root);
 		for(String s : layers)
-			builder.append(FILE_SEPARATOR).append(s);
+			builder.append(PATH_SEPARATOR).append(s);
 		return builder.toString();
+	}
+	
+	public static String checkName(String name){
+		return name.trim().replace("/", "_").replace("\\", "_");
 	}
 	
 	public interface PeriodComparator<E>{

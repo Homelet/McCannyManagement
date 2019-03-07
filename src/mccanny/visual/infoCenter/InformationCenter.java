@@ -36,8 +36,8 @@ public class InformationCenter extends JDialog{
 		panel.coursePanel.syncTableModule();
 	}
 	
-	private static final String[]          STUDENT_HEADER    = new String[]{ "Identity", "OEN" };
-	private static final String[]          TEACHER_HEADER    = new String[]{ "Identity", "MEN" };
+	private static final String[]          STUDENT_HEADER    = new String[]{ "Identity", "OEN", "Birthday", "Email" };
+	private static final String[]          TEACHER_HEADER    = new String[]{ "Identity", "MEN", "Birthday", "Email" };
 	private static final String[]          COURSE_HEADER     = new String[]{ "Course ID", "Course Hour" };
 	private static final InformationCenter informationCenter = new InformationCenter();
 	private final        NestedPanel       panel;
@@ -202,9 +202,12 @@ public class InformationCenter extends JDialog{
 		
 		void syncTableModule(){
 			tableModule = new TableModule(columnHeader);
+			table.setRowSorter(null);
 			table.setModel(tableModule);
-			table.setRowSorter(new TableRowSorter<>(tableModule));
-			table.getRowSorter().toggleSortOrder(0);
+			if(tableModule.data.length != 0){
+				table.setRowSorter(new TableRowSorter<>(tableModule));
+				table.getRowSorter().toggleSortOrder(0);
+			}
 		}
 		
 		@Override
@@ -284,6 +287,8 @@ public class InformationCenter extends JDialog{
 							data[row][0] = item;
 							data[row][1] = item.identity();
 							data[row][2] = item.OEN();
+							data[row][3] = item.birthday();
+							data[row][4] = item.email();
 							row++;
 						}
 						break;
@@ -295,6 +300,8 @@ public class InformationCenter extends JDialog{
 							data[row][0] = item;
 							data[row][1] = item.identity();
 							data[row][2] = item.MEN();
+							data[row][3] = item.birthday();
+							data[row][4] = item.email();
 							row++;
 						}
 						break;

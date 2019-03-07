@@ -25,58 +25,59 @@ public class SelectionDialog<E> extends InfoDialog<Collection<E>>{
 	public static SelectionDialog<Student> showStudentDialog(Collection<Student> include, Collection<Student> exclude, NewItemListener itemListener){
 		return showStudentDialog(Display.getInstance(), include, exclude, itemListener);
 	}
-
+	
 	public static SelectionDialog<Student> showStudentDialog(Frame frameOwner, Collection<Student> include, Collection<Student> exclude, NewItemListener itemListener){
 		SelectionDialog<Student> studentSelectionDialog = new SelectionDialog<>(frameOwner, STUDENT_COLUMN_HEADER, include, exclude, Utility.STUDENT_FLAG, itemListener);
 		studentSelectionDialog.showDialog();
 		studentSelectionDialog.removeDialog();
 		return studentSelectionDialog;
 	}
-
+	
 	public static SelectionDialog<Student> showStudentDialog(Dialog frameOwner, Collection<Student> include, Collection<Student> exclude, NewItemListener itemListener){
 		SelectionDialog<Student> studentSelectionDialog = new SelectionDialog<>(frameOwner, STUDENT_COLUMN_HEADER, include, exclude, Utility.STUDENT_FLAG, itemListener);
 		studentSelectionDialog.showDialog();
 		studentSelectionDialog.removeDialog();
 		return studentSelectionDialog;
 	}
-
+	
 	public static SelectionDialog<Teacher> showTeacherDialog(Collection<Teacher> include, Collection<Teacher> exclude, NewItemListener itemListener){
 		return showTeacherDialog(Display.getInstance(), include, exclude, itemListener);
 	}
-
+	
 	public static SelectionDialog<Teacher> showTeacherDialog(Frame frameOwner, Collection<Teacher> include, Collection<Teacher> exclude, NewItemListener itemListener){
 		SelectionDialog<Teacher> teacherSelectionDialog = new SelectionDialog<>(frameOwner, TEACHER_COLUMN_HEADER, include, exclude, Utility.TEACHER_FLAG, itemListener);
 		teacherSelectionDialog.showDialog();
 		teacherSelectionDialog.removeDialog();
 		return teacherSelectionDialog;
 	}
-
+	
 	public static SelectionDialog<Teacher> showTeacherDialog(Dialog frameOwner, Collection<Teacher> include, Collection<Teacher> exclude, NewItemListener itemListener){
 		SelectionDialog<Teacher> teacherSelectionDialog = new SelectionDialog<>(frameOwner, TEACHER_COLUMN_HEADER, include, exclude, Utility.TEACHER_FLAG, itemListener);
 		teacherSelectionDialog.showDialog();
 		teacherSelectionDialog.removeDialog();
 		return teacherSelectionDialog;
 	}
-
+	
 	public static SelectionDialog<Course> showCourseDialog(Collection<Course> include, Collection<Course> exclude, NewItemListener itemListener){
 		return showCourseDialog(Display.getInstance(), include, exclude, itemListener);
 	}
-
+	
 	public static SelectionDialog<Course> showCourseDialog(Frame frameOwner, Collection<Course> include, Collection<Course> exclude, NewItemListener itemListener){
 		SelectionDialog<Course> courseSelectionDialog = new SelectionDialog<>(frameOwner, COURSE_COLUMN_HEADER, include, exclude, Utility.COURSE_FLAG, itemListener);
 		courseSelectionDialog.showDialog();
 		courseSelectionDialog.removeDialog();
 		return courseSelectionDialog;
 	}
-
+	
 	public static SelectionDialog<Course> showCourseDialog(Dialog frameOwner, Collection<Course> include, Collection<Course> exclude, NewItemListener itemListener){
 		SelectionDialog<Course> courseSelectionDialog = new SelectionDialog<>(frameOwner, COURSE_COLUMN_HEADER, include, exclude, Utility.COURSE_FLAG, itemListener);
 		courseSelectionDialog.showDialog();
 		courseSelectionDialog.removeDialog();
 		return courseSelectionDialog;
 	}
-	private static final String[]        STUDENT_COLUMN_HEADER = new String[]{ null, "Identity", "OEN" };
-	private static final String[]        TEACHER_COLUMN_HEADER = new String[]{ null, "Identity", "MEN" };
+	
+	private static final String[]        STUDENT_COLUMN_HEADER = new String[]{ null, "Identity", "OEN", "Birthday", "Email" };
+	private static final String[]        TEACHER_COLUMN_HEADER = new String[]{ null, "Identity", "MEN", "Birthday", "Email" };
 	private static final String[]        COURSE_COLUMN_HEADER  = new String[]{ null, "CourseID", "CourseHour" };
 	private              ArrayList<E>    include;
 	private              ArrayList<E>    exclude;
@@ -113,10 +114,12 @@ public class SelectionDialog<E> extends InfoDialog<Collection<E>>{
 	}
 	
 	public Collection<E> include(){
+		include.sort(null);
 		return include;
 	}
 	
 	public Collection<E> exclude(){
+		exclude.sort(null);
 		return exclude;
 	}
 	
@@ -137,7 +140,7 @@ public class SelectionDialog<E> extends InfoDialog<Collection<E>>{
 			JButton        newItem        = new JButton("New " + title);
 			JButton        selectAll      = new JButton("Select All");
 			JButton        clearSelection = new JButton("Clear Selection");
-			JButton        confirm        = new JButton("Confirm");
+			JButton        confirm        = new JButton("Confirm Selection");
 			JButton        cancel         = new JButton("Cancel");
 			confirm.addActionListener((action)->{
 				acceptResult = true;
@@ -199,13 +202,14 @@ public class SelectionDialog<E> extends InfoDialog<Collection<E>>{
 		
 		void syncTableModule(){
 			tableModule = new TableModule(columnHeader);
+			table.setRowSorter(null);
 			table.setModel(tableModule);
-			table.setRowSorter(new TableRowSorter<>(tableModule));
-			table.getRowSorter().toggleSortOrder(1);
+			if(tableModule.data.length != 0){
+				table.setRowSorter(new TableRowSorter<>(tableModule));
+				table.getRowSorter().toggleSortOrder(1);
+			}
 			TableColumnModel model = table.getColumnModel();
 			model.getColumn(0).setResizable(false);
-			model.getColumn(1).setResizable(false);
-			model.getColumn(2).setResizable(false);
 			model.getColumn(0).setMinWidth(20);
 			model.getColumn(0).setMaxWidth(20);
 			model.getColumn(0).setPreferredWidth(20);
@@ -339,6 +343,8 @@ public class SelectionDialog<E> extends InfoDialog<Collection<E>>{
 						data[row][1] = Boolean.TRUE;
 						data[row][2] = item.identity();
 						data[row][3] = item.OEN();
+						data[row][4] = item.birthday();
+						data[row][5] = item.email();
 						row++;
 					}
 					for(E e : exclude){
@@ -347,6 +353,8 @@ public class SelectionDialog<E> extends InfoDialog<Collection<E>>{
 						data[row][1] = Boolean.FALSE;
 						data[row][2] = item.identity();
 						data[row][3] = item.OEN();
+						data[row][4] = item.birthday();
+						data[row][5] = item.email();
 						row++;
 					}
 					break;
@@ -357,6 +365,8 @@ public class SelectionDialog<E> extends InfoDialog<Collection<E>>{
 						data[row][1] = Boolean.TRUE;
 						data[row][2] = item.identity();
 						data[row][3] = item.MEN();
+						data[row][4] = item.birthday();
+						data[row][5] = item.email();
 						row++;
 					}
 					for(E e : exclude){
@@ -365,6 +375,8 @@ public class SelectionDialog<E> extends InfoDialog<Collection<E>>{
 						data[row][1] = Boolean.FALSE;
 						data[row][2] = item.identity();
 						data[row][3] = item.MEN();
+						data[row][4] = item.birthday();
+						data[row][5] = item.email();
 						row++;
 					}
 					break;

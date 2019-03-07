@@ -5,15 +5,33 @@ import homelet.GH.StringDrawer.StringDrawer.StringDrawerException;
 import homelet.GH.handlers.GH;
 import homelet.GH.utils.Alignment;
 import homelet.GH.visual.interfaces.Renderable;
+import mccanny.io.Builder;
+import mccanny.io.TimeTableBuilder.TimeTableBuilder;
 import mccanny.management.course.CoursePeriod;
 import mccanny.util.*;
 import mccanny.visual.Display;
+import mccanny.visual.infoCenter.OneClickImageDialog;
 
+import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.util.Collection;
 
 public class TimeTable implements Renderable, ImageRenderable{
 	
+	private static final TimeTableBuilder BUILDER = Builder.TIME_TABLE_V1;
+	private static       JFileChooser     FILE_CHOOSER;
+	
+	static{
+		FILE_CHOOSER = new JFileChooser();
+		FILE_CHOOSER.setMultiSelectionEnabled(false);
+		FILE_CHOOSER.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		FILE_CHOOSER.setDialogType(JFileChooser.SAVE_DIALOG);
+		FILE_CHOOSER.setDialogTitle("Save As");
+		FILE_CHOOSER.setApproveButtonToolTipText("Click to save Timetable.");
+	}
+	
+	//
 	private static Color                            GRAY = new Color(0x999999);
 	private final  OrderedUniqueArray<CoursePeriod> periods;
 	private final  StringDrawer                     nameDrawer;
@@ -21,13 +39,16 @@ public class TimeTable implements Renderable, ImageRenderable{
 	private final  StringDrawer                     timeDrawer;
 	private final  StringDrawer                     semiTimeDrawer;
 	private final  StringDrawer                     filterDrawer;
+	private        String                           name;
 	private        Date                             startDate;
 	private        Date                             endDate;
 	private        Filter                           filter;
+	private        boolean                          saved;
+	private        File                             file;
 	
 	// for sub Timetable
 	public TimeTable(TimeTable parent, Object object, Filter filter){
-		this.nameDrawer = new StringDrawer("McCanny TimeTable" + (object != null ? (" (" + object + ")") : ""));
+		this.nameDrawer = new StringDrawer();
 		this.nameDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(30.0f));
 		this.nameDrawer.setAlign(Alignment.TOP);
 		this.nameDrawer.setTextAlign(Alignment.TOP);
@@ -58,16 +79,20 @@ public class TimeTable implements Renderable, ImageRenderable{
 		this.semiTimeDrawer.setInsetsRight(5);
 		this.semiTimeDrawer.setColor(GRAY);
 		this.periods = new OrderedUniqueArray<>();
+		this.name = parent.name + (object != null ? (" (" + object + ")") : "");
+		name(name);
 		for(CoursePeriod period : parent.periods){
 			if(filter.filter(period))
 				periods.add(period);
 		}
 		this.filter = filter;
-		startDate(parent.startDate);
+		this.startDate = parent.startDate;
+		this.endDate = parent.endDate;
+		syncPeriodDrawer();
 	}
 	
-	public TimeTable(Date startDate){
-		this.nameDrawer = new StringDrawer("McCanny TimeTable");
+	public TimeTable(String name, File file, Date startDate, Date endDate){
+		this.nameDrawer = new StringDrawer();
 		this.nameDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(30.0f));
 		this.nameDrawer.setAlign(Alignment.TOP);
 		this.nameDrawer.setTextAlign(Alignment.TOP);
@@ -98,23 +123,49 @@ public class TimeTable implements Renderable, ImageRenderable{
 		this.semiTimeDrawer.setInsetsRight(5);
 		this.semiTimeDrawer.setColor(GRAY);
 		this.periods = new OrderedUniqueArray<>();
+		this.name = name;
+		name(name);
 		applyFilter(Filter.NULL_FILTER);
-		startDate(startDate);
+		this.startDate = startDate;
+		this.endDate = endDate;
+		syncPeriodDrawer();
+		this.file = file;
 	}
 	
 	public void startDate(Date startDate){
 		this.startDate = startDate;
-		this.periodDrawer.initializeContents(startDate.visibleMonth() + ", " + startDate.visibleYear());
+		syncPeriodDrawer();
 	}
 	
 	public Date startDate(){
 		return startDate;
 	}
 	
+	public void endDate(Date endDate){
+		this.endDate = endDate;
+		syncPeriodDrawer();
+	}
+	
+	public Date endDate(){
+		return endDate;
+	}
+	
+	public String name(){
+		return name;
+	}
+	
+	public void name(String name){
+		this.name = name;
+		nameDrawer.initializeContents(name);
+	}
+	
+	private void syncPeriodDrawer(){
+		this.periodDrawer.initializeContents((startDate == null ? "" : startDate.dateOnly()) + (endDate == null ? "" : " ~ " + endDate.dateOnly()));
+	}
+	
 	public void addAll(Collection<CoursePeriod> periods){
 		for(CoursePeriod period : periods){
-			this.periods.add(period);
-			period.activate(filter.filter(period));
+			add(period);
 		}
 	}
 	
@@ -126,12 +177,12 @@ public class TimeTable implements Renderable, ImageRenderable{
 		return periods.isEmpty();
 	}
 	
-	void add(CoursePeriod period){
+	public void add(CoursePeriod period){
 		this.periods.add(period);
 		period.activate(filter.filter(period));
 	}
 	
-	void remove(CoursePeriod period){
+	public void remove(CoursePeriod period){
 		this.periods.remove(period);
 	}
 	
@@ -193,7 +244,7 @@ public class TimeTable implements Renderable, ImageRenderable{
 		for(Weekday day : Weekday.weekdays()){
 			if(day == Weekday.FIRST_DAY_OF_WEEK)
 				continue;
-			int renderOffset = Display.getInstance().renderer().renderOffset(day);
+			int renderOffset = OneClickImageDialog.renderOffset(day);
 			g.fill(GH.rectangle(false, renderOffset - 5, CourseManager.TOP_INSET - 5, 5, CourseManager.TIMETABLE_DI.height + 5));
 		}
 	}
@@ -261,5 +312,65 @@ public class TimeTable implements Renderable, ImageRenderable{
 	
 	public Filter filter(){
 		return filter;
+	}
+	
+	private String promptPath(){
+		File f;
+		if(file == null)
+			f = new File(Utility.join("", name + ".timetable"));
+		else
+			f = file;
+		FILE_CHOOSER.setSelectedFile(f);
+		int result = FILE_CHOOSER.showDialog(Display.getInstance(), "Save As .timetable");
+		switch(result){
+			case JFileChooser.CANCEL_OPTION:
+			case JFileChooser.ERROR_OPTION:
+				return null;
+			case JFileChooser.APPROVE_OPTION:
+		}
+		f = FILE_CHOOSER.getSelectedFile();
+		String path = f.getPath();
+		if(!path.endsWith(".timetable"))
+			path += ".timetable";
+		return path;
+	}
+	
+	public boolean save(){
+		if(!saved){
+			if(file == null){
+				return saveAs();
+			}else{
+				saved = true;
+				return BUILDER.encode(this, file);
+			}
+		}
+		return true;
+	}
+	
+	public boolean saveAs(){
+		String path = promptPath();
+		if(path == null)
+			return false;
+		file = new File(path);
+		saved = true;
+		return BUILDER.encode(this, file);
+	}
+	
+	public boolean close(){
+		if(!saved){
+			int result = JOptionPane.showConfirmDialog(Display.getInstance(), "There is a unsaved change.\nAre you sure to save?", "Save", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null);
+			switch(result){
+				default:
+				case JOptionPane.NO_OPTION:
+					return false;
+				case JOptionPane.YES_OPTION:
+					return save();
+			}
+		}
+		return true;
+	}
+	
+	public void changed(){
+		saved = false;
 	}
 }

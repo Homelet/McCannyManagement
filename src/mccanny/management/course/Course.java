@@ -11,7 +11,7 @@ import java.util.HashMap;
 /**
  * the blue print for every course object
  */
-public class Course implements ToolTipText, Distinguishable{
+public class Course implements ToolTipText, Distinguishable, Comparable<Course>{
 	
 	public static Course findCourse(String courseID){
 		return courses.get(courseID);
@@ -57,11 +57,22 @@ public class Course implements ToolTipText, Distinguishable{
 	public String courseID(){
 		return courseID;
 	}
+	
 	private static HashMap<String, Course> courses = new HashMap<>();
-	private final String UID;
-	private       String courseID;
-	private       double courseHour;
-	private       Color  color;
+	private final  String                  UID;
+	private        String                  courseID;
+	private        double                  courseHour;
+	private        Color                   color;
+	
+	@Override
+	public int compareTo(Course o){
+		int result = courseID.compareTo(o.courseID);
+		if(result == 0){
+			return Double.compare(courseHour, o.courseHour);
+		}else{
+			return result;
+		}
+	}
 	
 	private Course(String UID, String courseID, double courseHour, Color color){
 		this.UID = UID;

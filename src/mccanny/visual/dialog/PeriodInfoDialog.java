@@ -109,7 +109,7 @@ public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
 				periodField.startField.processValue(period.start(), false);
 				periodField.endField.processValue(period.end(), false);
 			}
-			JButton confirm = new JButton("Confirm");
+			JButton confirm = new JButton(period != null ? "Apply Changes" : "Create CoursePeriod");
 			JButton cancel  = new JButton("Cancel");
 			confirm.addActionListener((action)->{
 				Course              courseValue          = (Course) basicField.courseField.getSelectedItem();
@@ -135,8 +135,8 @@ public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
 				if(period == null){
 					try{
 						period = new CoursePeriod(courseValue, classRoomNumberValue, weekdayValue, startValue, endValue);
-						period.addTeacher(true, teacherValue);
-						period.addStudent(true, studentValue);
+						period.replaceTeacher(teacherValue);
+						period.replaceStudent(studentValue);
 						Display.getInstance().manager().add(period);
 						closeDialog();
 					}catch(IllegalArgumentException e){

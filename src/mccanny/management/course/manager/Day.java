@@ -32,7 +32,7 @@ public class Day extends ActionsManager implements LocatableRender, ImageRendera
 	private final Point                           vertex;
 	private final StringDrawer                    drawer;
 	
-	Day(Weekday weekday){
+	public Day(Weekday weekday){
 		this.weekday = weekday;
 		errors = new ArrayList<>();
 		events = new OrderedUniqueArray<>();
@@ -65,7 +65,7 @@ public class Day extends ActionsManager implements LocatableRender, ImageRendera
 		this.size.width = this.maxCount * CoursePeriod.WIDTH;
 	}
 	
-	int width(){
+	public int width(){
 		return this.size.width;
 	}
 	
@@ -77,6 +77,14 @@ public class Day extends ActionsManager implements LocatableRender, ImageRendera
 	@Override
 	public Point getVertex(Rectangle rectangle){
 		return vertex;
+	}
+	
+	public ArrayList<CourseCollusion> errors(){
+		return errors;
+	}
+	
+	public OrderedUniqueArray<PeriodEvent> events(){
+		return events;
 	}
 	
 	@Override

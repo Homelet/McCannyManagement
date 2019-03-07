@@ -13,6 +13,27 @@ public enum Weekday{
 	SATURDAY(5, "Saturday"),
 	SUNDAY(6, "Sunday");
 	
+	public static Weekday offset(int offset){
+		switch(offset){
+			case 0:
+				return Weekday.MONDAY;
+			case 1:
+				return Weekday.TUESDAY;
+			case 2:
+				return Weekday.WEDNESDAY;
+			case 3:
+				return Weekday.THURSDAY;
+			case 4:
+				return Weekday.FRIDAY;
+			case 5:
+				return Weekday.SATURDAY;
+			case 6:
+				return Weekday.SUNDAY;
+			default:
+				return null;
+		}
+	}
+	
 	public static Weekday[] weekdays(Weekday from){
 		Weekday[] weekdays = new Weekday[7];
 		int       cursor   = from.index;
@@ -57,10 +78,10 @@ public enum Weekday{
 				return Weekday.THURSDAY;
 			case Calendar.FRIDAY:
 				return Weekday.FRIDAY;
-			case Calendar.SUNDAY:
-				return Weekday.SUNDAY;
 			case Calendar.SATURDAY:
 				return Weekday.SATURDAY;
+			case Calendar.SUNDAY:
+				return Weekday.SUNDAY;
 			default:
 				return null;
 		}
@@ -116,6 +137,10 @@ public enum Weekday{
 			validate();
 		}
 		return index;
+	}
+	
+	public int offset(){
+		return offset;
 	}
 	
 	public static boolean isValidated(){

@@ -39,6 +39,7 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	private final        StringDrawer                           courseCodeDrawer;
 	private final        StringDrawer                           teacherDrawer;
 	private final        StringDrawer                           studentDrawer;
+	// data
 	private              Course                                 course;
 	private              int                                    classroomNumber;
 	private              double                                 start;
@@ -179,6 +180,7 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	}
 	
 	public void syncTeacherApper(){
+		teachers.sort(null);
 		teacherDrawer.clearAllContents();
 		for(int i = 0; i < teachers.size(); i++){
 			if(i < config.maxTeacher - 1){
@@ -195,6 +197,7 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	}
 	
 	public void syncStudentApper(){
+		students.sort(null);
 		studentDrawer.clearAllContents();
 		for(int i = 0; i < students.size(); i++){
 			if(i < config.maxStudent - 1){
@@ -229,7 +232,12 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 		}else if(p1.start < p2.start){
 			return -1;
 		}else{
-			return Double.compare(p1.end, p2.end);
+			int result = Double.compare(p1.end, p2.end);
+			if(result == 0){
+				return p1.course.courseID().compareTo(p2.course.courseID());
+			}else{
+				return result;
+			}
 		}
 	}
 	
@@ -273,14 +281,8 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 		return weekday;
 	}
 	
-	public void addTeacher(boolean sync, Collection<Teacher> teacher){
-		teachers.addAll(teacher);
-		if(sync)
-			syncTeacherApper();
-	}
-	
-	public void removeTeacher(boolean sync, Collection<Teacher> teacher){
-		teachers.removeAll(teacher);
+	public void addTeacher(boolean sync, Teacher teacher){
+		teachers.add(teacher);
 		if(sync)
 			syncTeacherApper();
 	}
@@ -291,14 +293,8 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 		syncTeacherApper();
 	}
 	
-	public void addStudent(boolean sync, Collection<Student> student){
-		students.addAll(student);
-		if(sync)
-			syncStudentApper();
-	}
-	
-	public void removeStudent(boolean sync, Collection<Student> student){
-		students.removeAll(student);
+	public void addStudent(boolean sync, Student student){
+		students.add(student);
 		if(sync)
 			syncStudentApper();
 	}
