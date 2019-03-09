@@ -2,9 +2,7 @@ package mccanny.management.course;
 
 import homelet.GH.StringDrawer.StringDrawer.StringDrawer;
 import homelet.GH.StringDrawer.StringDrawer.StringDrawer.LinePolicy;
-import homelet.GH.StringDrawer.StringDrawer.StringDrawerException;
 import homelet.GH.utils.Alignment;
-import homelet.GH.utils.Border;
 import homelet.GH.visual.ActionsManager;
 import homelet.GH.visual.interfaces.LocatableRender;
 import mccanny.management.course.manager.CourseManager;
@@ -24,13 +22,57 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+/*
+ * Rectangle bound = g.getClipBounds();
+		g.setColor(course.color());
+		g.fill(bound);
+		try{
+			Rectangle up;
+			Rectangle down;
+			if(config.maxStudent == 0){
+				up = bound;
+			}else{
+				up = new Rectangle(0, 0, bound.width, bound.height / 2);
+				down = new Rectangle(0, bound.height / 2, bound.width, bound.height / 2);
+				studentDrawer.updateGraphics(g);
+				studentDrawer.setFrame(down);
+				studentDrawer.validate();
+				studentDrawer.draw();
+			}
+			if(config.roomNumberFlag){
+				classroomNumberDrawer.updateGraphics(g);
+				classroomNumberDrawer.setFrame(up);
+				classroomNumberDrawer.validate();
+				classroomNumberDrawer.draw();
+			}
+			if(config.periodFlag){
+				periodDrawer.updateGraphics(g);
+				periodDrawer.setFrame(up);
+				periodDrawer.validate();
+				periodDrawer.draw();
+			}
+			if(config.maxTeacher != 0){
+				teacherDrawer.updateGraphics(g);
+				teacherDrawer.setFrame(up);
+				teacherDrawer.validate();
+				teacherDrawer.draw();
+			}
+			courseCodeDrawer.updateGraphics(g);
+			courseCodeDrawer.setFrame(up);
+			courseCodeDrawer.validate();
+			courseCodeDrawer.draw();
+		}catch(StringDrawerException e){
+			e.printStackTrace();
+		}
+ */
+
 public class CoursePeriod extends ActionsManager implements Comparable<CoursePeriod>, LocatableRender, ImageRenderable, ImageLocateable{
 	
-	public static final  double                                 START_AT        = 9.0;
-	public static final  double                                 END_AT          = 20.0;
-	public static final  int                                    WIDTH           = 70;
-	public static final  int                                    HEIGHT_PER_HOUR = 50;
-	private static final HashMap<Double, RenderThresholdConfig> configs         = new HashMap<>();
+	public static final  double                                 START_AT       = 8.0;
+	public static final  double                                 END_AT         = 20.0;
+	public static final  int                                    HEIGHT         = 50;
+	public static final  int                                    WIDTH_PER_HOUR = 50;
+	private static final HashMap<Double, RenderThresholdConfig> configs        = new HashMap<>();
 	private final        Dimension                              size;
 	private final        Point                                  vertex;
 	// render
@@ -154,7 +196,7 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 		this.weekday = weekday;
 		this.length = end - start;
 		pullConfig();
-		this.size.setSize(CoursePeriod.WIDTH, (int) (CoursePeriod.HEIGHT_PER_HOUR * length));
+		this.size.setSize((int) (CoursePeriod.WIDTH_PER_HOUR * length), CoursePeriod.HEIGHT);
 		this.periodDrawer.initializeContents(Utility.time(start, Display.FORMAT_24), "~", Utility.time(end, Display.FORMAT_24));
 	}
 	
@@ -258,7 +300,7 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	}
 	
 	public void updateLocation(){
-		this.vertex.setLocation(Display.getInstance().manager().renderOffset(weekday) + lineIndex * WIDTH, CourseManager.TOP_INSET + (start - START_AT) * HEIGHT_PER_HOUR);
+		this.vertex.setLocation(CourseManager.TOP_INSET + (start - START_AT) * HEIGHT_PER_HOUR);
 	}
 	
 	public Course course(){
@@ -333,52 +375,12 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	
 	@Override
 	public Point getVertex(int renderOffset, int lineIndex){
-		return new Point(renderOffset + lineIndex * WIDTH, (int) (CourseManager.TOP_INSET + (start - START_AT) * HEIGHT_PER_HOUR));
+		return new Point((int) (CourseManager.LEFT_INSET + (start - START_AT) * WIDTH_PER_HOUR), renderOffset + lineIndex * HEIGHT);
 	}
 	
 	@Override
 	public void renderImage(Graphics2D g){
-		Rectangle bound = g.getClipBounds();
-		g.setColor(course.color());
-		g.fill(bound);
-		try{
-			Rectangle up;
-			Rectangle down;
-			if(config.maxStudent == 0){
-				up = bound;
-			}else{
-				up = new Rectangle(0, 0, bound.width, bound.height / 2);
-				down = new Rectangle(0, bound.height / 2, bound.width, bound.height / 2);
-				studentDrawer.updateGraphics(g);
-				studentDrawer.setFrame(down);
-				studentDrawer.validate();
-				studentDrawer.draw();
-			}
-			if(config.roomNumberFlag){
-				classroomNumberDrawer.updateGraphics(g);
-				classroomNumberDrawer.setFrame(up);
-				classroomNumberDrawer.validate();
-				classroomNumberDrawer.draw();
-			}
-			if(config.periodFlag){
-				periodDrawer.updateGraphics(g);
-				periodDrawer.setFrame(up);
-				periodDrawer.validate();
-				periodDrawer.draw();
-			}
-			if(config.maxTeacher != 0){
-				teacherDrawer.updateGraphics(g);
-				teacherDrawer.setFrame(up);
-				teacherDrawer.validate();
-				teacherDrawer.draw();
-			}
-			courseCodeDrawer.updateGraphics(g);
-			courseCodeDrawer.setFrame(up);
-			courseCodeDrawer.validate();
-			courseCodeDrawer.draw();
-		}catch(StringDrawerException e){
-			e.printStackTrace();
-		}
+		// TODO
 	}
 	
 	@Override
@@ -386,50 +388,17 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	
 	@Override
 	public void render(Graphics2D g){
-		Rectangle bound = g.getClipBounds();
-		g.setColor(course.color());
-		g.fill(bound);
 		if(isHovering()){
-			Border.drawBorder(g, Border.RECTANGULAR, bound, Color.BLACK, 2, 0);
+			compactRender(g);
+		}else{
+			regularRender(g);
 		}
-		try{
-			Rectangle up;
-			Rectangle down;
-			if(config.maxStudent == 0){
-				up = bound;
-			}else{
-				up = new Rectangle(0, 0, bound.width, bound.height / 2);
-				down = new Rectangle(0, bound.height / 2, bound.width, bound.height / 2);
-				studentDrawer.updateGraphics(g);
-				studentDrawer.setFrame(down);
-				studentDrawer.validate();
-				studentDrawer.draw();
-			}
-			if(config.roomNumberFlag){
-				classroomNumberDrawer.updateGraphics(g);
-				classroomNumberDrawer.setFrame(up);
-				classroomNumberDrawer.validate();
-				classroomNumberDrawer.draw();
-			}
-			if(config.periodFlag){
-				periodDrawer.updateGraphics(g);
-				periodDrawer.setFrame(up);
-				periodDrawer.validate();
-				periodDrawer.draw();
-			}
-			if(config.maxTeacher != 0){
-				teacherDrawer.updateGraphics(g);
-				teacherDrawer.setFrame(up);
-				teacherDrawer.validate();
-				teacherDrawer.draw();
-			}
-			courseCodeDrawer.updateGraphics(g);
-			courseCodeDrawer.setFrame(up);
-			courseCodeDrawer.validate();
-			courseCodeDrawer.draw();
-		}catch(StringDrawerException e){
-			e.printStackTrace();
-		}
+	}
+	
+	private void compactRender(Graphics2D g){
+	}
+	
+	private void regularRender(Graphics2D g){
 	}
 	
 	@Override
