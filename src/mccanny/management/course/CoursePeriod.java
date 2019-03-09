@@ -28,7 +28,7 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	
 	public static final  double                                 START_AT        = 9.0;
 	public static final  double                                 END_AT          = 20.0;
-	public static final  int                                    WIDTH           = 50;
+	public static final  int                                    WIDTH           = 70;
 	public static final  int                                    HEIGHT_PER_HOUR = 50;
 	private static final HashMap<Double, RenderThresholdConfig> configs         = new HashMap<>();
 	private final        Dimension                              size;

@@ -333,6 +333,20 @@
             </students>
         </period>
         <period>
+            <course UID="498a3214ad834aeabb8353910dffc69e" courseID="IDC4U"/>
+            <classRoom number="3"/>
+            <time end="11.5" start="9.0" weekday="3"/>
+            <teachers>
+                <teacher MEN="013" UID="b38e1d6ddab747c7b7a3eaefea9777cb"/>
+                <teacher MEN="006" UID="e5d00f59dd8942e1bfd4616819efb2f1"/>
+            </teachers>
+            <students>
+                <student OEN="151" UID="2c01ba12bdd14b7192a3d667c01ccea4"/>
+                <student OEN="119" UID="44f16087269446088c63008d959c1e83"/>
+                <student OEN="162" UID="3bc49e2360f347609fd3c7351be7b71f"/>
+            </students>
+        </period>
+        <period>
             <course UID="8f9b4789851e4a89a62116210b647ec6" courseID="LKMDU"/>
             <classRoom number="1"/>
             <time end="12.25" start="9.25" weekday="3"/>
