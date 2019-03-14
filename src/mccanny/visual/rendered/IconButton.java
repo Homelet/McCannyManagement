@@ -84,6 +84,8 @@ public class IconButton extends ActionsManager implements LocatableRender{
 	
 	@Override
 	public void onMouseRelease(MouseEvent e){
+		if(Display.getInstance().locking())
+			return;
 		pressing = false;
 		if(e.getButton() == MouseEvent.BUTTON1){
 			if(action != null)

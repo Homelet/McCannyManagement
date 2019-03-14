@@ -192,14 +192,14 @@ public class Utility{
 	
 	public static Point frameVertex(Rectangle frame, Rectangle objectFrame){
 		Point vertex = Alignment.CENTER.getVertex(false, frame, objectFrame);
-		if(vertex.x < 0)
-			vertex.x = 0;
-		if(vertex.y < 0)
-			vertex.y = 0;
 		if(vertex.x + objectFrame.width > Display.SCREEN_DIMENSION.width)
 			vertex.x = Display.SCREEN_DIMENSION.width - objectFrame.width;
 		if(vertex.y + objectFrame.height > Display.SCREEN_DIMENSION.height)
 			vertex.y = Display.SCREEN_DIMENSION.height - objectFrame.height;
+		if(vertex.x < 0)
+			vertex.x = 0;
+		if(vertex.y < 0)
+			vertex.y = 0;
 		return vertex;
 	}
 	

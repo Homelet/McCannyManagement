@@ -16,6 +16,7 @@ import mccanny.util.Weekday;
 import mccanny.visual.Display;
 import mccanny.visual.rendered.IconButtonManager;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,17 +26,31 @@ import java.util.HashSet;
 //@SuppressWarnings("all")
 public class CourseManager implements Renderable{
 	
-	public static       Dimension             TIMETABLE_DI        = new Dimension(0, (int) ((CoursePeriod.END_AT - CoursePeriod.START_AT) * CoursePeriod.HEIGHT_PER_HOUR));
-	public static final int                   MIN_COUNT           = 4;
-	public static final int                   TOP_INSET           = 130;
-	public static final int                   LEFT_INSET          = 85;
-	public static final int                   RIGHT_INSET         = 0;
-	public static final int                   BOTTOM_INSET        = 0;
-	public static final int                   FIXED_HEADER_HEIGHT = 60;
+	public static final int                   MIN_COUNT          = 2;
+	public static final int                   TOP_INSET          = 65;
+	public static final int                   LEFT_INSET         = 0;
+	public static final int                   RIGHT_INSET        = 0;
+	public static final int                   BOTTOM_INSET       = 0;
+	public static final int                   FIXED_HEADER_WIDTH = 200;
+	public static final Dimension             TIMETABLE_DI       = new Dimension((int) ((CoursePeriod.END_AT - CoursePeriod.START_AT) * CoursePeriod.WIDTH_PER_HOUR), 0);
 	private             TimeTable             timeTable;
 	private final       IconButtonManager     iconButtonManager;
+	private final       TimeRuler             ruler;
 	private final       HashMap<Weekday, Day> days;
 	private final       CanvasThread          thread;
+	private             boolean               dialogLock         = false;
+	
+	public synchronized void lock(){
+		SwingUtilities.invokeLater(()->dialogLock = true);
+	}
+	
+	public synchronized void unlock(){
+		SwingUtilities.invokeLater(()->dialogLock = false);
+	}
+	
+	public boolean locking(){
+		return dialogLock;
+	}
 	
 	public void printError(){
 		for(Weekday weekday : Weekday.weekdays()){
@@ -55,13 +70,19 @@ public class CourseManager implements Renderable{
 	public CourseManager(CanvasThread thread){
 		this.thread = thread;
 		this.days = new HashMap<>();
+		this.ruler = new TimeRuler();
 		thread.getRenderManager().addPreTargets(this);
 		for(Weekday weekday : Weekday.weekdays()){
 			Day day = new Day(weekday);
 			this.days.put(weekday, day);
 			thread.getRenderManager().addPreTargets(day);
 		}
+		thread.getRenderManager().addPreTargets(ruler);
 		this.iconButtonManager = new IconButtonManager(thread);
+	}
+	
+	public TimeRuler ruler(){
+		return ruler;
 	}
 	
 	public void initializeTimeTable(TimeTable timeTable){
@@ -85,6 +106,26 @@ public class CourseManager implements Renderable{
 		syncAllLocation();
 	}
 	
+	public void bestFit(){
+		int target = Display.SCREEN_DIMENSION.height - 100;
+		int accum  = TOP_INSET + TimeRuler.DEFAULT_RULER_HEIGHT;
+		for(Weekday weekday : Weekday.weekdays()){
+			Day day = days.get(weekday);
+			accum += day.height() + 5;
+			day.active(accum <= target);
+		}
+		analyze();
+		updateOffsets();
+		syncAllLocation();
+	}
+	
+	public void active(Weekday weekday, boolean active){
+		days.get(weekday).active(active);
+		analyze();
+		updateOffsets();
+		syncAllLocation();
+	}
+	
 	public void analyze(){
 		for(Weekday weekday : Weekday.weekdays())
 			analyze(weekday);
@@ -92,6 +133,8 @@ public class CourseManager implements Renderable{
 	
 	public void analyze(Weekday weekday){
 		Day day = days.get(weekday);
+		if(!day.active())
+			return;
 		day.errors.clear();
 		int          maxCount = 0;
 		PeriodBuffer buffer   = new PeriodBuffer();
@@ -135,18 +178,21 @@ public class CourseManager implements Renderable{
 	}
 	
 	private void updateOffsets(){
-		int accum = LEFT_INSET;
+		int accum = TOP_INSET + TimeRuler.DEFAULT_RULER_HEIGHT;
 		for(Weekday weekday : Weekday.weekdays()){
 			Day day = days.get(weekday);
+			if(!day.active())
+				return;
 			day.renderOffset(accum);
-			accum += day.width();
+			accum += day.height() + 5;
 		}
-		updateDimension(accum - LEFT_INSET);
+		updateDimension(accum - TOP_INSET - TimeRuler.DEFAULT_RULER_HEIGHT - 5);
 	}
 	
-	private void updateDimension(int newWidth){
-		if(TIMETABLE_DI.width != newWidth){
-			TIMETABLE_DI.width = newWidth;
+	private void updateDimension(int newHeight){
+		if(TIMETABLE_DI.height != newHeight){
+			TIMETABLE_DI.height = newHeight;
+			ruler.syncHeight();
 			Display.getInstance().updateDimension();
 		}
 	}
@@ -168,6 +214,15 @@ public class CourseManager implements Renderable{
 	
 	public int renderOffset(Weekday weekday){
 		return days.get(weekday).renderOffset();
+	}
+	
+	public void applyFilter(){
+//		if(this.timeTable.filter().equals(filter))
+//			return;
+		timeTable.applyFilter();
+		analyze();
+		updateOffsets();
+		syncAllLocation();
 	}
 	
 	public void applyFilter(Filter filter){
@@ -250,5 +305,9 @@ public class CourseManager implements Renderable{
 	public void syncAll(){
 		for(CoursePeriod period : timeTable.periods())
 			period.syncAll();
+	}
+	
+	public Day day(Weekday weekday){
+		return days.get(weekday);
 	}
 }

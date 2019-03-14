@@ -8,7 +8,12 @@ public class PeriodEvent implements Comparable<PeriodEvent>{
 	public int compareTo(PeriodEvent o){
 		int result = Double.compare(time, o.time);
 		if(result == 0){
-			return this.period.compareTo(o.period);
+			result = Boolean.compare(status, o.status);
+			if(result == 0){
+				return this.period.compareTo(o.period);
+			}else{
+				return result;
+			}
 		}else{
 			return result;
 		}
@@ -19,12 +24,14 @@ public class PeriodEvent implements Comparable<PeriodEvent>{
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
 		PeriodEvent event = (PeriodEvent) o;
-		if(status != event.status) return false;
-		return period.equals(event.period);
+		if(period.equals(event.period))
+			return status == event.status;
+		else
+			return false;
 	}
 	
-	public final static boolean      START = true;
-	public final static boolean      END   = false;
+	public final static boolean      START = false;
+	public final static boolean      END   = true;
 	public final        CoursePeriod period;
 	public final        double       time;
 	public final        boolean      status;

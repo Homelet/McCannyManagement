@@ -76,7 +76,7 @@
         <courseID>TDJ</courseID>
         <courseHour>110.0</courseHour>
         <UID>40c295e7a5aa4574aae85281fe564bbd</UID>
-        <color>-333334</color>
+        <color>-ff009a</color>
     </course>
     <course>
         <courseID>Portfolios</courseID>
@@ -94,7 +94,7 @@
         <courseID>Portfolio</courseID>
         <courseHour>110.0</courseHour>
         <UID>ccef80e8e41b449ba2433808a7004d36</UID>
-        <color>-1f999a</color>
+        <color>-9d0000</color>
     </course>
     <course>
         <courseID>SBI,SNC</courseID>

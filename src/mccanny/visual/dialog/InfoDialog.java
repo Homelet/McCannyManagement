@@ -1,6 +1,7 @@
 package mccanny.visual.dialog;
 
 import mccanny.util.Utility;
+import mccanny.visual.Display;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,11 +46,13 @@ public abstract class InfoDialog<E> extends JDialog{
 		this.setLocation(Utility.frameVertex(this.getOwner().getBounds(), this.getBounds()));
 		if(firstFocus() != null)
 			firstFocus().requestFocusInWindow(Cause.ACTIVATION);
+		Display.getInstance().manager().lock();
 		this.setVisible(true);
 	}
 	
 	public void removeDialog(){
 		this.dispose();
+		Display.getInstance().manager().unlock();
 	}
 	
 	public abstract E result();

@@ -10,7 +10,6 @@ import mccanny.io.TimeTableBuilder.TimeTableBuilder;
 import mccanny.management.course.CoursePeriod;
 import mccanny.util.*;
 import mccanny.visual.Display;
-import mccanny.visual.infoCenter.OneClickImageDialog;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,8 +35,6 @@ public class TimeTable implements Renderable, ImageRenderable{
 	private final  OrderedUniqueArray<CoursePeriod> periods;
 	private final  StringDrawer                     nameDrawer;
 	private final  StringDrawer                     periodDrawer;
-	private final  StringDrawer                     timeDrawer;
-	private final  StringDrawer                     semiTimeDrawer;
 	private final  StringDrawer                     filterDrawer;
 	private        String                           name;
 	private        Date                             startDate;
@@ -64,20 +61,6 @@ public class TimeTable implements Renderable, ImageRenderable{
 		this.filterDrawer.setTextAlign(Alignment.RIGHT);
 		this.filterDrawer.setColor(GRAY);
 		this.filterDrawer.setInsetsRight(5);
-		this.timeDrawer = new StringDrawer();
-		this.timeDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(15.0f));
-		this.timeDrawer.setAlign(Alignment.BOTTOM_RIGHT);
-		this.timeDrawer.setTextAlign(Alignment.TOP_RIGHT);
-		this.timeDrawer.setInsetsBottom(5);
-		this.timeDrawer.setInsetsRight(5);
-		this.timeDrawer.setColor(GRAY);
-		this.semiTimeDrawer = new StringDrawer();
-		this.semiTimeDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(10.0f));
-		this.semiTimeDrawer.setAlign(Alignment.BOTTOM_RIGHT);
-		this.semiTimeDrawer.setTextAlign(Alignment.TOP_RIGHT);
-		this.semiTimeDrawer.setInsetsBottom(3);
-		this.semiTimeDrawer.setInsetsRight(5);
-		this.semiTimeDrawer.setColor(GRAY);
 		this.periods = new OrderedUniqueArray<>();
 		this.name = parent.name + (object != null ? (" (" + object + ")") : "");
 		name(name);
@@ -108,20 +91,6 @@ public class TimeTable implements Renderable, ImageRenderable{
 		this.filterDrawer.setTextAlign(Alignment.RIGHT);
 		this.filterDrawer.setColor(GRAY);
 		this.filterDrawer.setInsetsRight(5);
-		this.timeDrawer = new StringDrawer();
-		this.timeDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(15.0f));
-		this.timeDrawer.setAlign(Alignment.BOTTOM_RIGHT);
-		this.timeDrawer.setTextAlign(Alignment.TOP_RIGHT);
-		this.timeDrawer.setInsetsBottom(5);
-		this.timeDrawer.setInsetsRight(5);
-		this.timeDrawer.setColor(GRAY);
-		this.semiTimeDrawer = new StringDrawer();
-		this.semiTimeDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(10.0f));
-		this.semiTimeDrawer.setAlign(Alignment.BOTTOM_RIGHT);
-		this.semiTimeDrawer.setTextAlign(Alignment.TOP_RIGHT);
-		this.semiTimeDrawer.setInsetsBottom(3);
-		this.semiTimeDrawer.setInsetsRight(5);
-		this.semiTimeDrawer.setColor(GRAY);
 		this.periods = new OrderedUniqueArray<>();
 		this.name = name;
 		name(name);
@@ -190,6 +159,10 @@ public class TimeTable implements Renderable, ImageRenderable{
 //		if(this.filter != null && this.filter.equals(filter))
 //			return;
 		this.filter = filter;
+		applyFilter();
+	}
+	
+	void applyFilter(){
 		for(CoursePeriod period : periods)
 			period.activate(filter.filter(period));
 		this.filterDrawer.initializeContents(this.filter.toString());
@@ -197,56 +170,7 @@ public class TimeTable implements Renderable, ImageRenderable{
 	
 	@Override
 	public void renderImage(Graphics2D g){
-		Rectangle bound      = g.getClipBounds();
-		Rectangle topPortion = new Rectangle(0, 0, bound.width, CourseManager.TOP_INSET - CourseManager.FIXED_HEADER_HEIGHT - 5);
-		this.nameDrawer.updateGraphics(g);
-		this.periodDrawer.updateGraphics(g);
-		this.filterDrawer.updateGraphics(g);
-		this.nameDrawer.setFrame(topPortion);
-		this.periodDrawer.setFrame(topPortion);
-		this.filterDrawer.setFrame(topPortion);
-		try{
-			nameDrawer.validate();
-			periodDrawer.validate();
-			filterDrawer.validate();
-			nameDrawer.draw();
-			periodDrawer.draw();
-			filterDrawer.draw();
-		}catch(StringDrawerException e){
-			e.printStackTrace();
-		}
-		timeDrawer.updateGraphics(g);
-		semiTimeDrawer.updateGraphics(g);
-		int          heightOffset = CourseManager.TOP_INSET;
-		boolean      wholeFlag    = CoursePeriod.START_AT - Math.floor(CoursePeriod.START_AT) == 0;
-		StringDrawer drawer;
-		for(double timeCount = CoursePeriod.START_AT; timeCount <= CoursePeriod.END_AT; timeCount += 0.5, heightOffset += CoursePeriod.HEIGHT_PER_HOUR / 2){
-			g.setColor(GRAY);
-			if(wholeFlag){
-				drawer = timeDrawer;
-				g.fill(GH.rectangle(false, 0, heightOffset - 5, bound.width, 5));
-				drawer.setFrame(new Rectangle(0, 0, CourseManager.LEFT_INSET, heightOffset));
-			}else{
-				drawer = semiTimeDrawer;
-				g.fill(GH.rectangle(false, 30, heightOffset - 2, bound.width - 30, 2));
-				drawer.setFrame(new Rectangle(10, 0, CourseManager.LEFT_INSET - 10, heightOffset));
-			}
-			drawer.initializeContents(Utility.time(timeCount, Display.FORMAT_24));
-			try{
-				drawer.validate();
-				drawer.draw();
-			}catch(StringDrawerException e){
-				e.printStackTrace();
-			}
-			wholeFlag = !wholeFlag;
-		}
-		g.setColor(Color.BLACK);
-		for(Weekday day : Weekday.weekdays()){
-			if(day == Weekday.FIRST_DAY_OF_WEEK)
-				continue;
-			int renderOffset = OneClickImageDialog.renderOffset(day);
-			g.fill(GH.rectangle(false, renderOffset - 5, CourseManager.TOP_INSET - 5, 5, CourseManager.TIMETABLE_DI.height + 5));
-		}
+		render(g);
 	}
 	
 	@Override
@@ -259,7 +183,7 @@ public class TimeTable implements Renderable, ImageRenderable{
 	@Override
 	public void render(Graphics2D g){
 		Rectangle bound      = g.getClipBounds();
-		Rectangle topPortion = new Rectangle(0, 0, bound.width, CourseManager.TOP_INSET - CourseManager.FIXED_HEADER_HEIGHT - 5);
+		Rectangle topPortion = new Rectangle(0, 0, bound.width, CourseManager.TOP_INSET);
 		this.nameDrawer.updateGraphics(g);
 		this.periodDrawer.updateGraphics(g);
 		this.filterDrawer.updateGraphics(g);
@@ -276,37 +200,17 @@ public class TimeTable implements Renderable, ImageRenderable{
 		}catch(StringDrawerException e){
 			e.printStackTrace();
 		}
-		timeDrawer.updateGraphics(g);
-		semiTimeDrawer.updateGraphics(g);
-		int          heightOffset = CourseManager.TOP_INSET;
-		boolean      wholeFlag    = CoursePeriod.START_AT - Math.floor(CoursePeriod.START_AT) == 0;
-		StringDrawer drawer;
-		for(double timeCount = CoursePeriod.START_AT; timeCount <= CoursePeriod.END_AT; timeCount += 0.5, heightOffset += CoursePeriod.HEIGHT_PER_HOUR / 2){
-			g.setColor(GRAY);
-			if(wholeFlag){
-				drawer = timeDrawer;
-				g.fill(GH.rectangle(false, 0, heightOffset - 5, bound.width, 5));
-				drawer.setFrame(new Rectangle(0, 0, CourseManager.LEFT_INSET, heightOffset));
-			}else{
-				drawer = semiTimeDrawer;
-				g.fill(GH.rectangle(false, 30, heightOffset - 2, bound.width - 30, 2));
-				drawer.setFrame(new Rectangle(10, 0, CourseManager.LEFT_INSET - 10, heightOffset));
-			}
-			drawer.initializeContents(Utility.time(timeCount, Display.FORMAT_24));
-			try{
-				drawer.validate();
-				drawer.draw();
-			}catch(StringDrawerException e){
-				e.printStackTrace();
-			}
-			wholeFlag = !wholeFlag;
-		}
 		g.setColor(Color.BLACK);
+		boolean drawFlag = false;
 		for(Weekday day : Weekday.weekdays()){
-			if(day == Weekday.FIRST_DAY_OF_WEEK)
+			Day d = Display.getInstance().manager().day(day);
+			if(!d.active())
 				continue;
-			int renderOffset = Display.getInstance().manager().renderOffset(day);
-			g.fill(GH.rectangle(false, renderOffset - 5, CourseManager.TOP_INSET - 5, 5, CourseManager.TIMETABLE_DI.height + 5));
+			if(!drawFlag){
+				drawFlag = true;
+				continue;
+			}
+			g.fill(GH.rectangle(false, CourseManager.FIXED_HEADER_WIDTH, d.renderOffset() - 5, CourseManager.TIMETABLE_DI.width, 5));
 		}
 	}
 	

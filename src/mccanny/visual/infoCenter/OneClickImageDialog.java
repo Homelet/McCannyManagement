@@ -46,9 +46,11 @@ public class OneClickImageDialog extends JDialog{
 	}
 	
 	private void showDialog(){
+		Display.getInstance().manager().lock();
 		syncAll();
 		this.setLocation(Utility.frameVertex(Display.getInstance().getBounds(), this.getBounds()));
 		this.setVisible(true);
+		Display.getInstance().manager().unlock();
 	}
 	
 	private void syncAll(){
@@ -314,13 +316,13 @@ public class OneClickImageDialog extends JDialog{
 		}
 		
 		private Dimension updateOffsets(){
-			int accum = CourseManager.LEFT_INSET;
+			int accum = CourseManager.TOP_INSET;
 			for(Weekday weekday : Weekday.weekdays()){
 				Day day = days.get(weekday);
 				day.renderOffset(accum);
-				accum += day.width();
+				accum += day.height() + 5;
 			}
-			return new Dimension(accum + CourseManager.RIGHT_INSET, (int) ((CoursePeriod.END_AT - CoursePeriod.START_AT) * CoursePeriod.HEIGHT_PER_HOUR) + CourseManager.TOP_INSET + CourseManager.BOTTOM_INSET);
+			return new Dimension((int) ((CoursePeriod.END_AT - CoursePeriod.START_AT) * CoursePeriod.WIDTH_PER_HOUR) + CourseManager.LEFT_INSET + CourseManager.RIGHT_INSET, accum + CourseManager.BOTTOM_INSET);
 		}
 		
 		@Override

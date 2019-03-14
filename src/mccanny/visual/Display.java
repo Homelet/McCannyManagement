@@ -10,6 +10,7 @@ import mccanny.io.TimeTableBuilder.TimeTableBuilder;
 import mccanny.management.course.Course;
 import mccanny.management.course.CoursePeriod;
 import mccanny.management.course.manager.CourseManager;
+import mccanny.management.course.manager.TimeRuler;
 import mccanny.management.course.manager.TimeTable;
 import mccanny.management.student.Student;
 import mccanny.management.teacher.Teacher;
@@ -29,6 +30,10 @@ import java.util.Arrays;
 
 public class Display extends JFrame{
 	
+	public boolean locking(){
+		return manager.locking();
+	}
+	
 	public static Display createDisplay(){
 		display = new Display();
 		display.construct();
@@ -40,8 +45,8 @@ public class Display extends JFrame{
 			JOptionPane.showMessageDialog(this, "Error Loading Data Base!\nPlease Contact Administer!", "Error", JOptionPane.ERROR_MESSAGE, null);
 		TimeTable timeTable = TimeTableBuilder.decode(Utility.join("data", "timetable.timetable"));
 		this.manager.initializeTimeTable(timeTable);
+		this.manager.bestFit();
 //		this.manager.initializeTimeTable(new TimeTable("McCanny TimeTable", new Date(2019, 3.0, 1), new Date(2019, 3.0, 29)));
-		updateDimension();
 //		Course ESL_GLS1O         = Course.newCourse("ESL", 110, Color.RED);
 //		Course ENG4U_3U          = Course.newCourse("ENG", 110, Color.BLUE);
 //		Course ASM4M_3M          = Course.newCourse("ASM", 110, Color.GREEN);
@@ -211,7 +216,8 @@ public class Display extends JFrame{
 	 * 21 for mac
 	 */
 	public void updateDimension(){
-		DISPLAY_DIMENSION.setSize(CourseManager.TIMETABLE_DI.width + CourseManager.LEFT_INSET + CourseManager.RIGHT_INSET, CourseManager.TIMETABLE_DI.height + CourseManager.BOTTOM_INSET + CourseManager.TOP_INSET + 39 + 23);
+		DISPLAY_DIMENSION.setSize(CourseManager.TIMETABLE_DI.width + CourseManager.FIXED_HEADER_WIDTH + CourseManager.LEFT_INSET + CourseManager.RIGHT_INSET + 16, CourseManager.TIMETABLE_DI.height + TimeRuler.DEFAULT_RULER_HEIGHT + CourseManager.BOTTOM_INSET + CourseManager.TOP_INSET + 39 + 23);
+		System.out.println(DISPLAY_DIMENSION);
 		this.setSize(DISPLAY_DIMENSION);
 		this.revalidate();
 	}
@@ -287,7 +293,7 @@ public class Display extends JFrame{
 		});
 		exit.addActionListener(action->{
 		});
-		// Edit
+		// Info
 		JMenu             info            = new JMenu("Info");
 		JCheckBoxMenuItem massProduction  = new JCheckBoxMenuItem("Mass Production Mode", false);
 		JMenuItem         newStudent      = new JMenuItem("New Student");
@@ -331,6 +337,26 @@ public class Display extends JFrame{
 		Info.addActionListener(action->{
 			InformationCenter.showInformationCenter();
 		});
+		// View
+		JMenu             view    = new JMenu("View");
+		JCheckBoxMenuItem bestFit = new JCheckBoxMenuItem("Best Fit");
+		view.add(bestFit);
+		view.addSeparator();
+		JCheckBoxMenuItem[] weedays = new JCheckBoxMenuItem[7];
+		for(Weekday weekday : Weekday.weekdays()){
+			JCheckBoxMenuItem item = new JCheckBoxMenuItem(weekday.toString());
+			weedays[weekday.index()] = item;
+			item.addActionListener(event->{
+				manager.active(weekday, item.isSelected());
+			});
+			view.add(item);
+		}
+		bestFit.addActionListener(action->{
+			manager.bestFit();
+			for(Weekday weekday : Weekday.weekdays()){
+				weedays[weekday.index()].setSelected(manager.day(weekday).active());
+			}
+		});
 		// Filter
 		JMenu     filter      = new JMenu("Filter");
 		JMenuItem applyFilter = new JMenuItem("Apply Filter");
@@ -348,6 +374,7 @@ public class Display extends JFrame{
 		//
 		menuBar.add(file);
 		menuBar.add(info);
+		menuBar.add(view);
 		menuBar.add(filter);
 		menuBar.add(utility);
 		this.setJMenuBar(menuBar);
@@ -365,9 +392,9 @@ public class Display extends JFrame{
 		this.setLocation(Utility.frameVertex(new Rectangle(SCREEN_DIMENSION), this.getBounds()));
 		this.setVisible(true);
 		this.canvas.startRendering();
-		SwingUtilities.invokeLater(()->{
-			TimeTableInfoDialog.showInfoDialog();
-		});
+//		SwingUtilities.invokeLater(()->{
+//			TimeTableInfoDialog.showInfoDialog();
+//		});
 	}
 	
 	@Override

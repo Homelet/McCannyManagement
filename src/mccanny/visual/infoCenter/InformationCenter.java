@@ -25,9 +25,11 @@ public class InformationCenter extends JDialog{
 	}
 	
 	private void showDialog(){
+		Display.getInstance().manager().lock();
 		syncAll();
 		this.setLocation(Utility.frameVertex(Display.getInstance().getBounds(), this.getBounds()));
 		this.setVisible(true);
+		Display.getInstance().manager().unlock();
 	}
 	
 	private void syncAll(){

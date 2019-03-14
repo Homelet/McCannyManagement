@@ -26,7 +26,7 @@ public class PeriodBuffer{
 		this.arr = Arrays.copyOf(arr, (int) Math.ceil(this.arr.length * 2));
 	}
 	
-	public int join(CoursePeriod period){
+	public synchronized int join(CoursePeriod period){
 		for(int i = 0; i < arr.length; i++){
 			if(arr[i] == null){
 				arr[i] = period;
@@ -38,7 +38,7 @@ public class PeriodBuffer{
 		return join(period);
 	}
 	
-	public void remove(int index){
+	public synchronized void remove(int index){
 		arr[index] = null;
 		size--;
 	}

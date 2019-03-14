@@ -256,7 +256,7 @@ public class PeriodInfoDialog extends InfoDialog<CoursePeriod>{
 		
 		@Override
 		public String process(double value){
-			return "Room " + (int) Math.floor(value);
+			return value == 0 ? "Off Campus" : "Room " + (int) Math.floor(value);
 		}
 		
 		@Override
