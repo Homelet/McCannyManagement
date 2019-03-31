@@ -46,18 +46,18 @@ public class TimeTable implements Renderable, ImageRenderable{
 	// for sub Timetable
 	public TimeTable(TimeTable parent, Object object, Filter filter){
 		this.nameDrawer = new StringDrawer();
-		this.nameDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(30.0f));
+		this.nameDrawer.setFont(Display.LIBRE_BASKERVILLE.deriveFont(30.0f));
 		this.nameDrawer.setAlign(Alignment.TOP);
 		this.nameDrawer.setTextAlign(Alignment.TOP);
 		this.nameDrawer.setColor(Display.McCANNY_BLUE);
 		this.periodDrawer = new StringDrawer();
 		this.periodDrawer.setTextAlign(Alignment.TOP);
 		this.periodDrawer.setAlign(Alignment.BOTTOM);
-		this.periodDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(20.0f));
+		this.periodDrawer.setFont(Display.LIBRE_BASKERVILLE.deriveFont(15.0f));
 		this.periodDrawer.setColor(GRAY);
 		this.filterDrawer = new StringDrawer(filter.toString());
 		this.filterDrawer.setAlign(Alignment.BOTTOM);
-		this.filterDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(15.0f));
+		this.filterDrawer.setFont(Display.LIBRE_BASKERVILLE.deriveFont(15.0f));
 		this.filterDrawer.setTextAlign(Alignment.RIGHT);
 		this.filterDrawer.setColor(GRAY);
 		this.filterDrawer.setInsetsRight(5);
@@ -76,18 +76,18 @@ public class TimeTable implements Renderable, ImageRenderable{
 	
 	public TimeTable(String name, File file, Date startDate, Date endDate){
 		this.nameDrawer = new StringDrawer();
-		this.nameDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(30.0f));
+		this.nameDrawer.setFont(Display.LIBRE_BASKERVILLE.deriveFont(30.0f));
 		this.nameDrawer.setAlign(Alignment.TOP);
 		this.nameDrawer.setTextAlign(Alignment.TOP);
 		this.nameDrawer.setColor(Display.McCANNY_BLUE);
 		this.periodDrawer = new StringDrawer();
 		this.periodDrawer.setTextAlign(Alignment.TOP);
 		this.periodDrawer.setAlign(Alignment.BOTTOM);
-		this.periodDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(20.0f));
+		this.periodDrawer.setFont(Display.LIBRE_BASKERVILLE.deriveFont(15.0f));
 		this.periodDrawer.setColor(GRAY);
 		this.filterDrawer = new StringDrawer();
 		this.filterDrawer.setAlign(Alignment.BOTTOM);
-		this.filterDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(15.0f));
+		this.filterDrawer.setFont(Display.LIBRE_BASKERVILLE.deriveFont(15.0f));
 		this.filterDrawer.setTextAlign(Alignment.RIGHT);
 		this.filterDrawer.setColor(GRAY);
 		this.filterDrawer.setInsetsRight(5);
@@ -200,17 +200,17 @@ public class TimeTable implements Renderable, ImageRenderable{
 		}catch(StringDrawerException e){
 			e.printStackTrace();
 		}
-		g.setColor(Color.BLACK);
+		g.setColor(Display.NORMAL_BACKGROUND);
 		boolean drawFlag = false;
 		for(Weekday day : Weekday.weekdays()){
 			Day d = Display.getInstance().manager().day(day);
-			if(!d.active())
-				continue;
+//			if(!d.active())
+//				continue;
 			if(!drawFlag){
 				drawFlag = true;
 				continue;
 			}
-			g.fill(GH.rectangle(false, CourseManager.FIXED_HEADER_WIDTH, d.renderOffset() - 5, CourseManager.TIMETABLE_DI.width, 5));
+			g.fill(GH.rectangle(false, 0, d.renderOffset() - 5, bound.width, 5));
 		}
 	}
 	

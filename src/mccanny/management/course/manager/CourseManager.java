@@ -27,7 +27,7 @@ import java.util.HashSet;
 public class CourseManager implements Renderable{
 	
 	public static final int                   MIN_COUNT          = 2;
-	public static final int                   TOP_INSET          = 65;
+	public static final int                   TOP_INSET          = 60;
 	public static final int                   LEFT_INSET         = 0;
 	public static final int                   RIGHT_INSET        = 0;
 	public static final int                   BOTTOM_INSET       = 0;
@@ -105,22 +105,21 @@ public class CourseManager implements Renderable{
 		updateOffsets();
 		syncAllLocation();
 	}
-	
-	public void bestFit(){
-		int target = Display.SCREEN_DIMENSION.height - 100;
-		int accum  = TOP_INSET + TimeRuler.DEFAULT_RULER_HEIGHT;
-		for(Weekday weekday : Weekday.weekdays()){
-			Day day = days.get(weekday);
-			accum += day.height() + 5;
-			day.active(accum <= target);
-		}
-		analyze();
-		updateOffsets();
-		syncAllLocation();
-	}
+//	public void bestFit(){
+//		int target = Display.SCREEN_DIMENSION.height - 100;
+//		int accum  = TOP_INSET + TimeRuler.DEFAULT_RULER_HEIGHT;
+//		for(Weekday weekday : Weekday.weekdays()){
+//			Day day = days.get(weekday);
+//			accum += day.height() + 5;
+////			day.active(accum <= target);
+//		}
+//		analyze();
+//		updateOffsets();
+//		syncAllLocation();
+//	}
 	
 	public void active(Weekday weekday, boolean active){
-		days.get(weekday).active(active);
+//		days.get(weekday).active(active);
 		analyze();
 		updateOffsets();
 		syncAllLocation();
@@ -133,15 +132,15 @@ public class CourseManager implements Renderable{
 	
 	public void analyze(Weekday weekday){
 		Day day = days.get(weekday);
-		if(!day.active())
-			return;
+//		if(!day.active())
+//			return;
 		day.errors.clear();
 		int          maxCount = 0;
 		PeriodBuffer buffer   = new PeriodBuffer();
 		for(PeriodEvent event : day.events){
 			if(!event.period.activate())
 				continue;
-			if(event.status){
+			if(event.status == PeriodEvent.START){
 				check(event.period, buffer, day.errors);
 				event.period.lineIndex(buffer.join(event.period));
 				maxCount = Math.max(buffer.size(), maxCount);
@@ -171,6 +170,8 @@ public class CourseManager implements Renderable{
 	@Override
 	public void render(Graphics2D g){
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setColor(Display.NORMAL_BACKGROUND);
+		g.fill(g.getClipBounds());
 	}
 	
 	public TimeTable timeTable(){
@@ -181,8 +182,8 @@ public class CourseManager implements Renderable{
 		int accum = TOP_INSET + TimeRuler.DEFAULT_RULER_HEIGHT;
 		for(Weekday weekday : Weekday.weekdays()){
 			Day day = days.get(weekday);
-			if(!day.active())
-				return;
+//			if(!day.active())
+//				return;
 			day.renderOffset(accum);
 			accum += day.height() + 5;
 		}

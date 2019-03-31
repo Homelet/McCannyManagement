@@ -10,6 +10,7 @@ import mccanny.io.TimeTableBuilder.TimeTableBuilder;
 import mccanny.management.course.Course;
 import mccanny.management.course.CoursePeriod;
 import mccanny.management.course.manager.CourseManager;
+import mccanny.management.course.manager.PeriodEvent;
 import mccanny.management.course.manager.TimeRuler;
 import mccanny.management.course.manager.TimeTable;
 import mccanny.management.student.Student;
@@ -45,7 +46,7 @@ public class Display extends JFrame{
 			JOptionPane.showMessageDialog(this, "Error Loading Data Base!\nPlease Contact Administer!", "Error", JOptionPane.ERROR_MESSAGE, null);
 		TimeTable timeTable = TimeTableBuilder.decode(Utility.join("data", "timetable.timetable"));
 		this.manager.initializeTimeTable(timeTable);
-		this.manager.bestFit();
+//		this.manager.bestFit();
 //		this.manager.initializeTimeTable(new TimeTable("McCanny TimeTable", new Date(2019, 3.0, 1), new Date(2019, 3.0, 29)));
 //		Course ESL_GLS1O         = Course.newCourse("ESL", 110, Color.RED);
 //		Course ENG4U_3U          = Course.newCourse("ENG", 110, Color.BLUE);
@@ -201,6 +202,8 @@ public class Display extends JFrame{
 //		create(AMV4M_3M, Weekday.SUNDAY, 12.75, 15.75, new Teacher[]{ Alberto }, Grantarie, Andy, Toney, Eric, Jack_student);
 //		create(TEJ4M_3M_ICS3U_4U, Weekday.SUNDAY, 12.75, 15.75, new Teacher[]{ Bill }, Homelet, Oliver, Penny, Ethan, Joel);
 //		create(TEJ4M_3M_ICS3U_4U, Weekday.SUNDAY, 16.00, 18.00, new Teacher[]{ Bill }, Homelet, Oliver, Penny, Ethan, Joel);
+		for(PeriodEvent e : manager.day(Weekday.MONDAY).events())
+			System.out.println(e);
 		manager.printError();
 	}
 	
@@ -226,10 +229,14 @@ public class Display extends JFrame{
 		return display;
 	}
 	
+	public static final Color         NORMAL_BACKGROUND = new Color(0xF1F0F0);
 	public static final Color         McCANNY_BLUE      = new Color(0x00205E);
+	public static final Color         TRANS_GRAY        = new Color(153, 153, 153, 51);
 	public static final String        VERSION           = "V1.0 BETA";
 	public static final Dimension     DISPLAY_DIMENSION = new Dimension();
 	public static       Font          CLEAR_SANS_BOLD;
+	public static       Font          LIBRE_BASKERVILLE;
+	public static       Font          ARIAL_BOLD;
 	public static       Dimension     SCREEN_DIMENSION;
 	public static       boolean       FORMAT_24         = false;
 	private static      Display       display;
@@ -239,6 +246,8 @@ public class Display extends JFrame{
 	static{
 		try{
 			CLEAR_SANS_BOLD = Font.createFont(Font.TRUETYPE_FONT, new File("assets/font/Clear Sans Bold.ttf")).deriveFont(15.0f);
+			LIBRE_BASKERVILLE = Font.createFont(Font.TRUETYPE_FONT, new File("assets/font/LibreBaskerville-Regular.otf")).deriveFont(15.0f);
+			ARIAL_BOLD = Font.createFont(Font.TRUETYPE_FONT, new File("assets/font/arial-bold.ttf")).deriveFont(15.0f);
 		}catch(FontFormatException | IOException e){
 			e.printStackTrace();
 		}
@@ -251,7 +260,7 @@ public class Display extends JFrame{
 		setResizable(false);
 		this.canvas = new JCanvas("TimeTable");
 		this.canvas.getCanvasThread().setPrintNoticeInConsole(false);
-		this.canvas.getCanvasThread().setFPS(30);
+		this.canvas.getCanvasThread().setFPS(-1);
 		this.manager = new CourseManager(canvas.getCanvasThread());
 		JBasePanel panel = new JBasePanel();
 		createMenu();
@@ -352,10 +361,10 @@ public class Display extends JFrame{
 			view.add(item);
 		}
 		bestFit.addActionListener(action->{
-			manager.bestFit();
-			for(Weekday weekday : Weekday.weekdays()){
-				weedays[weekday.index()].setSelected(manager.day(weekday).active());
-			}
+//			manager.bestFit();
+//			for(Weekday weekday : Weekday.weekdays()){
+//				weedays[weekday.index()].setSelected(manager.day(weekday).active());
+//			}
 		});
 		// Filter
 		JMenu     filter      = new JMenu("Filter");

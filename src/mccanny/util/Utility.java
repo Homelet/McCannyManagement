@@ -263,6 +263,16 @@ public class Utility{
 		return name.trim().replace("/", "_").replace("\\", "_");
 	}
 	
+	public static String join(String sep, Collection objects){
+		StringBuilder builder = new StringBuilder();
+		for(Iterator itr = objects.iterator(); itr.hasNext(); ){
+			builder.append(itr.next().toString());
+			if(itr.hasNext())
+				builder.append(sep);
+		}
+		return builder.toString();
+	}
+	
 	public interface PeriodComparator<E>{
 		
 		void compare(E o1, E o2, ArrayList<CourseCollusion> errors);

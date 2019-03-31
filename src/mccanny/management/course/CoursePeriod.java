@@ -2,7 +2,6 @@ package mccanny.management.course;
 
 import homelet.GH.StringDrawer.StringDrawer.StringDrawer;
 import homelet.GH.StringDrawer.StringDrawer.StringDrawer.LinePolicy;
-import homelet.GH.handlers.GH;
 import homelet.GH.utils.Alignment;
 import homelet.GH.visual.ActionsManager;
 import homelet.GH.visual.interfaces.LocatableRender;
@@ -27,7 +26,7 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	
 	public static final  double                                 START_AT       = 8.0;
 	public static final  double                                 END_AT         = 20.0;
-	public static final  int                                    HEIGHT         = 50;
+	public static final  int                                    HEIGHT         = 25;
 	public static final  int                                    WIDTH_PER_HOUR = 120;
 	private static final HashMap<Double, RenderThresholdConfig> configs        = new HashMap<>();
 	private final        Dimension                              size;
@@ -73,14 +72,14 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	
 	public CoursePeriod(Course course, int classroomNumber, Weekday weekday, double start, double end){
 		this.courseCodeDrawer = new StringDrawer();
-		this.courseCodeDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(20.0f));
+		this.courseCodeDrawer.setFont(Display.ARIAL_BOLD.deriveFont(15.0f));
 		this.courseCodeDrawer.setLinePolicy(LinePolicy.NEVER_BREAK);
 		this.courseCodeDrawer.setAlign(Alignment.CENTER);
 		this.courseCodeDrawer.setTextAlign(Alignment.TOP);
-		this.courseCodeDrawer.setColor(Color.BLACK);
+		this.courseCodeDrawer.setColor(Color.WHITE);
 		//
 		this.classroomNumberDrawer = new StringDrawer();
-		this.classroomNumberDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(17.0f));
+		this.classroomNumberDrawer.setFont(Display.ARIAL_BOLD.deriveFont(10.0f));
 		this.classroomNumberDrawer.setLinePolicy(LinePolicy.NEVER_BREAK);
 		this.classroomNumberDrawer.setAlign(Alignment.CENTER);
 		this.classroomNumberDrawer.setTextAlign(Alignment.LEFT);
@@ -135,7 +134,7 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	public void course(Course course){
 		if(!this.course.equals(course)){
 			this.course = course;
-			this.courseCodeDrawer.initializeContents(course.courseID());
+			syncCourseCodeAppr();
 			Display.getInstance().manager().applyFilter();
 		}
 	}
@@ -146,7 +145,11 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	}
 	
 	public void syncClassroomAppr(){
-		this.classroomNumberDrawer.initializeContents(this.classroomNumber == 0 ? "OC" : String.valueOf(classroomNumber));
+		this.classroomNumberDrawer.initializeContents(classroomInfo());
+	}
+	
+	public String classroomInfo(){
+		return this.classroomNumber == 0 ? "OC" : String.valueOf(classroomNumber);
 	}
 	
 	private void initPeriod(Weekday weekday, double start, double end){
@@ -162,7 +165,7 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 		this.length = end - start;
 		pullConfig();
 		this.size.setSize((int) (CoursePeriod.WIDTH_PER_HOUR * length), CoursePeriod.HEIGHT);
-		this.periodDrawer.initializeContents(Utility.time(start, Display.FORMAT_24), "~", Utility.time(end, Display.FORMAT_24));
+//		this.periodDrawer.initializeContents(Utility.time(start, Display.FORMAT_24), "~", Utility.time(end, Display.FORMAT_24));
 	}
 	
 	private void pullConfig(){
@@ -170,7 +173,12 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 		syncStudentApper();
 	}
 	
+	public void syncCourseCodeAppr(){
+		this.courseCodeDrawer.initializeContents(course.courseID() + " (" + Utility.join(", ", teachers) + ")");
+	}
+	
 	public void syncTeacherApper(){
+		syncCourseCodeAppr();
 	}
 	
 	public void syncStudentApper(){
@@ -274,6 +282,14 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 		syncStudentApper();
 	}
 	
+	public String teacherInfo(){
+		return Utility.join(",\n", teachers);
+	}
+	
+	public String studentInfo(){
+		return Utility.join(",\n", students);
+	}
+	
 	public ArrayList<Teacher> teachers(){
 		return teachers;
 	}
@@ -283,7 +299,8 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	}
 	
 	public boolean activate(){
-		return activate && Display.getInstance().manager().day(weekday).active();
+		// TODO
+		return activate;
 	}
 	
 	public void activate(boolean activate){
@@ -315,16 +332,14 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	
 	@Override
 	public void render(Graphics2D g){
-		if(isHovering()){
-			compactRender(g);
-		}else{
-			regularRender(g);
-		}
+		regularRender(g);
 	}
 	
 	private void compactRender(Graphics2D g){
-		Rectangle bounds = g.getClipBounds();
-		if(isHovering()){
+	}
+	
+	/*
+	 * if(isHovering()){
 			g.setColor(course.color().darker());
 		}else{
 			g.setColor(course.color());
@@ -341,26 +356,23 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 		g.fill(GH.rRectangle(false, 0, 0, classNumberWidth + 15, bounds.height, bounds.getHeight(), bounds.getHeight()));
 		courseCodeDrawer.draw();
 		classroomNumberDrawer.draw();
-	}
-	
+	 */
 	private void regularRender(Graphics2D g){
 		Rectangle bounds = g.getClipBounds();
-		if(isHovering()){
-			g.setColor(course.color().darker());
-		}else{
-			g.setColor(course.color());
-		}
-		g.fill(GH.rRectangle(false, bounds, bounds.getHeight(), bounds.getHeight()));
-		courseCodeDrawer.updateGraphics(g);
-		courseCodeDrawer.setFrame(bounds);
-		courseCodeDrawer.validate();
 		classroomNumberDrawer.updateGraphics(g);
-		classroomNumberDrawer.setFrame(bounds);
+		courseCodeDrawer.updateGraphics(g);
+		int       offset = classroomNumberDrawer.approximateStringWidth() + 15;
+		Rectangle first  = new Rectangle(0, 0, offset, bounds.height);
+		Rectangle second = new Rectangle(offset, 0, bounds.width - offset, bounds.height);
+		classroomNumberDrawer.setFrame(first);
+		courseCodeDrawer.setFrame(second);
 		classroomNumberDrawer.validate();
-		int classNumberWidth = classroomNumberDrawer.approximateStringWidth();
-		g.setColor(Color.BLACK);
-		g.fill(GH.rRectangle(false, 0, 0, classNumberWidth + 15, bounds.height, bounds.getHeight(), bounds.getHeight()));
+		courseCodeDrawer.validate();
+		g.setColor(course.color());
+		g.fill(second);
 		courseCodeDrawer.draw();
+		g.setColor(Color.BLACK);
+		g.fill(first);
 		classroomNumberDrawer.draw();
 	}
 	

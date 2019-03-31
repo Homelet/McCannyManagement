@@ -58,13 +58,13 @@
         <courseID>3D Model</courseID>
         <courseHour>110.0</courseHour>
         <UID>8e06e05b86cc42cb8ec32aa5715ae9a7</UID>
-        <color>-edb692</color>
+        <color>-9dbb6b</color>
     </course>
     <course>
         <courseID>ASM</courseID>
         <courseHour>110.0</courseHour>
         <UID>d505c69f896e4359a88d0f71decd0d6c</UID>
-        <color>-ff0100</color>
+        <color>-b24a51</color>
     </course>
     <course>
         <courseID>SBI</courseID>
@@ -112,7 +112,7 @@
         <courseID>AMV</courseID>
         <courseHour>110.0</courseHour>
         <UID>53c5577c9fb5408a8f3373df6b0eda28</UID>
-        <color>-b3334</color>
+        <color>-e57c0</color>
     </course>
     <course>
         <courseID>LKMDU</courseID>

@@ -2,6 +2,7 @@ package mccanny.management.course.manager;
 
 import homelet.GH.StringDrawer.StringDrawer.StringDrawer;
 import homelet.GH.StringDrawer.StringDrawer.StringDrawer.LinePolicy;
+import homelet.GH.handlers.GH;
 import homelet.GH.utils.Alignment;
 import homelet.GH.visual.interfaces.LocatableRender;
 import mccanny.management.course.CoursePeriod;
@@ -28,15 +29,15 @@ public class TimeRuler implements LocatableRender, ImageRenderable{
 		this.size = new Dimension(CourseManager.TIMETABLE_DI.width, 0);
 		this.vertex = new Point(CourseManager.FIXED_HEADER_WIDTH, CourseManager.TOP_INSET);
 		this.timeDrawer = new StringDrawer();
-		this.timeDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(13.0f));
+		this.timeDrawer.setFont(Display.LIBRE_BASKERVILLE.deriveFont(13.0f));
 		this.timeDrawer.setInsetsLeft(7);
 		this.timeDrawer.setAlign(Alignment.TOP_LEFT);
 		this.timeDrawer.setTextAlign(Alignment.TOP_LEFT);
 		this.periodDrawer = new StringDrawer();
 		this.periodDrawer.setTextWidth(StringDrawer.FRAME_WIDTH, StringDrawer.FRAME_WIDTH);
 		this.periodDrawer.setLinePolicy(LinePolicy.BREAK_BY_WORD);
-		this.periodDrawer.setLineSpaceing(-10);
-		this.periodDrawer.setFont(Display.CLEAR_SANS_BOLD.deriveFont(15.0f));
+		this.periodDrawer.setLineSpaceing(-5);
+		this.periodDrawer.setFont(Display.LIBRE_BASKERVILLE.deriveFont(15.0f));
 		this.periodDrawer.setAlign(Alignment.CENTER);
 		this.periodDrawer.setTextAlign(Alignment.TOP);
 		this.periodDrawer.setColor(Color.BLACK);
@@ -90,8 +91,9 @@ public class TimeRuler implements LocatableRender, ImageRenderable{
 	public void render(Graphics2D g){
 		Rectangle bound = g.getClipBounds();
 		timeDrawer.updateGraphics(g);
-		int widthOffset = 0;
-		int drawingFlag;
+		int     widthOffset   = 0;
+		int     drawingFlag;
+		boolean drawShadeFlag = true;
 		{
 			double reminder = CoursePeriod.START_AT - Math.floor(CoursePeriod.START_AT);
 			if(reminder == 0){
@@ -107,14 +109,12 @@ public class TimeRuler implements LocatableRender, ImageRenderable{
 			}
 		}
 		for(double timeCount = CoursePeriod.START_AT; timeCount <= CoursePeriod.END_AT; timeCount += 0.25, widthOffset += CoursePeriod.WIDTH_PER_HOUR / 4){
+			Rectangle rect;
 			if(timeCount == highlightStart || timeCount == highlightEnd){
-				g.setColor(HIGHLIGHT_COLOR);
 				timeDrawer.setColor(HIGHLIGHT_COLOR);
 			}else{
-				g.setColor(GRAY);
 				timeDrawer.setColor(GRAY);
 			}
-			Rectangle rect;
 			switch(drawingFlag){
 				case 0:
 					timeDrawer.setFrame(new Rectangle(widthOffset, 0, bound.width - widthOffset, DEFAULT_RULER_HEIGHT));
@@ -122,6 +122,13 @@ public class TimeRuler implements LocatableRender, ImageRenderable{
 					timeDrawer.validate();
 					timeDrawer.draw();
 					rect = new Rectangle(widthOffset, 0, 5, DEFAULT_RULER_HEIGHT);
+					if(drawShadeFlag){
+						g.setColor(Display.NORMAL_BACKGROUND);
+						g.fill(GH.rectangle(false, widthOffset, DEFAULT_RULER_HEIGHT, CoursePeriod.WIDTH_PER_HOUR, bound.height - DEFAULT_RULER_HEIGHT));
+						drawShadeFlag = false;
+					}else{
+						drawShadeFlag = true;
+					}
 					break;
 				case 2:
 					rect = new Rectangle(widthOffset, DEFAULT_RULER_HEIGHT - 20, 4, 20);
@@ -131,6 +138,11 @@ public class TimeRuler implements LocatableRender, ImageRenderable{
 				case 1:
 					rect = new Rectangle(widthOffset, DEFAULT_RULER_HEIGHT - 10, 2, 10);
 					break;
+			}
+			if(timeCount == highlightStart || timeCount == highlightEnd){
+				g.setColor(HIGHLIGHT_COLOR);
+			}else{
+				g.setColor(GRAY);
 			}
 			g.fill(rect);
 			if(drawingFlag == 3){

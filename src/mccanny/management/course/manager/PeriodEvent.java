@@ -21,13 +21,21 @@ public class PeriodEvent implements Comparable<PeriodEvent>{
 	
 	@Override
 	public boolean equals(Object o){
-		if(this == o) return true;
-		if(o == null || getClass() != o.getClass()) return false;
-		PeriodEvent event = (PeriodEvent) o;
-		if(period.equals(event.period))
-			return status == event.status;
-		else
+		if(this == o)
+			return true;
+		if(!(o instanceof PeriodEvent))
 			return false;
+		PeriodEvent e = (PeriodEvent) o;
+		return this.period.equals((e.period)) && this.status == e.status;
+	}
+	
+	@Override
+	public String toString(){
+		return "PeriodEvent{" +
+				"time=" + time +
+				", status=" + status +
+				", period=" + period +
+				'}';
 	}
 	
 	public final static boolean      START = false;
