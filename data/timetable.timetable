@@ -3,269 +3,833 @@
     <encoder version="v1"/>
     <config>
         <date>
-            <start day="0" month="2" year="2019"/>
-            <end day="28" month="2" year="2019"/>
+            <start day="0" month="3" year="2019"/>
+            <end day="0" month="4" year="2019"/>
         </date>
         <name str="McCanny TimeTable"/>
     </config>
     <periods>
         <period>
-            <course UID="13b2db675b1748d4bf4d85c4a32380d3" courseID="SPH"/>
-            <classRoom number="0"/>
-            <time end="9.5" start="8.0" weekday="0"/>
-            <teachers>
-                <teacher MEN="014" UID="16e55aa2baa442528366f0fdaca1278e"/>
-            </teachers>
-            <students>
-                <student OEN="115" UID="94a7414c41ef4e7ab352c2c8549b4c5d"/>
-                <student OEN="127" UID="85c7cfa9e0084ec3bc2f3ae5784014e7"/>
-            </students>
-        </period>
-        <period>
-            <course UID="c97ebe67ed6649c5a310796b5c18eb1b" courseID="ESL"/>
+            <course UID="2643d656101249dd9d99d921f5a27706" courseID="ENG4U/3U"/>
             <classRoom number="1"/>
-            <time end="11.75" start="8.5" weekday="0"/>
+            <time end="12.25" start="9.0" weekday="0"/>
             <teachers>
-                <teacher MEN="000" UID="30dd378c4fff470fa1fef1b3001a1367"/>
+                <teacher MEN="000000002" UID="28d0a9d3ede3437ab1eb984449002c83"/>
             </teachers>
             <students>
-                <student OEN="111" UID="1f50dfb335e148f6a4ccb2db34a07812"/>
-                <student OEN="112" UID="473fd76f56de4cc7a1599fc8c8893a62"/>
-                <student OEN="113" UID="0b62855863304c3ca439a94bcf2bba64"/>
-                <student OEN="114" UID="d9fda1a0cd7a4c9ca740a49ee92c181d"/>
-                <student OEN="115" UID="94a7414c41ef4e7ab352c2c8549b4c5d"/>
-                <student OEN="116" UID="953261be489d4532b20a165b9a18ab69"/>
+                <student OEN="000000009" UID="9c4a888445e347098c2506f1393bb2da"/>
+                <student OEN="000000008" UID="7e92f29ea7024334acc2142acf275d0a"/>
+                <student OEN="000000014" UID="21354562b1774096af3396401e5ac1d1"/>
+                <student OEN="000000013" UID="3c662f450e9744e68f3d442bf5ed9b0f"/>
+                <student OEN="000000012" UID="14867f0ac8364940a10f2209c8d0103f"/>
+                <student OEN="000000011" UID="fd8ca89e09e049e1b257bc828b42d52f"/>
+                <student OEN="000000007" UID="67a8e97669634b118e88162115f9ddce"/>
+                <student OEN="000000006" UID="45c13be74e084f0ca29624b99fcd4176"/>
+                <student OEN="000000016" UID="4cfdec1e597540dbbcb299555d637c2c"/>
+                <student OEN="000000015" UID="06b81ff03eb444bd94ff954b81ee73bb"/>
+                <student OEN="000000010" UID="bc6fe735a53f45de9d9f8255b3f50e02"/>
             </students>
         </period>
         <period>
-            <course UID="b1629c7a32aa42ba85004737ba4a6b01" courseID="CHC,GLC,CLS"/>
+            <course UID="5f29fdf3c5fc45cbbe42b214caf4f116" courseID="ESL"/>
+            <classRoom number="1"/>
+            <time end="12.25" start="9.0" weekday="0"/>
+            <teachers>
+                <teacher MEN="000000001" UID="79e51b9395b14a96a16e3a0d0776679c"/>
+            </teachers>
+            <students>
+                <student OEN="000000003" UID="09459e60437044858985a075db5b3fd3"/>
+                <student OEN="000000002" UID="948e05609114407bb611980a6a1d1c5b"/>
+                <student OEN="000000001" UID="0efc789de3d249baa9409c96865fa169"/>
+                <student OEN="000000005" UID="b05f8885b11443ee9670319696a6ccb0"/>
+                <student OEN="000000004" UID="cb91b2756bee4b059cb8cb196c01b14c"/>
+            </students>
+        </period>
+        <period>
+            <course UID="40eb139fba774aa2a94b4f071484a38f" courseID="MHF4U/MCV4U"/>
+            <classRoom number="1"/>
+            <time end="12.25" start="9.0" weekday="0"/>
+            <teachers>
+                <teacher MEN="000000003" UID="f251706ed3d04b949960809ab9da4515"/>
+            </teachers>
+            <students>
+                <student OEN="000000019" UID="ad892a97fc9e49eea7cccd1d1c6713ff"/>
+                <student OEN="000000018" UID="789cdd40c0f144d09a4bdbccc01ad764"/>
+                <student OEN="000000017" UID="6c05c46c19154cd0977bced8c52cdc60"/>
+                <student OEN="000000021" UID="d54f441c90e546219a16f7721a68ab7a"/>
+                <student OEN="000000020" UID="8a3c813483124021a60e0829a4f8f1af"/>
+            </students>
+        </period>
+        <period>
+            <course UID="2643d656101249dd9d99d921f5a27706" courseID="ENG4U/3U"/>
             <classRoom number="1"/>
             <time end="15.75" start="12.75" weekday="0"/>
             <teachers>
-                <teacher MEN="000" UID="30dd378c4fff470fa1fef1b3001a1367"/>
+                <teacher MEN="000000002" UID="28d0a9d3ede3437ab1eb984449002c83"/>
             </teachers>
             <students>
-                <student OEN="131" UID="9143d123275a4166ac206893fba95ced"/>
-                <student OEN="132" UID="e7ec8a0dc75942bf878a94b219521d8d"/>
-                <student OEN="112" UID="473fd76f56de4cc7a1599fc8c8893a62"/>
-                <student OEN="111" UID="1f50dfb335e148f6a4ccb2db34a07812"/>
-                <student OEN="116" UID="953261be489d4532b20a165b9a18ab69"/>
+                <student OEN="000000025" UID="4c30c1c01dfb4f68ababaa49fd6fff32"/>
+                <student OEN="000000018" UID="789cdd40c0f144d09a4bdbccc01ad764"/>
+                <student OEN="000000031" UID="5872ab448a0f4bfab5973d3a80a73095"/>
+                <student OEN="000000030" UID="c1c9d37980f04e5993c897e59bc94cf3"/>
+                <student OEN="000000019" UID="ad892a97fc9e49eea7cccd1d1c6713ff"/>
+                <student OEN="000000009" UID="9c4a888445e347098c2506f1393bb2da"/>
+                <student OEN="000000029" UID="c8169663f98a48c68f591fc7d9c1cd8c"/>
             </students>
         </period>
         <period>
-            <course UID="5c76e17c3cf9415bb57a4d2010eb2149" courseID="SBI"/>
+            <course UID="2262a345396445ab9a5a600a6bbe7109" courseID="IDC4U"/>
             <classRoom number="1"/>
             <time end="15.75" start="12.75" weekday="0"/>
             <teachers>
-                <teacher MEN="003" UID="1ee1c0b6effa4387995a99216f7cd9ee"/>
+                <teacher MEN="000000004" UID="4dee548796c243de9ac0b9a341d8e4f2"/>
             </teachers>
             <students>
-                <student OEN="115" UID="94a7414c41ef4e7ab352c2c8549b4c5d"/>
-                <student OEN="118" UID="c7267cb70f5a4d93bd119cf7c8199aec"/>
+                <student OEN="000000022" UID="adabaed608fe4970b91987b19db4869c"/>
+                <student OEN="000000023" UID="eba22b2ebbd84552ad342df83bcdc36a"/>
+                <student OEN="000000024" UID="77a9f033f5c548fb9eadf56f9d0afd01"/>
+                <student OEN="000000013" UID="3c662f450e9744e68f3d442bf5ed9b0f"/>
+                <student OEN="000000012" UID="14867f0ac8364940a10f2209c8d0103f"/>
+                <student OEN="000000015" UID="06b81ff03eb444bd94ff954b81ee73bb"/>
+                <student OEN="000000016" UID="4cfdec1e597540dbbcb299555d637c2c"/>
+                <student OEN="000000010" UID="bc6fe735a53f45de9d9f8255b3f50e02"/>
             </students>
         </period>
         <period>
-            <course UID="d505c69f896e4359a88d0f71decd0d6c" courseID="ASM"/>
+            <course UID="e030faa780f04e5ebf7e80de15b59d00" courseID="MCR3U/MPM2D"/>
             <classRoom number="1"/>
-            <time end="16.0" start="13.0" weekday="0"/>
+            <time end="15.75" start="12.75" weekday="0"/>
             <teachers>
-                <teacher MEN="002" UID="8d01befda4f14fd69d31af26b4bfb6fc"/>
+                <teacher MEN="000000003" UID="f251706ed3d04b949960809ab9da4515"/>
             </teachers>
             <students>
-                <student OEN="113" UID="0b62855863304c3ca439a94bcf2bba64"/>
-                <student OEN="114" UID="d9fda1a0cd7a4c9ca740a49ee92c181d"/>
-                <student OEN="117" UID="49d23a5b07bd47d4a55286fbdfe56124"/>
-                <student OEN="125" UID="8991eeedadf24a269da9fdbd920d953c"/>
-                <student OEN="126" UID="69ac3e20f18a412792325bfd2b3717ff"/>
-                <student OEN="127" UID="85c7cfa9e0084ec3bc2f3ae5784014e7"/>
-                <student OEN="128" UID="e7b3a5bc8b0f48e180b3521a3f0d1803"/>
-                <student OEN="129" UID="641c409767d745f6b5ae1e4462f4ffa9"/>
-                <student OEN="130" UID="4ae8a784886548a2a9f71f7c6becfce6"/>
+                <student OEN="000000003" UID="09459e60437044858985a075db5b3fd3"/>
+                <student OEN="000000005" UID="b05f8885b11443ee9670319696a6ccb0"/>
+                <student OEN="000000001" UID="0efc789de3d249baa9409c96865fa169"/>
+                <student OEN="000000004" UID="cb91b2756bee4b059cb8cb196c01b14c"/>
+                <student OEN="000000002" UID="948e05609114407bb611980a6a1d1c5b"/>
             </students>
         </period>
         <period>
-            <course UID="ccef80e8e41b449ba2433808a7004d36" courseID="Portfolio"/>
+            <course UID="743d8166b86b4d1794f71ed8dbb25315" courseID="AWM4M/AVI20"/>
             <classRoom number="1"/>
             <time end="18.0" start="16.0" weekday="0"/>
             <teachers>
-                <teacher MEN="004" UID="c07329233586461787295f0aa3cc812e"/>
+                <teacher MEN="000000001" UID="79e51b9395b14a96a16e3a0d0776679c"/>
             </teachers>
             <students>
-                <student OEN="115" UID="94a7414c41ef4e7ab352c2c8549b4c5d"/>
-                <student OEN="133" UID="86a30c1e985342dea1b38fadf820a50a"/>
-                <student OEN="134" UID="34422ce1b20f45d08a849ea63cf14f88"/>
-                <student OEN="135" UID="49b4b71833aa4e52b7b96ee3b0a59183"/>
+                <student OEN="000000003" UID="09459e60437044858985a075db5b3fd3"/>
+                <student OEN="000000005" UID="b05f8885b11443ee9670319696a6ccb0"/>
+                <student OEN="000000032" UID="705cb875a67142a092679e4fd29d72f9"/>
+                <student OEN="000000034" UID="563653ea320b4814b06da8ef47dc9fb2"/>
+                <student OEN="000000033" UID="431468a66f154bcdba012617dca5505c"/>
             </students>
         </period>
         <period>
-            <course UID="53c5577c9fb5408a8f3373df6b0eda28" courseID="AMV"/>
+            <course UID="ea4790b373fe433cbe122926a43d6e42" courseID="Basketball Club"/>
             <classRoom number="1"/>
-            <time end="19.0" start="16.0" weekday="0"/>
-            <teachers>
-                <teacher MEN="005" UID="03bd579aa75d462ca329ac1d0c0d4628"/>
-            </teachers>
-            <students>
-                <student OEN="121" UID="6809916d3d9d493b974ee781ef261f47"/>
-                <student OEN="138" UID="3bec48bef3a14a309e5600a767803916"/>
-                <student OEN="136" UID="6160fee2d42d477da3078a5c2b1ccd3a"/>
-                <student OEN="139" UID="14310ee7e0d64374a4653a71bc92cdf2"/>
-                <student OEN="137" UID="85eff339a76549cbad8de6f0b1ffd6e7"/>
-            </students>
+            <time end="18.0" start="16.0" weekday="0"/>
+            <teachers/>
+            <students/>
         </period>
         <period>
-            <course UID="671021f8e9b84c0a979c0a3828e250e6" courseID="SPH,SNC"/>
+            <course UID="5f29fdf3c5fc45cbbe42b214caf4f116" courseID="ESL"/>
             <classRoom number="1"/>
-            <time end="19.0" start="16.0" weekday="0"/>
+            <time end="12.25" start="9.0" weekday="1"/>
             <teachers>
-                <teacher MEN="003" UID="1ee1c0b6effa4387995a99216f7cd9ee"/>
+                <teacher MEN="000000001" UID="79e51b9395b14a96a16e3a0d0776679c"/>
             </teachers>
             <students>
-                <student OEN="118" UID="c7267cb70f5a4d93bd119cf7c8199aec"/>
-                <student OEN="140" UID="6701b5030e8d4de984e80dc07d428ca2"/>
-                <student OEN="112" UID="473fd76f56de4cc7a1599fc8c8893a62"/>
-                <student OEN="141" UID="ebb70bab48004b6ea8c0e3b3681284e4"/>
-                <student OEN="111" UID="1f50dfb335e148f6a4ccb2db34a07812"/>
+                <student OEN="000000003" UID="09459e60437044858985a075db5b3fd3"/>
+                <student OEN="000000002" UID="948e05609114407bb611980a6a1d1c5b"/>
+                <student OEN="000000001" UID="0efc789de3d249baa9409c96865fa169"/>
+                <student OEN="000000005" UID="b05f8885b11443ee9670319696a6ccb0"/>
+                <student OEN="000000004" UID="cb91b2756bee4b059cb8cb196c01b14c"/>
             </students>
         </period>
         <period>
-            <course UID="3dcd6b3924954ec190da2266a259d052" courseID="MDM4U"/>
+            <course UID="40eb139fba774aa2a94b4f071484a38f" courseID="MHF4U/MCV4U"/>
             <classRoom number="1"/>
-            <time end="19.0" start="17.5" weekday="0"/>
+            <time end="12.25" start="9.0" weekday="1"/>
             <teachers>
-                <teacher MEN="006" UID="e5d00f59dd8942e1bfd4616819efb2f1"/>
+                <teacher MEN="000000003" UID="f251706ed3d04b949960809ab9da4515"/>
             </teachers>
             <students>
-                <student OEN="117" UID="49d23a5b07bd47d4a55286fbdfe56124"/>
-                <student OEN="124" UID="607e6c420f5b472d92b293d2dc558ef3"/>
-                <student OEN="140" UID="6701b5030e8d4de984e80dc07d428ca2"/>
-                <student OEN="142" UID="bf0bac2e7921479497ac5960d1f3b0a8"/>
-                <student OEN="143" UID="9391a0982b584c18afabd90a60b87f60"/>
+                <student OEN="000000019" UID="ad892a97fc9e49eea7cccd1d1c6713ff"/>
+                <student OEN="000000013" UID="3c662f450e9744e68f3d442bf5ed9b0f"/>
+                <student OEN="000000011" UID="fd8ca89e09e049e1b257bc828b42d52f"/>
+                <student OEN="000000007" UID="67a8e97669634b118e88162115f9ddce"/>
+                <student OEN="000000018" UID="789cdd40c0f144d09a4bdbccc01ad764"/>
+                <student OEN="000000017" UID="6c05c46c19154cd0977bced8c52cdc60"/>
+                <student OEN="000000021" UID="d54f441c90e546219a16f7721a68ab7a"/>
+                <student OEN="000000020" UID="8a3c813483124021a60e0829a4f8f1af"/>
             </students>
         </period>
         <period>
-            <course UID="2ea214afb8af43acb78108c55a660107" courseID="ENG"/>
-            <classRoom number="0"/>
-            <time end="12.0" start="9.0" weekday="5"/>
-            <teachers>
-                <teacher MEN="001" UID="da579247a4b44247b9001fd0db45a264"/>
-            </teachers>
-            <students>
-                <student OEN="117" UID="49d23a5b07bd47d4a55286fbdfe56124"/>
-                <student OEN="118" UID="c7267cb70f5a4d93bd119cf7c8199aec"/>
-                <student OEN="119" UID="44f16087269446088c63008d959c1e83"/>
-                <student OEN="121" UID="6809916d3d9d493b974ee781ef261f47"/>
-                <student OEN="122" UID="8c032530b1354983ad640a70fc4d7538"/>
-                <student OEN="123" UID="ae394d1ad5fb4f9a87f187be564d0569"/>
-                <student OEN="124" UID="607e6c420f5b472d92b293d2dc558ef3"/>
-                <student OEN="125" UID="8991eeedadf24a269da9fdbd920d953c"/>
-                <student OEN="126" UID="69ac3e20f18a412792325bfd2b3717ff"/>
-            </students>
-        </period>
-        <period>
-            <course UID="3dcd6b3924954ec190da2266a259d052" courseID="MDM4U"/>
+            <course UID="68f9106b079e4abba12e0b32c8ddd931" courseID="CHC2D/GLC20"/>
             <classRoom number="1"/>
-            <time end="18.0" start="16.0" weekday="5"/>
+            <time end="15.75" start="12.75" weekday="1"/>
             <teachers>
-                <teacher MEN="006" UID="e5d00f59dd8942e1bfd4616819efb2f1"/>
+                <teacher MEN="000000008" UID="f23c3b2c740448a79be70623ac05594d"/>
             </teachers>
             <students>
-                <student OEN="143" UID="9391a0982b584c18afabd90a60b87f60"/>
-                <student OEN="117" UID="49d23a5b07bd47d4a55286fbdfe56124"/>
-                <student OEN="140" UID="6701b5030e8d4de984e80dc07d428ca2"/>
-                <student OEN="142" UID="bf0bac2e7921479497ac5960d1f3b0a8"/>
-                <student OEN="124" UID="607e6c420f5b472d92b293d2dc558ef3"/>
+                <student OEN="000000013" UID="3c662f450e9744e68f3d442bf5ed9b0f"/>
+                <student OEN="000000006" UID="45c13be74e084f0ca29624b99fcd4176"/>
+                <student OEN="000000005" UID="b05f8885b11443ee9670319696a6ccb0"/>
             </students>
         </period>
         <period>
-            <course UID="b59d167458e7497f9e824cdc2e80e940" courseID="TEJ,ICS"/>
+            <course UID="fb5d41d6dcdc4d359cd5b6b7004cdd91" courseID="MDM4U"/>
             <classRoom number="1"/>
-            <time end="18.0" start="16.0" weekday="5"/>
+            <time end="15.75" start="12.75" weekday="1"/>
             <teachers>
-                <teacher MEN="014" UID="16e55aa2baa442528366f0fdaca1278e"/>
+                <teacher MEN="000000003" UID="f251706ed3d04b949960809ab9da4515"/>
             </teachers>
             <students>
-                <student OEN="119" UID="44f16087269446088c63008d959c1e83"/>
-                <student OEN="140" UID="6701b5030e8d4de984e80dc07d428ca2"/>
-                <student OEN="147" UID="eb6cad5b537341cd868f25e7d13a240d"/>
-                <student OEN="122" UID="8c032530b1354983ad640a70fc4d7538"/>
-                <student OEN="161" UID="f01f6176c9644efcbc093ed71107660f"/>
+                <student OEN="000000011" UID="fd8ca89e09e049e1b257bc828b42d52f"/>
+                <student OEN="000000017" UID="6c05c46c19154cd0977bced8c52cdc60"/>
+                <student OEN="000000025" UID="4c30c1c01dfb4f68ababaa49fd6fff32"/>
             </students>
         </period>
         <period>
-            <course UID="8f9b4789851e4a89a62116210b647ec6" courseID="LKMDU"/>
+            <course UID="68f9106b079e4abba12e0b32c8ddd931" courseID="CHC2D/GLC20"/>
+            <classRoom number="1"/>
+            <time end="15.75" start="13.5" weekday="1"/>
+            <teachers>
+                <teacher MEN="000000007" UID="3e187079f1ab4497883d2b270a2100ad"/>
+            </teachers>
+            <students>
+                <student OEN="000000022" UID="adabaed608fe4970b91987b19db4869c"/>
+                <student OEN="000000018" UID="789cdd40c0f144d09a4bdbccc01ad764"/>
+                <student OEN="000000001" UID="0efc789de3d249baa9409c96865fa169"/>
+                <student OEN="000000002" UID="948e05609114407bb611980a6a1d1c5b"/>
+            </students>
+        </period>
+        <period>
+            <course UID="2643d656101249dd9d99d921f5a27706" courseID="ENG4U/3U"/>
+            <classRoom number="1"/>
+            <time end="12.25" start="9.0" weekday="2"/>
+            <teachers>
+                <teacher MEN="000000002" UID="28d0a9d3ede3437ab1eb984449002c83"/>
+            </teachers>
+            <students>
+                <student OEN="000000008" UID="7e92f29ea7024334acc2142acf275d0a"/>
+                <student OEN="000000007" UID="67a8e97669634b118e88162115f9ddce"/>
+                <student OEN="000000006" UID="45c13be74e084f0ca29624b99fcd4176"/>
+                <student OEN="000000014" UID="21354562b1774096af3396401e5ac1d1"/>
+                <student OEN="000000013" UID="3c662f450e9744e68f3d442bf5ed9b0f"/>
+                <student OEN="000000011" UID="fd8ca89e09e049e1b257bc828b42d52f"/>
+                <student OEN="000000012" UID="14867f0ac8364940a10f2209c8d0103f"/>
+                <student OEN="000000009" UID="9c4a888445e347098c2506f1393bb2da"/>
+                <student OEN="000000015" UID="06b81ff03eb444bd94ff954b81ee73bb"/>
+                <student OEN="000000016" UID="4cfdec1e597540dbbcb299555d637c2c"/>
+                <student OEN="000000010" UID="bc6fe735a53f45de9d9f8255b3f50e02"/>
+            </students>
+        </period>
+        <period>
+            <course UID="5f29fdf3c5fc45cbbe42b214caf4f116" courseID="ESL"/>
+            <classRoom number="1"/>
+            <time end="12.25" start="9.0" weekday="2"/>
+            <teachers>
+                <teacher MEN="000000001" UID="79e51b9395b14a96a16e3a0d0776679c"/>
+            </teachers>
+            <students>
+                <student OEN="000000003" UID="09459e60437044858985a075db5b3fd3"/>
+                <student OEN="000000005" UID="b05f8885b11443ee9670319696a6ccb0"/>
+                <student OEN="000000001" UID="0efc789de3d249baa9409c96865fa169"/>
+                <student OEN="000000004" UID="cb91b2756bee4b059cb8cb196c01b14c"/>
+                <student OEN="000000002" UID="948e05609114407bb611980a6a1d1c5b"/>
+            </students>
+        </period>
+        <period>
+            <course UID="e030faa780f04e5ebf7e80de15b59d00" courseID="MCR3U/MPM2D"/>
+            <classRoom number="1"/>
+            <time end="12.25" start="9.0" weekday="2"/>
+            <teachers>
+                <teacher MEN="000000003" UID="f251706ed3d04b949960809ab9da4515"/>
+            </teachers>
+            <students>
+                <student OEN="000000020" UID="8a3c813483124021a60e0829a4f8f1af"/>
+                <student OEN="000000018" UID="789cdd40c0f144d09a4bdbccc01ad764"/>
+                <student OEN="000000021" UID="d54f441c90e546219a16f7721a68ab7a"/>
+                <student OEN="000000019" UID="ad892a97fc9e49eea7cccd1d1c6713ff"/>
+                <student OEN="000000017" UID="6c05c46c19154cd0977bced8c52cdc60"/>
+            </students>
+        </period>
+        <period>
+            <course UID="706e658df3af4e08ae0b9deea9c7090b" courseID="SBI4U/SPH3U"/>
+            <classRoom number="1"/>
+            <time end="15.75" start="12.75" weekday="2"/>
+            <teachers>
+                <teacher MEN="000000008" UID="f23c3b2c740448a79be70623ac05594d"/>
+            </teachers>
+            <students>
+                <student OEN="000000013" UID="3c662f450e9744e68f3d442bf5ed9b0f"/>
+                <student OEN="000000002" UID="948e05609114407bb611980a6a1d1c5b"/>
+                <student OEN="000000001" UID="0efc789de3d249baa9409c96865fa169"/>
+                <student OEN="000000006" UID="45c13be74e084f0ca29624b99fcd4176"/>
+            </students>
+        </period>
+        <period>
+            <course UID="6f5863238925440cb16615a69ec687d4" courseID="TDJ4M/3M"/>
+            <classRoom number="1"/>
+            <time end="15.75" start="12.75" weekday="2"/>
+            <teachers>
+                <teacher MEN="000000009" UID="5c11fb4acd364a37a3fa0e9e99dcd1d4"/>
+            </teachers>
+            <students>
+                <student OEN="000000020" UID="8a3c813483124021a60e0829a4f8f1af"/>
+                <student OEN="000000003" UID="09459e60437044858985a075db5b3fd3"/>
+                <student OEN="000000005" UID="b05f8885b11443ee9670319696a6ccb0"/>
+                <student OEN="000000022" UID="adabaed608fe4970b91987b19db4869c"/>
+                <student OEN="000000031" UID="5872ab448a0f4bfab5973d3a80a73095"/>
+                <student OEN="000000012" UID="14867f0ac8364940a10f2209c8d0103f"/>
+                <student OEN="000000004" UID="cb91b2756bee4b059cb8cb196c01b14c"/>
+                <student OEN="000000016" UID="4cfdec1e597540dbbcb299555d637c2c"/>
+            </students>
+        </period>
+        <period>
+            <course UID="743d8166b86b4d1794f71ed8dbb25315" courseID="AWM4M/AVI20"/>
+            <classRoom number="1"/>
+            <time end="18.0" start="16.0" weekday="2"/>
+            <teachers>
+                <teacher MEN="000000001" UID="79e51b9395b14a96a16e3a0d0776679c"/>
+            </teachers>
+            <students>
+                <student OEN="000000035" UID="0d3db8a15fa44175a165e9ad5e1fa7d1"/>
+                <student OEN="000000001" UID="0efc789de3d249baa9409c96865fa169"/>
+            </students>
+        </period>
+        <period>
+            <course UID="ede7e2874d684668b3e5e7685f25d84f" courseID="AMV4M/3M"/>
+            <classRoom number="1"/>
+            <time end="19.0" start="16.0" weekday="2"/>
+            <teachers>
+                <teacher MEN="000000007" UID="3e187079f1ab4497883d2b270a2100ad"/>
+            </teachers>
+            <students>
+                <student OEN="000000036" UID="280129626cf4459e8000e293a99c128f"/>
+                <student OEN="000000033" UID="431468a66f154bcdba012617dca5505c"/>
+                <student OEN="000000024" UID="77a9f033f5c548fb9eadf56f9d0afd01"/>
+            </students>
+        </period>
+        <period>
+            <course UID="e95e950b64294142be558723bd31e688" courseID="SPH4U/SNC2D"/>
+            <classRoom number="1"/>
+            <time end="19.0" start="16.0" weekday="2"/>
+            <teachers>
+                <teacher MEN="000000010" UID="e4fc3c5139474eb8b8428cb6696e5708"/>
+            </teachers>
+            <students>
+                <student OEN="000000020" UID="8a3c813483124021a60e0829a4f8f1af"/>
+                <student OEN="000000003" UID="09459e60437044858985a075db5b3fd3"/>
+                <student OEN="000000023" UID="eba22b2ebbd84552ad342df83bcdc36a"/>
+                <student OEN="000000012" UID="14867f0ac8364940a10f2209c8d0103f"/>
+                <student OEN="000000034" UID="563653ea320b4814b06da8ef47dc9fb2"/>
+                <student OEN="000000004" UID="cb91b2756bee4b059cb8cb196c01b14c"/>
+                <student OEN="000000015" UID="06b81ff03eb444bd94ff954b81ee73bb"/>
+                <student OEN="000000016" UID="4cfdec1e597540dbbcb299555d637c2c"/>
+            </students>
+        </period>
+        <period>
+            <course UID="e95e950b64294142be558723bd31e688" courseID="SPH4U/SNC2D"/>
+            <classRoom number="1"/>
+            <time end="19.0" start="16.0" weekday="2"/>
+            <teachers>
+                <teacher MEN="000000008" UID="f23c3b2c740448a79be70623ac05594d"/>
+            </teachers>
+            <students>
+                <student OEN="000000014" UID="21354562b1774096af3396401e5ac1d1"/>
+                <student OEN="000000037" UID="ccdf3515730e465fa45a4753b8215bfb"/>
+                <student OEN="000000030" UID="c1c9d37980f04e5993c897e59bc94cf3"/>
+                <student OEN="000000002" UID="948e05609114407bb611980a6a1d1c5b"/>
+                <student OEN="000000001" UID="0efc789de3d249baa9409c96865fa169"/>
+                <student OEN="000000006" UID="45c13be74e084f0ca29624b99fcd4176"/>
+            </students>
+        </period>
+        <period>
+            <course UID="2262a345396445ab9a5a600a6bbe7109" courseID="IDC4U"/>
+            <classRoom number="1"/>
+            <time end="12.25" start="9.0" weekday="3"/>
+            <teachers>
+                <teacher MEN="000000004" UID="4dee548796c243de9ac0b9a341d8e4f2"/>
+            </teachers>
+            <students>
+                <student OEN="000000022" UID="adabaed608fe4970b91987b19db4869c"/>
+                <student OEN="000000023" UID="eba22b2ebbd84552ad342df83bcdc36a"/>
+                <student OEN="000000024" UID="77a9f033f5c548fb9eadf56f9d0afd01"/>
+                <student OEN="000000013" UID="3c662f450e9744e68f3d442bf5ed9b0f"/>
+                <student OEN="000000012" UID="14867f0ac8364940a10f2209c8d0103f"/>
+                <student OEN="000000015" UID="06b81ff03eb444bd94ff954b81ee73bb"/>
+                <student OEN="000000016" UID="4cfdec1e597540dbbcb299555d637c2c"/>
+                <student OEN="000000010" UID="bc6fe735a53f45de9d9f8255b3f50e02"/>
+            </students>
+        </period>
+        <period>
+            <course UID="40eb139fba774aa2a94b4f071484a38f" courseID="MHF4U/MCV4U"/>
+            <classRoom number="1"/>
+            <time end="12.25" start="9.0" weekday="3"/>
+            <teachers>
+                <teacher MEN="000000003" UID="f251706ed3d04b949960809ab9da4515"/>
+            </teachers>
+            <students>
+                <student OEN="000000019" UID="ad892a97fc9e49eea7cccd1d1c6713ff"/>
+                <student OEN="000000018" UID="789cdd40c0f144d09a4bdbccc01ad764"/>
+                <student OEN="000000017" UID="6c05c46c19154cd0977bced8c52cdc60"/>
+                <student OEN="000000021" UID="d54f441c90e546219a16f7721a68ab7a"/>
+                <student OEN="000000020" UID="8a3c813483124021a60e0829a4f8f1af"/>
+            </students>
+        </period>
+        <period>
+            <course UID="743d8166b86b4d1794f71ed8dbb25315" courseID="AWM4M/AVI20"/>
+            <classRoom number="1"/>
+            <time end="15.75" start="12.75" weekday="3"/>
+            <teachers>
+                <teacher MEN="000000001" UID="79e51b9395b14a96a16e3a0d0776679c"/>
+            </teachers>
+            <students>
+                <student OEN="000000005" UID="b05f8885b11443ee9670319696a6ccb0"/>
+                <student OEN="000000001" UID="0efc789de3d249baa9409c96865fa169"/>
+                <student OEN="000000035" UID="0d3db8a15fa44175a165e9ad5e1fa7d1"/>
+            </students>
+        </period>
+        <period>
+            <course UID="bf7de3d3e4fc44ef81ffa34b8d437683" courseID="CHC2D/CHV2O"/>
+            <classRoom number="1"/>
+            <time end="15.75" start="12.75" weekday="3"/>
+            <teachers>
+                <teacher MEN="000000007" UID="3e187079f1ab4497883d2b270a2100ad"/>
+            </teachers>
+            <students>
+                <student OEN="000000022" UID="adabaed608fe4970b91987b19db4869c"/>
+                <student OEN="000000012" UID="14867f0ac8364940a10f2209c8d0103f"/>
+                <student OEN="000000002" UID="948e05609114407bb611980a6a1d1c5b"/>
+            </students>
+        </period>
+        <period>
+            <course UID="b26f176ee9db4c9aa40e65078b62ac57" courseID="OLC4O"/>
+            <classRoom number="1"/>
+            <time end="15.75" start="12.75" weekday="3"/>
+            <teachers>
+                <teacher MEN="000000002" UID="28d0a9d3ede3437ab1eb984449002c83"/>
+            </teachers>
+            <students>
+                <student OEN="000000025" UID="4c30c1c01dfb4f68ababaa49fd6fff32"/>
+                <student OEN="000000018" UID="789cdd40c0f144d09a4bdbccc01ad764"/>
+                <student OEN="000000031" UID="5872ab448a0f4bfab5973d3a80a73095"/>
+                <student OEN="000000030" UID="c1c9d37980f04e5993c897e59bc94cf3"/>
+                <student OEN="000000019" UID="ad892a97fc9e49eea7cccd1d1c6713ff"/>
+                <student OEN="000000009" UID="9c4a888445e347098c2506f1393bb2da"/>
+                <student OEN="000000029" UID="c8169663f98a48c68f591fc7d9c1cd8c"/>
+            </students>
+        </period>
+        <period>
+            <course UID="d30561d700624a0ea261f0daabdc6e7a" courseID="ASM4M/3M"/>
+            <classRoom number="1"/>
+            <time end="19.0" start="16.0" weekday="3"/>
+            <teachers>
+                <teacher MEN="000000010" UID="e4fc3c5139474eb8b8428cb6696e5708"/>
+            </teachers>
+            <students>
+                <student OEN="000000020" UID="8a3c813483124021a60e0829a4f8f1af"/>
+                <student OEN="000000003" UID="09459e60437044858985a075db5b3fd3"/>
+                <student OEN="000000023" UID="eba22b2ebbd84552ad342df83bcdc36a"/>
+                <student OEN="000000012" UID="14867f0ac8364940a10f2209c8d0103f"/>
+                <student OEN="000000034" UID="563653ea320b4814b06da8ef47dc9fb2"/>
+                <student OEN="000000004" UID="cb91b2756bee4b059cb8cb196c01b14c"/>
+                <student OEN="000000015" UID="06b81ff03eb444bd94ff954b81ee73bb"/>
+                <student OEN="000000016" UID="4cfdec1e597540dbbcb299555d637c2c"/>
+            </students>
+        </period>
+        <period>
+            <course UID="2643d656101249dd9d99d921f5a27706" courseID="ENG4U/3U"/>
+            <classRoom number="1"/>
+            <time end="19.0" start="16.0" weekday="3"/>
+            <teachers>
+                <teacher MEN="000000002" UID="28d0a9d3ede3437ab1eb984449002c83"/>
+            </teachers>
+            <students>
+                <student OEN="000000017" UID="6c05c46c19154cd0977bced8c52cdc60"/>
+                <student OEN="000000039" UID="3d9b76ace0b94598967e85a3db3f2d73"/>
+                <student OEN="000000038" UID="238fa6d65b7f407a87afa07d770f58cd"/>
+                <student OEN="000000040" UID="f5bde7d51aca4ada801d1fc486dc69a9"/>
+            </students>
+        </period>
+        <period>
+            <course UID="2643d656101249dd9d99d921f5a27706" courseID="ENG4U/3U"/>
+            <classRoom number="1"/>
+            <time end="12.25" start="9.0" weekday="4"/>
+            <teachers>
+                <teacher MEN="000000002" UID="28d0a9d3ede3437ab1eb984449002c83"/>
+            </teachers>
+            <students>
+                <student OEN="000000008" UID="7e92f29ea7024334acc2142acf275d0a"/>
+                <student OEN="000000007" UID="67a8e97669634b118e88162115f9ddce"/>
+                <student OEN="000000006" UID="45c13be74e084f0ca29624b99fcd4176"/>
+                <student OEN="000000014" UID="21354562b1774096af3396401e5ac1d1"/>
+                <student OEN="000000013" UID="3c662f450e9744e68f3d442bf5ed9b0f"/>
+                <student OEN="000000011" UID="fd8ca89e09e049e1b257bc828b42d52f"/>
+                <student OEN="000000012" UID="14867f0ac8364940a10f2209c8d0103f"/>
+                <student OEN="000000009" UID="9c4a888445e347098c2506f1393bb2da"/>
+                <student OEN="000000015" UID="06b81ff03eb444bd94ff954b81ee73bb"/>
+                <student OEN="000000016" UID="4cfdec1e597540dbbcb299555d637c2c"/>
+                <student OEN="000000010" UID="bc6fe735a53f45de9d9f8255b3f50e02"/>
+                <student OEN="000000017" UID="6c05c46c19154cd0977bced8c52cdc60"/>
+            </students>
+        </period>
+        <period>
+            <course UID="e030faa780f04e5ebf7e80de15b59d00" courseID="MCR3U/MPM2D"/>
+            <classRoom number="1"/>
+            <time end="12.25" start="9.0" weekday="4"/>
+            <teachers>
+                <teacher MEN="000000003" UID="f251706ed3d04b949960809ab9da4515"/>
+            </teachers>
+            <students>
+                <student OEN="000000003" UID="09459e60437044858985a075db5b3fd3"/>
+                <student OEN="000000005" UID="b05f8885b11443ee9670319696a6ccb0"/>
+                <student OEN="000000001" UID="0efc789de3d249baa9409c96865fa169"/>
+                <student OEN="000000004" UID="cb91b2756bee4b059cb8cb196c01b14c"/>
+                <student OEN="000000002" UID="948e05609114407bb611980a6a1d1c5b"/>
+            </students>
+        </period>
+        <period>
+            <course UID="fb5d41d6dcdc4d359cd5b6b7004cdd91" courseID="MDM4U"/>
+            <classRoom number="1"/>
+            <time end="15.75" start="12.75" weekday="4"/>
+            <teachers>
+                <teacher MEN="000000003" UID="f251706ed3d04b949960809ab9da4515"/>
+            </teachers>
+            <students>
+                <student OEN="000000025" UID="4c30c1c01dfb4f68ababaa49fd6fff32"/>
+                <student OEN="000000011" UID="fd8ca89e09e049e1b257bc828b42d52f"/>
+                <student OEN="000000017" UID="6c05c46c19154cd0977bced8c52cdc60"/>
+            </students>
+        </period>
+        <period>
+            <course UID="bfac8cb2b656417ba055edec1a134b19" courseID="SBI4U/SNC2D"/>
+            <classRoom number="1"/>
+            <time end="15.75" start="12.75" weekday="4"/>
+            <teachers>
+                <teacher MEN="000000008" UID="f23c3b2c740448a79be70623ac05594d"/>
+            </teachers>
+            <students>
+                <student OEN="000000006" UID="45c13be74e084f0ca29624b99fcd4176"/>
+                <student OEN="000000013" UID="3c662f450e9744e68f3d442bf5ed9b0f"/>
+                <student OEN="000000001" UID="0efc789de3d249baa9409c96865fa169"/>
+                <student OEN="000000002" UID="948e05609114407bb611980a6a1d1c5b"/>
+            </students>
+        </period>
+        <period>
+            <course UID="6f5863238925440cb16615a69ec687d4" courseID="TDJ4M/3M"/>
+            <classRoom number="1"/>
+            <time end="18.0" start="12.75" weekday="4"/>
+            <teachers>
+                <teacher MEN="000000009" UID="5c11fb4acd364a37a3fa0e9e99dcd1d4"/>
+            </teachers>
+            <students>
+                <student OEN="000000020" UID="8a3c813483124021a60e0829a4f8f1af"/>
+                <student OEN="000000003" UID="09459e60437044858985a075db5b3fd3"/>
+                <student OEN="000000005" UID="b05f8885b11443ee9670319696a6ccb0"/>
+                <student OEN="000000022" UID="adabaed608fe4970b91987b19db4869c"/>
+                <student OEN="000000031" UID="5872ab448a0f4bfab5973d3a80a73095"/>
+                <student OEN="000000012" UID="14867f0ac8364940a10f2209c8d0103f"/>
+                <student OEN="000000004" UID="cb91b2756bee4b059cb8cb196c01b14c"/>
+                <student OEN="000000016" UID="4cfdec1e597540dbbcb299555d637c2c"/>
+            </students>
+        </period>
+        <period>
+            <course UID="d30561d700624a0ea261f0daabdc6e7a" courseID="ASM4M/3M"/>
+            <classRoom number="1"/>
+            <time end="18.0" start="15.5" weekday="4"/>
+            <teachers>
+                <teacher MEN="000000011" UID="927b7a1876fa40c592d471193744854d"/>
+            </teachers>
+            <students>
+                <student OEN="000000006" UID="45c13be74e084f0ca29624b99fcd4176"/>
+                <student OEN="000000030" UID="c1c9d37980f04e5993c897e59bc94cf3"/>
+                <student OEN="000000014" UID="21354562b1774096af3396401e5ac1d1"/>
+                <student OEN="000000037" UID="ccdf3515730e465fa45a4753b8215bfb"/>
+            </students>
+        </period>
+        <period>
+            <course UID="40eb139fba774aa2a94b4f071484a38f" courseID="MHF4U/MCV4U"/>
+            <classRoom number="1"/>
+            <time end="18.0" start="16.0" weekday="4"/>
+            <teachers>
+                <teacher MEN="000000003" UID="f251706ed3d04b949960809ab9da4515"/>
+            </teachers>
+            <students>
+                <student OEN="000000013" UID="3c662f450e9744e68f3d442bf5ed9b0f"/>
+                <student OEN="000000041" UID="95e35b87129e49f883ece65fa086ff31"/>
+                <student OEN="000000044" UID="4c892cf171a5463c8d57f312ba2920f2"/>
+                <student OEN="000000042" UID="8044fc3cedcd4732b2f5b118900efc4d"/>
+                <student OEN="000000010" UID="bc6fe735a53f45de9d9f8255b3f50e02"/>
+                <student OEN="000000043" UID="e90c87c1691c42cabe4bb34cfccba1fc"/>
+            </students>
+        </period>
+        <period>
+            <course UID="d002cb23a1534f17819bbfbdcf7b6cd9" courseID="Art Portfolio/AWM4M"/>
+            <classRoom number="1"/>
+            <time end="15.75" start="12.75" weekday="5"/>
+            <teachers>
+                <teacher MEN="000000012" UID="f989ed1595734aabb58ecd75723e8900"/>
+            </teachers>
+            <students>
+                <student OEN="000000012" UID="14867f0ac8364940a10f2209c8d0103f"/>
+                <student OEN="000000035" UID="0d3db8a15fa44175a165e9ad5e1fa7d1"/>
+                <student OEN="000000034" UID="563653ea320b4814b06da8ef47dc9fb2"/>
+                <student OEN="000000033" UID="431468a66f154bcdba012617dca5505c"/>
+                <student OEN="000000003" UID="09459e60437044858985a075db5b3fd3"/>
+                <student OEN="000000046" UID="d06db733a8d84964b354563064599f7b"/>
+                <student OEN="000000045" UID="575703b6d9b04485b82ef6dbb1964522"/>
+            </students>
+        </period>
+        <period>
+            <course UID="40eb139fba774aa2a94b4f071484a38f" courseID="MHF4U/MCV4U"/>
+            <classRoom number="1"/>
+            <time end="15.75" start="12.75" weekday="5"/>
+            <teachers>
+                <teacher MEN="000000003" UID="f251706ed3d04b949960809ab9da4515"/>
+            </teachers>
+            <students>
+                <student OEN="000000013" UID="3c662f450e9744e68f3d442bf5ed9b0f"/>
+                <student OEN="000000010" UID="bc6fe735a53f45de9d9f8255b3f50e02"/>
+                <student OEN="000000044" UID="4c892cf171a5463c8d57f312ba2920f2"/>
+                <student OEN="000000021" UID="d54f441c90e546219a16f7721a68ab7a"/>
+                <student OEN="000000043" UID="e90c87c1691c42cabe4bb34cfccba1fc"/>
+                <student OEN="000000042" UID="8044fc3cedcd4732b2f5b118900efc4d"/>
+                <student OEN="000000041" UID="95e35b87129e49f883ece65fa086ff31"/>
+            </students>
+        </period>
+        <period>
+            <course UID="b26f176ee9db4c9aa40e65078b62ac57" courseID="OLC4O"/>
+            <classRoom number="1"/>
+            <time end="15.75" start="12.75" weekday="5"/>
+            <teachers>
+                <teacher MEN="000000002" UID="28d0a9d3ede3437ab1eb984449002c83"/>
+            </teachers>
+            <students>
+                <student OEN="000000025" UID="4c30c1c01dfb4f68ababaa49fd6fff32"/>
+                <student OEN="000000018" UID="789cdd40c0f144d09a4bdbccc01ad764"/>
+                <student OEN="000000031" UID="5872ab448a0f4bfab5973d3a80a73095"/>
+                <student OEN="000000019" UID="ad892a97fc9e49eea7cccd1d1c6713ff"/>
+                <student OEN="000000009" UID="9c4a888445e347098c2506f1393bb2da"/>
+                <student OEN="000000029" UID="c8169663f98a48c68f591fc7d9c1cd8c"/>
+            </students>
+        </period>
+        <period>
+            <course UID="ee69875060524dd188bf962154155e64" courseID="SPH4U/3U"/>
+            <classRoom number="1"/>
+            <time end="15.75" start="12.75" weekday="5"/>
+            <teachers>
+                <teacher MEN="000000008" UID="f23c3b2c740448a79be70623ac05594d"/>
+            </teachers>
+            <students>
+                <student OEN="000000005" UID="b05f8885b11443ee9670319696a6ccb0"/>
+                <student OEN="000000006" UID="45c13be74e084f0ca29624b99fcd4176"/>
+                <student OEN="000000030" UID="c1c9d37980f04e5993c897e59bc94cf3"/>
+                <student OEN="000000014" UID="21354562b1774096af3396401e5ac1d1"/>
+                <student OEN="000000037" UID="ccdf3515730e465fa45a4753b8215bfb"/>
+            </students>
+        </period>
+        <period>
+            <course UID="2643d656101249dd9d99d921f5a27706" courseID="ENG4U/3U"/>
+            <classRoom number="1"/>
+            <time end="19.0" start="16.0" weekday="5"/>
+            <teachers>
+                <teacher MEN="000000002" UID="28d0a9d3ede3437ab1eb984449002c83"/>
+            </teachers>
+            <students>
+                <student OEN="000000039" UID="3d9b76ace0b94598967e85a3db3f2d73"/>
+                <student OEN="000000038" UID="238fa6d65b7f407a87afa07d770f58cd"/>
+                <student OEN="000000014" UID="21354562b1774096af3396401e5ac1d1"/>
+                <student OEN="000000013" UID="3c662f450e9744e68f3d442bf5ed9b0f"/>
+                <student OEN="000000040" UID="f5bde7d51aca4ada801d1fc486dc69a9"/>
+                <student OEN="000000047" UID="1c265c227b014dd2990bcfda70c30bf1"/>
+                <student OEN="000000048" UID="ea7cb43aa92a4a6a8f10932c9edd95e4"/>
+                <student OEN="000000015" UID="06b81ff03eb444bd94ff954b81ee73bb"/>
+                <student OEN="000000016" UID="4cfdec1e597540dbbcb299555d637c2c"/>
+                <student OEN="000000017" UID="6c05c46c19154cd0977bced8c52cdc60"/>
+            </students>
+        </period>
+        <period>
+            <course UID="4393e639a8f14a1a95b2ab77580a81f8" courseID="TEJ4M/ICS4U"/>
+            <classRoom number="1"/>
+            <time end="19.0" start="16.0" weekday="5"/>
+            <teachers>
+                <teacher MEN="000000013" UID="e6d74d1f5688452daa3e4c3c4609eb2f"/>
+            </teachers>
+            <students>
+                <student OEN="000000007" UID="67a8e97669634b118e88162115f9ddce"/>
+                <student OEN="000000030" UID="c1c9d37980f04e5993c897e59bc94cf3"/>
+                <student OEN="000000021" UID="d54f441c90e546219a16f7721a68ab7a"/>
+                <student OEN="000000009" UID="9c4a888445e347098c2506f1393bb2da"/>
+                <student OEN="000000049" UID="813c2c0eb058406389726f8a8ddc59ff"/>
+            </students>
+        </period>
+        <period>
+            <course UID="19d67a4265c6425ab5357a40636cbf56" courseID="LKMDU"/>
             <classRoom number="1"/>
             <time end="12.5" start="10.5" weekday="6"/>
             <teachers>
-                <teacher MEN="008" UID="f8fe3beb91874bf88a32eab3e5bccbd6"/>
+                <teacher MEN="000000015" UID="3febe8098a534a1ba7f0ac07bb7de392"/>
             </teachers>
             <students>
-                <student OEN="150" UID="2f6560ea0f334d768dfde46017d44ea1"/>
-                <student OEN="151" UID="2c01ba12bdd14b7192a3d667c01ccea4"/>
-                <student OEN="152" UID="f723bcb9e5c74d889b8e5beadcba7eef"/>
+                <student OEN="000000052" UID="021095d241894c729821b7a5e6f8dc6d"/>
+                <student OEN="000000051" UID="fec3b6afa82a4077b6398c5d5c1b2e1d"/>
+                <student OEN="000000038" UID="238fa6d65b7f407a87afa07d770f58cd"/>
+                <student OEN="000000043" UID="e90c87c1691c42cabe4bb34cfccba1fc"/>
             </students>
         </period>
         <period>
-            <course UID="59b0cab13d1248ada6c5e1acc2b2d9c6" courseID="MCR,AMC"/>
+            <course UID="9d1222332beb477b88b65552c587e241" courseID="MCR3U(TA)/AMC 8"/>
             <classRoom number="1"/>
             <time end="12.5" start="10.5" weekday="6"/>
             <teachers>
-                <teacher MEN="012" UID="e10d72267ac041689bcbb1a7b42de7af"/>
+                <teacher MEN="000000003" UID="f251706ed3d04b949960809ab9da4515"/>
             </teachers>
             <students>
-                <student OEN="164" UID="4620a97e24414bdb800ad94f08ba9872"/>
-                <student OEN="114" UID="d9fda1a0cd7a4c9ca740a49ee92c181d"/>
+                <student OEN="000000027" UID="296ad5f38a2e4d1a9b7021fc43f8f981"/>
+                <student OEN="000000026" UID="a0465babd313423d88620c48af65a5cb"/>
             </students>
         </period>
         <period>
-            <course UID="3dcd6b3924954ec190da2266a259d052" courseID="MDM4U"/>
+            <course UID="fb5d41d6dcdc4d359cd5b6b7004cdd91" courseID="MDM4U"/>
             <classRoom number="1"/>
             <time end="12.5" start="10.5" weekday="6"/>
             <teachers>
-                <teacher MEN="006" UID="e5d00f59dd8942e1bfd4616819efb2f1"/>
+                <teacher MEN="000000003" UID="f251706ed3d04b949960809ab9da4515"/>
             </teachers>
             <students>
-                <student OEN="143" UID="9391a0982b584c18afabd90a60b87f60"/>
-                <student OEN="117" UID="49d23a5b07bd47d4a55286fbdfe56124"/>
-                <student OEN="140" UID="6701b5030e8d4de984e80dc07d428ca2"/>
-                <student OEN="142" UID="bf0bac2e7921479497ac5960d1f3b0a8"/>
-                <student OEN="124" UID="607e6c420f5b472d92b293d2dc558ef3"/>
+                <student OEN="000000011" UID="fd8ca89e09e049e1b257bc828b42d52f"/>
+                <student OEN="000000017" UID="6c05c46c19154cd0977bced8c52cdc60"/>
+                <student OEN="000000025" UID="4c30c1c01dfb4f68ababaa49fd6fff32"/>
             </students>
         </period>
         <period>
-            <course UID="6e7a96842d2143639c25e4e43e404485" courseID="Portfolios"/>
+            <course UID="432cb1e95d9243d58c2c40d68096c570" courseID="Music Portfolio"/>
             <classRoom number="1"/>
             <time end="12.5" start="10.5" weekday="6"/>
             <teachers>
-                <teacher MEN="005" UID="03bd579aa75d462ca329ac1d0c0d4628"/>
+                <teacher MEN="000000007" UID="3e187079f1ab4497883d2b270a2100ad"/>
             </teachers>
             <students>
-                <student OEN="165" UID="cce2579cadb94a69973289eda693d6ee"/>
+                <student OEN="000000028" UID="a87e4b82ce3c4ed6975bd6488715c62b"/>
             </students>
         </period>
         <period>
-            <course UID="df7a9c48e7924dc791a7c7e37d58b13b" courseID="SBI,SNC"/>
+            <course UID="ede7e2874d684668b3e5e7685f25d84f" courseID="AMV4M/3M"/>
             <classRoom number="1"/>
-            <time end="12.5" start="10.5" weekday="6"/>
+            <time end="15.75" start="12.75" weekday="6"/>
             <teachers>
-                <teacher MEN="003" UID="1ee1c0b6effa4387995a99216f7cd9ee"/>
+                <teacher MEN="000000007" UID="3e187079f1ab4497883d2b270a2100ad"/>
             </teachers>
             <students>
-                <student OEN="118" UID="c7267cb70f5a4d93bd119cf7c8199aec"/>
-                <student OEN="112" UID="473fd76f56de4cc7a1599fc8c8893a62"/>
-                <student OEN="111" UID="1f50dfb335e148f6a4ccb2db34a07812"/>
+                <student OEN="000000036" UID="280129626cf4459e8000e293a99c128f"/>
+                <student OEN="000000024" UID="77a9f033f5c548fb9eadf56f9d0afd01"/>
+                <student OEN="000000033" UID="431468a66f154bcdba012617dca5505c"/>
             </students>
         </period>
         <period>
-            <course UID="b586daec421344038edabff908231810" courseID="IELTS"/>
+            <course UID="d30561d700624a0ea261f0daabdc6e7a" courseID="ASM4M/3M"/>
             <classRoom number="1"/>
-            <time end="14.0" start="10.5" weekday="6"/>
+            <time end="15.75" start="12.75" weekday="6"/>
             <teachers>
-                <teacher MEN="015" UID="387e9dd559fd473fa3d41ebf1ea32feb"/>
+                <teacher MEN="000000010" UID="e4fc3c5139474eb8b8428cb6696e5708"/>
             </teachers>
             <students>
-                <student OEN="162" UID="3bc49e2360f347609fd3c7351be7b71f"/>
-                <student OEN="163" UID="6ea15f9a247f42bdaba140474ab11049"/>
-                <student OEN="129" UID="641c409767d745f6b5ae1e4462f4ffa9"/>
+                <student OEN="000000012" UID="14867f0ac8364940a10f2209c8d0103f"/>
+                <student OEN="000000016" UID="4cfdec1e597540dbbcb299555d637c2c"/>
+                <student OEN="000000015" UID="06b81ff03eb444bd94ff954b81ee73bb"/>
+                <student OEN="000000023" UID="eba22b2ebbd84552ad342df83bcdc36a"/>
+                <student OEN="000000020" UID="8a3c813483124021a60e0829a4f8f1af"/>
+                <student OEN="000000034" UID="563653ea320b4814b06da8ef47dc9fb2"/>
+                <student OEN="000000003" UID="09459e60437044858985a075db5b3fd3"/>
+                <student OEN="000000004" UID="cb91b2756bee4b059cb8cb196c01b14c"/>
+            </students>
+        </period>
+        <period>
+            <course UID="19d67a4265c6425ab5357a40636cbf56" courseID="LKMDU"/>
+            <classRoom number="1"/>
+            <time end="15.75" start="12.75" weekday="6"/>
+            <teachers>
+                <teacher MEN="000000015" UID="3febe8098a534a1ba7f0ac07bb7de392"/>
+            </teachers>
+            <students>
+                <student OEN="000000052" UID="021095d241894c729821b7a5e6f8dc6d"/>
+                <student OEN="000000038" UID="238fa6d65b7f407a87afa07d770f58cd"/>
+                <student OEN="000000051" UID="fec3b6afa82a4077b6398c5d5c1b2e1d"/>
+                <student OEN="000000043" UID="e90c87c1691c42cabe4bb34cfccba1fc"/>
+            </students>
+        </period>
+        <period>
+            <course UID="4393e639a8f14a1a95b2ab77580a81f8" courseID="TEJ4M/ICS4U"/>
+            <classRoom number="1"/>
+            <time end="15.75" start="12.75" weekday="6"/>
+            <teachers>
+                <teacher MEN="000000013" UID="e6d74d1f5688452daa3e4c3c4609eb2f"/>
+            </teachers>
+            <students>
+                <student OEN="000000007" UID="67a8e97669634b118e88162115f9ddce"/>
+                <student OEN="000000030" UID="c1c9d37980f04e5993c897e59bc94cf3"/>
+                <student OEN="000000009" UID="9c4a888445e347098c2506f1393bb2da"/>
+                <student OEN="000000049" UID="813c2c0eb058406389726f8a8ddc59ff"/>
+            </students>
+        </period>
+        <period>
+            <course UID="51635a9aad74499c9dc042cbb08b7bf2" courseID="Art Portfolios"/>
+            <classRoom number="1"/>
+            <time end="15.0" start="13.0" weekday="6"/>
+            <teachers>
+                <teacher MEN="000000004" UID="4dee548796c243de9ac0b9a341d8e4f2"/>
+            </teachers>
+            <students>
+                <student OEN="000000003" UID="09459e60437044858985a075db5b3fd3"/>
+                <student OEN="000000005" UID="b05f8885b11443ee9670319696a6ccb0"/>
+                <student OEN="000000045" UID="575703b6d9b04485b82ef6dbb1964522"/>
+                <student OEN="000000034" UID="563653ea320b4814b06da8ef47dc9fb2"/>
+                <student OEN="000000053" UID="04bcceb036d54ea5865fc8ffded5c13a"/>
+            </students>
+        </period>
+        <period>
+            <course UID="065c61afa99745e790d56b6478d23f8f" courseID="French"/>
+            <classRoom number="1"/>
+            <time end="17.0" start="13.0" weekday="6"/>
+            <teachers>
+                <teacher MEN="000000002" UID="28d0a9d3ede3437ab1eb984449002c83"/>
+            </teachers>
+            <students>
+                <student OEN="000000050" UID="d48e4593b26642d286ac1d4366680dc0"/>
+                <student OEN="000000046" UID="d06db733a8d84964b354563064599f7b"/>
+            </students>
+        </period>
+        <period>
+            <course UID="5045a2d1d8604a7c96f72c3d042c317f" courseID="3D Model"/>
+            <classRoom number="1"/>
+            <time end="18.0" start="15.0" weekday="6"/>
+            <teachers>
+                <teacher MEN="000000014" UID="a9b0d9c04fc345baafddfab1b98af5b5"/>
+            </teachers>
+            <students>
+                <student OEN="000000003" UID="09459e60437044858985a075db5b3fd3"/>
+                <student OEN="000000005" UID="b05f8885b11443ee9670319696a6ccb0"/>
+                <student OEN="000000045" UID="575703b6d9b04485b82ef6dbb1964522"/>
+                <student OEN="000000034" UID="563653ea320b4814b06da8ef47dc9fb2"/>
+                <student OEN="000000046" UID="d06db733a8d84964b354563064599f7b"/>
+            </students>
+        </period>
+        <period>
+            <course UID="4393e639a8f14a1a95b2ab77580a81f8" courseID="TEJ4M/ICS4U"/>
+            <classRoom number="1"/>
+            <time end="18.0" start="16.0" weekday="6"/>
+            <teachers>
+                <teacher MEN="000000013" UID="e6d74d1f5688452daa3e4c3c4609eb2f"/>
+            </teachers>
+            <students>
+                <student OEN="000000007" UID="67a8e97669634b118e88162115f9ddce"/>
+                <student OEN="000000030" UID="c1c9d37980f04e5993c897e59bc94cf3"/>
+                <student OEN="000000009" UID="9c4a888445e347098c2506f1393bb2da"/>
+                <student OEN="000000049" UID="813c2c0eb058406389726f8a8ddc59ff"/>
             </students>
         </period>
     </periods>

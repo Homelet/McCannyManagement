@@ -62,6 +62,8 @@ public class CourseManager implements Renderable{
 	private String print(ArrayList arrayList){
 		StringBuilder builder = new StringBuilder("[");
 		for(Object o : arrayList){
+			if(o instanceof ClassroomCollusion)
+				continue;
 			builder.append(o).append("\n");
 		}
 		return builder.append("]").toString();

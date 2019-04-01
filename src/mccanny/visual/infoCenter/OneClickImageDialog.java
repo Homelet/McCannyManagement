@@ -229,10 +229,12 @@ public class OneClickImageDialog extends JDialog{
 		private final List<ImageRenderable>          postRenderList;
 		private final HashMap<Weekday, Day>          days;
 		private final HashMap<CoursePeriod, Integer> lineIndex;
+		private final TimeRuler                      ruler;
 		
 		private OneClickImageRenderer(){
 			this.days = new HashMap<>();
 			this.lineIndex = new HashMap<>();
+			this.ruler = new TimeRuler();
 			this.preRenderList = Collections.synchronizedList(new ArrayList<>());
 			this.renderList = Collections.synchronizedList(new ArrayList<>());
 			this.postRenderList = Collections.synchronizedList(new ArrayList<>());
@@ -241,6 +243,7 @@ public class OneClickImageDialog extends JDialog{
 				this.days.put(weekday, day);
 				this.preRenderList.add(day);
 			}
+			preRenderList.add(ruler);
 		}
 		
 		int renderOffset(Weekday weekday){
@@ -305,7 +308,7 @@ public class OneClickImageDialog extends JDialog{
 			int          maxCount = 0;
 			PeriodBuffer buffer   = new PeriodBuffer();
 			for(PeriodEvent event : day.events()){
-				if(event.status){
+				if(event.status == PeriodEvent.START){
 					lineIndex.put(event.period, buffer.join(event.period));
 					maxCount = Math.max(buffer.size(), maxCount);
 				}else{
@@ -316,20 +319,20 @@ public class OneClickImageDialog extends JDialog{
 		}
 		
 		private Dimension updateOffsets(){
-			int accum = CourseManager.TOP_INSET;
+			int accum = CourseManager.TOP_INSET + TimeRuler.DEFAULT_RULER_HEIGHT;
 			for(Weekday weekday : Weekday.weekdays()){
 				Day day = days.get(weekday);
 				day.renderOffset(accum);
 				accum += day.height() + 5;
 			}
-			return new Dimension((int) ((CoursePeriod.END_AT - CoursePeriod.START_AT) * CoursePeriod.WIDTH_PER_HOUR) + CourseManager.LEFT_INSET + CourseManager.RIGHT_INSET, accum + CourseManager.BOTTOM_INSET);
+			return new Dimension((int) ((CoursePeriod.END_AT - CoursePeriod.START_AT) * CoursePeriod.WIDTH_PER_HOUR) + CourseManager.FIXED_HEADER_WIDTH + CourseManager.LEFT_INSET + CourseManager.RIGHT_INSET, accum + CourseManager.BOTTOM_INSET);
 		}
 		
 		@Override
 		public void renderImage(Graphics2D g){
 			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-			g.setColor(Color.WHITE);
+			g.setColor(Display.NORMAL_BACKGROUND);
 			g.fill(g.getClipBounds());
 			preRender(g);
 			doRender(g);

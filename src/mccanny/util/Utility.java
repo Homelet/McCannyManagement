@@ -264,9 +264,13 @@ public class Utility{
 	}
 	
 	public static String join(String sep, Collection objects){
+		return join(sep, objects, Object::toString);
+	}
+	
+	public static <E> String join(String sep, Collection<E> objects, StringRep<E> rep){
 		StringBuilder builder = new StringBuilder();
-		for(Iterator itr = objects.iterator(); itr.hasNext(); ){
-			builder.append(itr.next().toString());
+		for(Iterator<E> itr = objects.iterator(); itr.hasNext(); ){
+			builder.append(rep.rep(itr.next()));
 			if(itr.hasNext())
 				builder.append(sep);
 		}
@@ -276,5 +280,10 @@ public class Utility{
 	public interface PeriodComparator<E>{
 		
 		void compare(E o1, E o2, ArrayList<CourseCollusion> errors);
+	}
+	
+	public interface StringRep<E>{
+		
+		String rep(E e);
 	}
 }

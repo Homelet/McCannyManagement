@@ -10,6 +10,7 @@ import mccanny.io.TimeTableBuilder.TimeTableBuilder;
 import mccanny.management.course.CoursePeriod;
 import mccanny.util.*;
 import mccanny.visual.Display;
+import mccanny.visual.infoCenter.OneClickImageDialog;
 
 import javax.swing.*;
 import java.awt.*;
@@ -170,7 +171,9 @@ public class TimeTable implements Renderable, ImageRenderable{
 	
 	@Override
 	public void renderImage(Graphics2D g){
-		render(g);
+		Rectangle bound = g.getClipBounds();
+		renderTitle(g, bound);
+		renderImageDiv(g, bound);
 	}
 	
 	@Override
@@ -182,7 +185,12 @@ public class TimeTable implements Renderable, ImageRenderable{
 	 */
 	@Override
 	public void render(Graphics2D g){
-		Rectangle bound      = g.getClipBounds();
+		Rectangle bound = g.getClipBounds();
+		renderTitle(g, bound);
+		renderDiv(g, bound);
+	}
+	
+	private synchronized void renderTitle(Graphics2D g, Rectangle bound){
 		Rectangle topPortion = new Rectangle(0, 0, bound.width, CourseManager.TOP_INSET);
 		this.nameDrawer.updateGraphics(g);
 		this.periodDrawer.updateGraphics(g);
@@ -201,6 +209,9 @@ public class TimeTable implements Renderable, ImageRenderable{
 			e.printStackTrace();
 		}
 		g.setColor(Display.NORMAL_BACKGROUND);
+	}
+	
+	private void renderDiv(Graphics2D g, Rectangle bound){
 		boolean drawFlag = false;
 		for(Weekday day : Weekday.weekdays()){
 			Day d = Display.getInstance().manager().day(day);
@@ -211,6 +222,20 @@ public class TimeTable implements Renderable, ImageRenderable{
 				continue;
 			}
 			g.fill(GH.rectangle(false, 0, d.renderOffset() - 5, bound.width, 5));
+		}
+	}
+	
+	private void renderImageDiv(Graphics2D g, Rectangle bound){
+		boolean drawFlag = false;
+		for(Weekday day : Weekday.weekdays()){
+			int renderOffset = OneClickImageDialog.renderOffset(day);
+//			if(!d.active())
+//				continue;
+			if(!drawFlag){
+				drawFlag = true;
+				continue;
+			}
+			g.fill(GH.rectangle(false, 0, renderOffset - 5, bound.width, 5));
 		}
 	}
 	

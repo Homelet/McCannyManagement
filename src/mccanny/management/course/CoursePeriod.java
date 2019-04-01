@@ -324,7 +324,7 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 	
 	@Override
 	public void renderImage(Graphics2D g){
-		// TODO
+		regularRender(g);
 	}
 	
 	@Override
@@ -357,7 +357,7 @@ public class CoursePeriod extends ActionsManager implements Comparable<CoursePer
 		courseCodeDrawer.draw();
 		classroomNumberDrawer.draw();
 	 */
-	private void regularRender(Graphics2D g){
+	private synchronized void regularRender(Graphics2D g){
 		Rectangle bounds = g.getClipBounds();
 		classroomNumberDrawer.updateGraphics(g);
 		courseCodeDrawer.updateGraphics(g);

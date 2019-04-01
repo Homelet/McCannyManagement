@@ -1,153 +1,165 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <courses>
     <course>
-        <courseID>CHC,GLC,CLS</courseID>
+        <courseID>ASM4M/3M</courseID>
         <courseHour>110.0</courseHour>
-        <UID>b1629c7a32aa42ba85004737ba4a6b01</UID>
-        <color>-ffdfa2</color>
+        <UID>d30561d700624a0ea261f0daabdc6e7a</UID>
+        <color>-ffff01</color>
     </course>
     <course>
-        <courseID>SPH</courseID>
+        <courseID>SPH4U/SNC2D</courseID>
         <courseHour>110.0</courseHour>
-        <UID>13b2db675b1748d4bf4d85c4a32380d3</UID>
-        <color>-9abcdf</color>
+        <UID>e95e950b64294142be558723bd31e688</UID>
+        <color>-ff8081</color>
     </course>
     <course>
-        <courseID>IELTS</courseID>
+        <courseID>TDJ4M/3M</courseID>
         <courseHour>110.0</courseHour>
-        <UID>b586daec421344038edabff908231810</UID>
-        <color>-7ed1bf</color>
+        <UID>6f5863238925440cb16615a69ec687d4</UID>
+        <color>-6667</color>
     </course>
     <course>
-        <courseID>MCR,AMC</courseID>
+        <courseID>SBI4U/SPH3U</courseID>
         <courseHour>110.0</courseHour>
-        <UID>59b0cab13d1248ada6c5e1acc2b2d9c6</UID>
-        <color>-cbed3c</color>
+        <UID>706e658df3af4e08ae0b9deea9c7090b</UID>
+        <color>-99009a</color>
     </course>
     <course>
         <courseID>IDC4U</courseID>
         <courseHour>110.0</courseHour>
-        <UID>498a3214ad834aeabb8353910dffc69e</UID>
-        <color>-3d8460</color>
+        <UID>2262a345396445ab9a5a600a6bbe7109</UID>
+        <color>-66b313</color>
     </course>
     <course>
-        <courseID>MPM,MCR</courseID>
+        <courseID>Music Portfolio</courseID>
         <courseHour>110.0</courseHour>
-        <UID>9d74955f4f8e42fd868cb32f52da3a48</UID>
-        <color>-1fbfaa</color>
+        <UID>432cb1e95d9243d58c2c40d68096c570</UID>
+        <color>-99cd</color>
     </course>
     <course>
-        <courseID>SPH,SNC</courseID>
+        <courseID>SPH4U/3U</courseID>
         <courseHour>110.0</courseHour>
-        <UID>671021f8e9b84c0a979c0a3828e250e6</UID>
-        <color>-1a68</color>
-    </course>
-    <course>
-        <courseID>MHF,MCV</courseID>
-        <courseHour>110.0</courseHour>
-        <UID>70d7afe775e74643abac00428bbaaa1b</UID>
-        <color>-dcaaef</color>
+        <UID>ee69875060524dd188bf962154155e64</UID>
+        <color>-669a</color>
     </course>
     <course>
         <courseID>French</courseID>
         <courseHour>110.0</courseHour>
-        <UID>579bb8745e36401b84a54d2eaec00fc0</UID>
-        <color>-d34</color>
+        <UID>065c61afa99745e790d56b6478d23f8f</UID>
+        <color>-800100</color>
     </course>
     <course>
         <courseID>3D Model</courseID>
         <courseHour>110.0</courseHour>
-        <UID>8e06e05b86cc42cb8ec32aa5715ae9a7</UID>
-        <color>-9dbb6b</color>
+        <UID>5045a2d1d8604a7c96f72c3d042c317f</UID>
+        <color>-ff8100</color>
     </course>
     <course>
-        <courseID>ASM</courseID>
+        <courseID>MHF4U/MCV4U</courseID>
         <courseHour>110.0</courseHour>
-        <UID>d505c69f896e4359a88d0f71decd0d6c</UID>
-        <color>-b24a51</color>
+        <UID>40eb139fba774aa2a94b4f071484a38f</UID>
+        <color>-66009a</color>
     </course>
     <course>
-        <courseID>SBI</courseID>
+        <courseID>MCR3U/MPM2D</courseID>
         <courseHour>110.0</courseHour>
-        <UID>5c76e17c3cf9415bb57a4d2010eb2149</UID>
-        <color>-ff0001</color>
+        <UID>e030faa780f04e5ebf7e80de15b59d00</UID>
+        <color>-ff3334</color>
     </course>
     <course>
-        <courseID>TDJ</courseID>
+        <courseID>AWM4M/AVI20</courseID>
         <courseHour>110.0</courseHour>
-        <UID>40c295e7a5aa4574aae85281fe564bbd</UID>
-        <color>-ff009a</color>
+        <UID>743d8166b86b4d1794f71ed8dbb25315</UID>
+        <color>-10000</color>
     </course>
     <course>
-        <courseID>Portfolios</courseID>
+        <courseID>Art Portfolio/AWM4M</courseID>
         <courseHour>110.0</courseHour>
-        <UID>6e7a96842d2143639c25e4e43e404485</UID>
-        <color>-edba67</color>
+        <UID>d002cb23a1534f17819bbfbdcf7b6cd9</UID>
+        <color>-cccd</color>
+    </course>
+    <course>
+        <courseID>Art Portfolios</courseID>
+        <courseHour>110.0</courseHour>
+        <UID>51635a9aad74499c9dc042cbb08b7bf2</UID>
+        <color>-ffff81</color>
+    </course>
+    <course>
+        <courseID>OLC4O</courseID>
+        <courseHour>110.0</courseHour>
+        <UID>b26f176ee9db4c9aa40e65078b62ac57</UID>
+        <color>-339a</color>
     </course>
     <course>
         <courseID>ESL</courseID>
         <courseHour>110.0</courseHour>
-        <UID>c97ebe67ed6649c5a310796b5c18eb1b</UID>
-        <color>-99009a</color>
+        <UID>5f29fdf3c5fc45cbbe42b214caf4f116</UID>
+        <color>-6601</color>
     </course>
     <course>
-        <courseID>Portfolio</courseID>
+        <courseID>ENG4U/EPS30</courseID>
         <courseHour>110.0</courseHour>
-        <UID>ccef80e8e41b449ba2433808a7004d36</UID>
-        <color>-9d0000</color>
+        <UID>135ff5651cf84766aa802934c5d69c5c</UID>
+        <color>-810000</color>
     </course>
     <course>
-        <courseID>SBI,SNC</courseID>
+        <courseID>MCR3U(TA)/AMC 8</courseID>
         <courseHour>110.0</courseHour>
-        <UID>df7a9c48e7924dc791a7c7e37d58b13b</UID>
-        <color>-3800</color>
+        <UID>9d1222332beb477b88b65552c587e241</UID>
+        <color>-ff0034</color>
     </course>
     <course>
         <courseID>MDM4U</courseID>
         <courseHour>110.0</courseHour>
-        <UID>3dcd6b3924954ec190da2266a259d052</UID>
-        <color>-5b3d0c</color>
+        <UID>fb5d41d6dcdc4d359cd5b6b7004cdd91</UID>
+        <color>-339a</color>
     </course>
     <course>
-        <courseID>AMV</courseID>
+        <courseID>AMV4M/3M</courseID>
         <courseHour>110.0</courseHour>
-        <UID>53c5577c9fb5408a8f3373df6b0eda28</UID>
-        <color>-e57c0</color>
+        <UID>ede7e2874d684668b3e5e7685f25d84f</UID>
+        <color>-6667</color>
     </course>
     <course>
         <courseID>LKMDU</courseID>
         <courseHour>110.0</courseHour>
-        <UID>8f9b4789851e4a89a62116210b647ec6</UID>
-        <color>-26152d</color>
+        <UID>19d67a4265c6425ab5357a40636cbf56</UID>
+        <color>-3400</color>
     </course>
     <course>
-        <courseID>ENG4U</courseID>
+        <courseID>TEJ4M/ICS4U</courseID>
         <courseHour>110.0</courseHour>
-        <UID>9479c7d2915247508078571494e64654</UID>
-        <color>-a9dc70</color>
+        <UID>4393e639a8f14a1a95b2ab77580a81f8</UID>
+        <color>-33cc01</color>
     </course>
     <course>
-        <courseID>MCR,MPM</courseID>
+        <courseID>CHC2D/GLC20</courseID>
         <courseHour>110.0</courseHour>
-        <UID>eac9d4154bfe4c0791ff1bec13a600c3</UID>
-        <color>-dced9a</color>
+        <UID>68f9106b079e4abba12e0b32c8ddd931</UID>
+        <color>-999901</color>
     </course>
     <course>
-        <courseID>TEJ,ICS</courseID>
+        <courseID>ENG4U/3U</courseID>
         <courseHour>110.0</courseHour>
-        <UID>b59d167458e7497f9e824cdc2e80e940</UID>
-        <color>-492858</color>
+        <UID>2643d656101249dd9d99d921f5a27706</UID>
+        <color>-999901</color>
     </course>
     <course>
-        <courseID>ENG</courseID>
+        <courseID>SBI4U/SNC2D</courseID>
         <courseHour>110.0</courseHour>
-        <UID>2ea214afb8af43acb78108c55a660107</UID>
-        <color>-ffff01</color>
+        <UID>bfac8cb2b656417ba055edec1a134b19</UID>
+        <color>-660067</color>
     </course>
     <course>
-        <courseID>ENG,EPS</courseID>
+        <courseID>CHC2D/CHV2O</courseID>
         <courseHour>110.0</courseHour>
-        <UID>509003a48ae34cec94c4fee2f9593f35</UID>
-        <color>-f60edd</color>
+        <UID>bf7de3d3e4fc44ef81ffa34b8d437683</UID>
+        <color>-ff8001</color>
+    </course>
+    <course>
+        <courseID>Basketball Club</courseID>
+        <courseHour>110.0</courseHour>
+        <UID>ea4790b373fe433cbe122926a43d6e42</UID>
+        <color>-99cd</color>
     </course>
 </courses>

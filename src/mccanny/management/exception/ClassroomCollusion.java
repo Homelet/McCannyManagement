@@ -1,6 +1,7 @@
 package mccanny.management.exception;
 
 import mccanny.management.course.CoursePeriod;
+import mccanny.util.Utility;
 
 import java.util.Arrays;
 
@@ -20,7 +21,7 @@ public class ClassroomCollusion extends CourseCollusion{
 	@Override
 	public String toString(){
 		return "ClassroomCollusion{" +
-				"period=" + Arrays.toString(period) +
+				"period=" + Utility.join(", ", Arrays.asList(period), period1->period1.course().courseID()) +
 				'}';
 	}
 }
