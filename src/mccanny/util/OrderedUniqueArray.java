@@ -5,7 +5,8 @@ import java.util.Iterator;
 import java.util.function.Predicate;
 
 /**
- * an ordered Unique Array is an linklist implemented array which aimed at provide a high speed at adding data to an sorted array with no duplicate item
+ * an ordered Unique Array is an linklist implemented array which aimed at provide a high speed at adding data to an
+ * sorted array with no duplicate item
  */
 public class OrderedUniqueArray<E extends Comparable<E>> implements Iterable<E>{
 	

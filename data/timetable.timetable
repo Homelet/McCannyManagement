@@ -318,6 +318,22 @@
             <classRoom number="1"/>
             <time end="19.0" start="16.0" weekday="2"/>
             <teachers>
+                <teacher MEN="000000008" UID="f23c3b2c740448a79be70623ac05594d"/>
+            </teachers>
+            <students>
+                <student OEN="000000014" UID="21354562b1774096af3396401e5ac1d1"/>
+                <student OEN="000000037" UID="ccdf3515730e465fa45a4753b8215bfb"/>
+                <student OEN="000000030" UID="c1c9d37980f04e5993c897e59bc94cf3"/>
+                <student OEN="000000002" UID="948e05609114407bb611980a6a1d1c5b"/>
+                <student OEN="000000001" UID="0efc789de3d249baa9409c96865fa169"/>
+                <student OEN="000000006" UID="45c13be74e084f0ca29624b99fcd4176"/>
+            </students>
+        </period>
+        <period>
+            <course UID="e95e950b64294142be558723bd31e688" courseID="SPH4U/SNC2D"/>
+            <classRoom number="1"/>
+            <time end="19.0" start="16.0" weekday="2"/>
+            <teachers>
                 <teacher MEN="000000010" UID="e4fc3c5139474eb8b8428cb6696e5708"/>
             </teachers>
             <students>
@@ -329,22 +345,6 @@
                 <student OEN="000000004" UID="cb91b2756bee4b059cb8cb196c01b14c"/>
                 <student OEN="000000015" UID="06b81ff03eb444bd94ff954b81ee73bb"/>
                 <student OEN="000000016" UID="4cfdec1e597540dbbcb299555d637c2c"/>
-            </students>
-        </period>
-        <period>
-            <course UID="e95e950b64294142be558723bd31e688" courseID="SPH4U/SNC2D"/>
-            <classRoom number="1"/>
-            <time end="19.0" start="16.0" weekday="2"/>
-            <teachers>
-                <teacher MEN="000000008" UID="f23c3b2c740448a79be70623ac05594d"/>
-            </teachers>
-            <students>
-                <student OEN="000000014" UID="21354562b1774096af3396401e5ac1d1"/>
-                <student OEN="000000037" UID="ccdf3515730e465fa45a4753b8215bfb"/>
-                <student OEN="000000030" UID="c1c9d37980f04e5993c897e59bc94cf3"/>
-                <student OEN="000000002" UID="948e05609114407bb611980a6a1d1c5b"/>
-                <student OEN="000000001" UID="0efc789de3d249baa9409c96865fa169"/>
-                <student OEN="000000006" UID="45c13be74e084f0ca29624b99fcd4176"/>
             </students>
         </period>
         <period>
